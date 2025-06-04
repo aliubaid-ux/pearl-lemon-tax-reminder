@@ -143,7 +143,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
                   <label className="flex items-center space-x-2">
                     <Checkbox
                       checked={showUpcomingOnly}
-                      onCheckedChange={setShowUpcomingOnly}
+                      onCheckedChange={(checked) => setShowUpcomingOnly(checked === true)}
                     />
                     <span className="text-sm">Show upcoming only (3 months)</span>
                   </label>
@@ -156,7 +156,13 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
                     <label key={category} className="flex items-center space-x-2">
                       <Checkbox
                         checked={selectedCategories.includes(category)}
-                        onCheckedChange={() => toggleCategory(category)}
+                        onCheckedChange={(checked) => {
+                          if (checked === true) {
+                            toggleCategory(category);
+                          } else if (checked === false) {
+                            toggleCategory(category);
+                          }
+                        }}
                       />
                       <span className="text-sm capitalize">
                         {category.replace('-', ' ')}
@@ -172,7 +178,13 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
                     <label key={priority} className="flex items-center space-x-2">
                       <Checkbox
                         checked={selectedPriorities.includes(priority)}
-                        onCheckedChange={() => togglePriority(priority)}
+                        onCheckedChange={(checked) => {
+                          if (checked === true) {
+                            togglePriority(priority);
+                          } else if (checked === false) {
+                            togglePriority(priority);
+                          }
+                        }}
                       />
                       <span className="text-sm capitalize flex items-center gap-1">
                         {priority === 'high' && <AlertTriangle className="h-3 w-3 text-red-500" />}
