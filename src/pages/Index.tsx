@@ -55,7 +55,7 @@ const Index = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Hero Section */}
         <section className="text-center mb-16 animate-fade-in">
@@ -108,7 +108,7 @@ const Index = () => {
             </div>
             
             <div className="bg-white rounded-2xl p-8 shadow-lg hover-lift border">
-              <div className="w-14 h-14 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6">
+              <div className="w-14 h-14 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center mb-6">
                 <Users className="h-8 w-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Multi-Profile Support</h3>
@@ -118,7 +118,7 @@ const Index = () => {
             </div>
             
             <div className="bg-white rounded-2xl p-8 shadow-lg hover-lift border">
-              <div className="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6">
+              <div className="w-14 h-14 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-6">
                 <Building2 className="h-8 w-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Professional Grade</h3>
@@ -169,7 +169,7 @@ const Index = () => {
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 shadow-xl hover-lift">
+          <Card className="bg-gradient-to-br from-yellow-500 to-orange-500 text-white border-0 shadow-xl hover-lift">
             <CardHeader className="flex flex-row items-center space-y-0 pb-2">
               <CardTitle className="text-lg font-semibold">Upcoming</CardTitle>
               <Calendar className="h-6 w-6 ml-auto" />
@@ -180,7 +180,7 @@ const Index = () => {
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-green-500 to-emerald-500 text-white border-0 shadow-xl hover-lift">
+          <Card className="bg-gradient-to-br from-orange-500 to-red-500 text-white border-0 shadow-xl hover-lift">
             <CardHeader className="flex flex-row items-center space-y-0 pb-2">
               <CardTitle className="text-lg font-semibold">Profile</CardTitle>
               {userType === 'company-director' ? 
@@ -196,7 +196,7 @@ const Index = () => {
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-purple-500 to-pink-500 text-white border-0 shadow-xl hover-lift">
+          <Card className="bg-gradient-to-br from-red-500 to-pink-500 text-white border-0 shadow-xl hover-lift">
             <CardHeader className="flex flex-row items-center space-y-0 pb-2">
               <CardTitle className="text-lg font-semibold">Period</CardTitle>
               <Clock className="h-6 w-6 ml-auto" />
