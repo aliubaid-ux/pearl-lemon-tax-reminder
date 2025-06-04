@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Calendar, AlertTriangle, Users, Building2, Clock, CheckCircle, ArrowRight, PlayCircle, Calculator } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Calendar, AlertTriangle, Users, Building2, Clock, CheckCircle, ArrowRight, PlayCircle, Calculator, Printer, Mail, Share, Keyboard } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -17,8 +17,15 @@ import VATThresholdMonitor from '@/components/VATThresholdMonitor';
 import PenaltyCalculator from '@/components/PenaltyCalculator';
 import EmploymentStatusChecker from '@/components/EmploymentStatusChecker';
 import TradingAllowanceCalculator from '@/components/TradingAllowanceCalculator';
+import EmailReminders from '@/components/EmailReminders';
+import DeadlineNotes from '@/components/DeadlineNotes';
+import MobileNavigation from '@/components/MobileNavigation';
+import AccessibilityFeatures from '@/components/AccessibilityFeatures';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
+import { printCalendar, exportToCSV, shareDeadlines } from '@/utils/exportUtils';
+import { loadUserData, saveUserData } from '@/utils/storage';
+import { useKeyboardNavigation, defaultShortcuts } from '@/hooks/useKeyboardNavigation';
 import { useToast } from '@/hooks/use-toast';
 
 type UserType = 'self-employed' | 'company-director' | 'both';
@@ -30,7 +37,15 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredDeadlines, setFilteredDeadlines] = useState(getTaxDeadlines(userType));
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [selectedDeadline, setSelectedDeadline] = useState<any>(null);
   const { toast } = useToast();
+  
+  // Load user data on mount
+  useEffect(() => {
+    const userData = loadUserData();
+    setUserType(userData.userType);
+    setFilteredDeadlines(getTaxDeadlines(userData.userType));
+  }, []);
   
   const deadlines = getTaxDeadlines(userType);
   
@@ -44,15 +59,6 @@ const Index = () => {
     })
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-  const handleUserTypeChange = (type: UserType) => {
-    setUserType(type);
-    setFilteredDeadlines(getTaxDeadlines(type));
-    toast({
-      title: "Profile Updated",
-      description: `Switched to ${type.replace('-', ' ')} profile.`,
-    });
-  };
-
   const urgentDeadlines = upcomingDeadlines.filter(deadline => {
     const deadlineDate = new Date(deadline.date);
     const today = new Date();
@@ -60,14 +66,71 @@ const Index = () => {
     return daysUntil <= 30;
   });
 
+  const handleUserTypeChange = (type: UserType) => {
+    setUserType(type);
+    setFilteredDeadlines(getTaxDeadlines(type));
+    saveUserData({ userType: type });
+    toast({
+      title: "Profile Updated",
+      description: `Switched to ${type.replace('-', ' ')} profile.`,
+    });
+  };
+
+  const handleQuickAction = (action: string) => {
+    switch (action) {
+      case 'print':
+        printCalendar(filteredDeadlines, userType);
+        break;
+      case 'export':
+        exportToCSV(filteredDeadlines);
+        break;
+      case 'share':
+        shareDeadlines(filteredDeadlines, userType);
+        break;
+      case 'calendar':
+        setShowAdvanced(true);
+        // Scroll to calendar
+        setTimeout(() => {
+          document.querySelector('[value="calendar"]')?.click();
+        }, 100);
+        break;
+      case 'deadlines':
+        setShowAdvanced(true);
+        setTimeout(() => {
+          document.querySelector('[value="deadlines"]')?.click();
+        }, 100);
+        break;
+      case 'calculator':
+        setShowAdvanced(true);
+        setTimeout(() => {
+          document.querySelector('[value="tools"]')?.click();
+        }, 100);
+        break;
+      default:
+        setShowAdvanced(true);
+    }
+  };
+
+  // Keyboard shortcuts
+  const { showShortcuts } = useKeyboardNavigation({
+    ...defaultShortcuts,
+    'Ctrl+P': () => printCalendar(filteredDeadlines, userType),
+    'Ctrl+E': () => exportToCSV(filteredDeadlines),
+    'Ctrl+S': () => shareDeadlines(filteredDeadlines, userType),
+    '?': showShortcuts
+  });
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Simplified Hero Section */}
+        {/* Hero Section with Mobile Navigation */}
         <section className="text-center mb-12 animate-fade-in">
           <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 border shadow-xl hover-lift">
             <div className="flex items-center justify-between mb-6">
-              <div></div>
+              <MobileNavigation 
+                urgentCount={urgentDeadlines.length} 
+                onQuickAction={handleQuickAction}
+              />
               <div className="flex items-center gap-4">
                 <div className="p-4 pearl-gradient rounded-2xl shadow-lg">
                   <Calendar className="h-8 w-8 text-white" />
@@ -81,7 +144,18 @@ const Index = () => {
                   </p>
                 </div>
               </div>
-              <ThemeToggle />
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={showShortcuts}
+                  className="hidden lg:flex items-center gap-2"
+                >
+                  <Keyboard className="h-4 w-4" />
+                  Shortcuts
+                </Button>
+              </div>
             </div>
             
             {urgentDeadlines.length > 0 && (
@@ -97,7 +171,7 @@ const Index = () => {
               Get started by selecting your profile below, then view your personalized tax calendar.
             </p>
 
-            <div className="flex items-center justify-center gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-4">
               <Button onClick={() => document.getElementById('profile-section')?.scrollIntoView({ behavior: 'smooth' })} className="flex items-center gap-2">
                 <PlayCircle className="h-4 w-4" />
                 Get Started
@@ -105,11 +179,33 @@ const Index = () => {
               <Button variant="outline" onClick={() => setShowAdvanced(!showAdvanced)}>
                 {showAdvanced ? 'Simple View' : 'Advanced Features'}
               </Button>
+              
+              {/* Quick Action Buttons for Desktop */}
+              <div className="hidden lg:flex items-center gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => printCalendar(filteredDeadlines, userType)}
+                  className="flex items-center gap-2"
+                >
+                  <Printer className="h-4 w-4" />
+                  Print
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => shareDeadlines(filteredDeadlines, userType)}
+                  className="flex items-center gap-2"
+                >
+                  <Share className="h-4 w-4" />
+                  Share
+                </Button>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* User Type Selection - Made Primary */}
+        {/* User Type Selection */}
         <section id="profile-section" className="mb-8 animate-slide-up">
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Step 1: Choose Your Profile</h2>
@@ -131,7 +227,7 @@ const Index = () => {
               {upcomingDeadlines.length > 0 ? (
                 <div className="space-y-3">
                   {upcomingDeadlines.slice(0, 2).map((deadline) => (
-                    <div key={deadline.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div key={deadline.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors" onClick={() => setSelectedDeadline(deadline)}>
                       <div>
                         <p className="font-medium text-gray-900">{deadline.title}</p>
                         <p className="text-sm text-gray-600">{new Date(deadline.date).toLocaleDateString('en-GB', { 
@@ -167,24 +263,42 @@ const Index = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <Button variant="outline" className="w-full justify-start" onClick={() => setShowAdvanced(true)}>
+                <Button variant="outline" className="w-full justify-start" onClick={() => handleQuickAction('calendar')}>
                   <Calendar className="h-4 w-4 mr-2" />
                   View Tax Calendar
                 </Button>
-                <Button variant="outline" className="w-full justify-start" onClick={() => setShowAdvanced(true)}>
+                <Button variant="outline" className="w-full justify-start" onClick={() => handleQuickAction('calculator')}>
                   <Calculator className="h-4 w-4 mr-2" />
                   Penalty Calculator
                 </Button>
                 <Button variant="outline" className="w-full justify-start" onClick={() => setShowAdvanced(true)}>
-                  <Users className="h-4 w-4 mr-2" />
-                  VAT Threshold Monitor
+                  <Mail className="h-4 w-4 mr-2" />
+                  Email Reminders
                 </Button>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Advanced Features - Progressive Disclosure */}
+        {/* Deadline Notes Modal/Sidebar */}
+        {selectedDeadline && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-bold">{selectedDeadline.title}</h3>
+                  <Button variant="ghost" onClick={() => setSelectedDeadline(null)}>×</Button>
+                </div>
+                <DeadlineCard deadline={selectedDeadline} />
+                <div className="mt-6">
+                  <DeadlineNotes deadline={selectedDeadline} />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Advanced Features */}
         {showAdvanced && (
           <>
             {/* Tax Year Selector */}
@@ -261,11 +375,12 @@ const Index = () => {
 
             {/* Main Content Tabs */}
             <Tabs defaultValue="calendar" className="space-y-8 animate-fade-in">
-              <TabsList className="grid w-full grid-cols-4 h-14 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg">
+              <TabsList className="grid w-full grid-cols-5 h-14 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg">
                 <TabsTrigger value="calendar" className="text-lg font-medium rounded-xl">Calendar</TabsTrigger>
                 <TabsTrigger value="deadlines" className="text-lg font-medium rounded-xl">Deadlines</TabsTrigger>
                 <TabsTrigger value="tools" className="text-lg font-medium rounded-xl">Tax Tools</TabsTrigger>
-                <TabsTrigger value="templates" className="text-lg font-medium rounded-xl">Templates</TabsTrigger>
+                <TabsTrigger value="reminders" className="text-lg font-medium rounded-xl">Reminders</TabsTrigger>
+                <TabsTrigger value="settings" className="text-lg font-medium rounded-xl">Settings</TabsTrigger>
               </TabsList>
               
               <TabsContent value="calendar">
@@ -334,8 +449,48 @@ const Index = () => {
                 </div>
               </TabsContent>
               
-              <TabsContent value="templates">
-                <DeadlineTemplates />
+              <TabsContent value="reminders">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <EmailReminders />
+                  <DeadlineTemplates />
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="settings">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <AccessibilityFeatures />
+                  <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-lg">
+                    <CardHeader>
+                      <CardTitle>Data Management</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <Button 
+                        variant="outline" 
+                        className="w-full"
+                        onClick={() => exportToCSV(filteredDeadlines)}
+                      >
+                        Export Calendar Data
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full"
+                        onClick={() => printCalendar(filteredDeadlines, userType)}
+                      >
+                        Print Calendar
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full"
+                        onClick={() => {
+                          localStorage.removeItem('uk-tax-calendar-data');
+                          window.location.reload();
+                        }}
+                      >
+                        Reset All Data
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
               </TabsContent>
             </Tabs>
           </>

@@ -2,17 +2,22 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Download, ExternalLink, Bell, FileText, Calculator, HelpCircle, Calendar, Mail, Smartphone } from 'lucide-react';
+import { Download, ExternalLink, Bell, FileText, Calculator, HelpCircle, Calendar, Mail, Smartphone, Printer, Share } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { printCalendar, exportToCSV, shareDeadlines } from '@/utils/exportUtils';
+import { getTaxDeadlines } from '@/utils/taxDeadlines';
+import { loadUserData } from '@/utils/storage';
 
 const QuickActionsCard = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const { toast } = useToast();
 
+  const userData = loadUserData();
+  const deadlines = getTaxDeadlines(userData.userType);
+
   const handleDownload = async () => {
     setIsDownloading(true);
-    // Simulate download delay
     setTimeout(() => {
       setIsDownloading(false);
       toast({
@@ -20,6 +25,37 @@ const QuickActionsCard = () => {
         description: "Your comprehensive UK tax year guide is being downloaded.",
       });
     }, 1500);
+  };
+
+  const handlePrint = () => {
+    printCalendar(deadlines, userData.userType);
+    toast({
+      title: "Opening Print Dialog",
+      description: "Your tax calendar is ready to print.",
+    });
+  };
+
+  const handleExportCSV = () => {
+    exportToCSV(deadlines);
+    toast({
+      title: "CSV Export Complete",
+      description: "Your tax calendar data has been downloaded.",
+    });
+  };
+
+  const handleShare = async () => {
+    try {
+      await shareDeadlines(deadlines, userData.userType);
+      toast({
+        title: "Share Successful",
+        description: "Tax calendar shared successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Shared to Clipboard",
+        description: "Tax calendar copied to clipboard.",
+      });
+    }
   };
 
   const handleExternalLink = (url: string, title: string) => {
@@ -42,9 +78,8 @@ const QuickActionsCard = () => {
     setIsExporting(true);
     setTimeout(() => {
       setIsExporting(false);
-      // Generate Google Calendar URL with sample event
       const startDate = new Date();
-      const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hour later
+      const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
       
       const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Tax%20Deadline%20Reminder&dates=${startDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}/${endDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}&details=Important%20UK%20tax%20deadline%20approaching&location=UK`;
       
@@ -56,51 +91,33 @@ const QuickActionsCard = () => {
     }, 1000);
   };
 
-  const handleICalExport = () => {
-    // Generate iCal content
-    const icalContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//UK Tax Calendar//EN
-BEGIN:VEVENT
-UID:${Date.now()}@uktaxcalendar.com
-DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}Z
-DTSTART:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}Z
-SUMMARY:UK Tax Deadlines
-DESCRIPTION:Important UK tax deadlines and reminders
-END:VEVENT
-END:VCALENDAR`;
-
-    const blob = new Blob([icalContent], { type: 'text/calendar;charset=utf-8' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'uk-tax-calendar.ics';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    toast({
-      title: "iCal Export Complete",
-      description: "Tax calendar file downloaded successfully.",
-    });
-  };
-
-  const handleEmailReminders = () => {
-    toast({
-      title: "Email Reminders Setup",
-      description: "Professional email reminder system is being configured...",
-    });
-  };
-
   const quickActions = [
     {
-      id: 'download-guide',
-      title: 'Tax Year Guide',
-      description: 'Comprehensive PDF guide for UK tax',
-      icon: Download,
-      action: handleDownload,
-      loading: isDownloading,
+      id: 'print',
+      title: 'Print Calendar',
+      description: 'Print-friendly tax calendar',
+      icon: Printer,
+      action: handlePrint,
       variant: 'default' as const,
-      category: 'download'
+      category: 'export'
+    },
+    {
+      id: 'export-csv',
+      title: 'Export CSV',
+      description: 'Download as spreadsheet',
+      icon: Download,
+      action: handleExportCSV,
+      variant: 'outline' as const,
+      category: 'export'
+    },
+    {
+      id: 'share',
+      title: 'Share Calendar',
+      description: 'Share your deadlines',
+      icon: Share,
+      action: handleShare,
+      variant: 'outline' as const,
+      category: 'export'
     },
     {
       id: 'google-calendar',
@@ -113,22 +130,14 @@ END:VCALENDAR`;
       category: 'calendar'
     },
     {
-      id: 'ical-export',
-      title: 'iCal Export',
-      description: 'Download .ics calendar file',
+      id: 'download-guide',
+      title: 'Tax Year Guide',
+      description: 'Comprehensive PDF guide',
       icon: FileText,
-      action: handleICalExport,
+      action: handleDownload,
+      loading: isDownloading,
       variant: 'outline' as const,
-      category: 'calendar'
-    },
-    {
-      id: 'email-reminders',
-      title: 'Email Alerts',
-      description: 'Intelligent deadline notifications',
-      icon: Mail,
-      action: handleEmailReminders,
-      variant: 'outline' as const,
-      category: 'notifications'
+      category: 'download'
     },
     {
       id: 'hmrc-website',
@@ -142,7 +151,7 @@ END:VCALENDAR`;
     {
       id: 'tax-calculator',
       title: 'Tax Calculator',
-      description: 'Official HMRC tax calculator',
+      description: 'Official HMRC calculator',
       icon: Calculator,
       action: () => handleExternalLink('https://www.gov.uk/estimate-income-tax', 'HMRC Tax Calculator'),
       variant: 'outline' as const,
@@ -151,27 +160,18 @@ END:VCALENDAR`;
     {
       id: 'self-assessment',
       title: 'Self Assessment',
-      description: 'Online Self Assessment portal',
+      description: 'Online portal',
       icon: Smartphone,
       action: () => handleExternalLink('https://www.gov.uk/log-in-file-self-assessment-tax-return', 'Self Assessment Portal'),
-      variant: 'outline' as const,
-      category: 'external'
-    },
-    {
-      id: 'help-support',
-      title: 'HMRC Support',
-      description: 'Get help from HMRC',
-      icon: HelpCircle,
-      action: () => handleExternalLink('https://www.gov.uk/government/organisations/hm-revenue-customs/contact', 'HMRC Support'),
       variant: 'outline' as const,
       category: 'external'
     },
   ];
 
   const groupedActions = {
-    download: quickActions.filter(action => action.category === 'download'),
+    export: quickActions.filter(action => action.category === 'export'),
     calendar: quickActions.filter(action => action.category === 'calendar'),
-    notifications: quickActions.filter(action => action.category === 'notifications'),
+    download: quickActions.filter(action => action.category === 'download'),
     external: quickActions.filter(action => action.category === 'external')
   };
 
@@ -186,11 +186,11 @@ END:VCALENDAR`;
         </CardTitle>
       </CardHeader>
       <CardContent className="p-6 space-y-6">
-        {/* Download Section */}
+        {/* Export & Print Section */}
         <div>
-          <h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-sm uppercase tracking-wide">Downloads</h4>
+          <h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-sm uppercase tracking-wide">Export & Print</h4>
           <div className="grid grid-cols-1 gap-2">
-            {groupedActions.download.map((action) => (
+            {groupedActions.export.map((action) => (
               <Button
                 key={action.id}
                 variant={action.variant}
@@ -258,25 +258,28 @@ END:VCALENDAR`;
           </div>
         </div>
 
-        {/* Notifications Section */}
+        {/* Downloads Section */}
         <div>
-          <h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-sm uppercase tracking-wide">Notifications</h4>
+          <h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-sm uppercase tracking-wide">Downloads</h4>
           <div className="grid grid-cols-1 gap-2">
-            {groupedActions.notifications.map((action) => (
+            {groupedActions.download.map((action) => (
               <Button
                 key={action.id}
                 variant={action.variant}
                 className="w-full justify-start h-auto p-4 hover:scale-105 transition-all duration-200"
                 onClick={action.action}
+                disabled={action.loading}
               >
                 <div className="flex items-center gap-3 w-full">
                   <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
-                    <action.icon className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                    <action.icon className={`h-4 w-4 text-purple-600 dark:text-purple-400 ${
+                      action.loading ? 'animate-spin' : ''
+                    }`} />
                   </div>
                   <div className="text-left flex-1">
                     <div className="font-medium text-sm">{action.title}</div>
                     <div className="text-xs opacity-75 text-gray-600 dark:text-gray-300">
-                      {action.description}
+                      {action.loading ? 'Processing...' : action.description}
                     </div>
                   </div>
                 </div>
