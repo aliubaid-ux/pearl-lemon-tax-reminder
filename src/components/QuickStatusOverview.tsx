@@ -22,18 +22,21 @@ const QuickStatusOverview: React.FC<QuickStatusOverviewProps> = ({
   const { toast } = useToast();
 
   const handleViewAllDeadlines = () => {
-    onShowAdvanced();
+    // Scroll to the deadlines tab and activate it
     setTimeout(() => {
       const deadlinesTab = document.querySelector('[value="deadlines"]') as HTMLElement;
       if (deadlinesTab) {
         deadlinesTab.click();
         deadlinesTab.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        toast({
+          title: "Showing All Deadlines",
+          description: "Navigated to the complete deadlines view.",
+        });
       }
     }, 100);
   };
 
   const handleQuickActionClick = (action: string) => {
-    onShowAdvanced();
     setTimeout(() => {
       onQuickAction(action);
     }, 100);
@@ -84,8 +87,8 @@ const QuickStatusOverview: React.FC<QuickStatusOverviewProps> = ({
               <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-3" />
               <p className="text-gray-600 dark:text-gray-300 font-medium">All caught up!</p>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">No urgent deadlines in the next 3 months</p>
-              <Button variant="outline" size="sm" onClick={() => handleQuickActionClick('calendar')}>
-                View Full Calendar
+              <Button variant="outline" size="sm" onClick={() => handleQuickActionClick('deadlines')}>
+                View All Deadlines
               </Button>
             </div>
           )}
@@ -96,7 +99,7 @@ const QuickStatusOverview: React.FC<QuickStatusOverviewProps> = ({
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-3 text-xl">
             <ArrowRight className="h-6 w-6 text-blue-500" />
-            Step 2: Next Actions
+            Quick Actions
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -104,11 +107,11 @@ const QuickStatusOverview: React.FC<QuickStatusOverviewProps> = ({
             <Button 
               variant="outline" 
               className="w-full justify-start hover:bg-green-50 border-green-200 dark:border-green-700 dark:hover:bg-green-900/20" 
-              onClick={() => handleQuickActionClick('calendar')}
+              onClick={() => handleQuickActionClick('deadlines')}
             >
               <Calendar className="h-4 w-4 mr-2 text-green-600" />
-              View Your Tax Calendar
-              <span className="ml-auto text-xs text-gray-500">See all important dates</span>
+              View All Tax Deadlines
+              <span className="ml-auto text-xs text-gray-500">Complete annual view</span>
             </Button>
             <Button 
               variant="outline" 
@@ -131,9 +134,9 @@ const QuickStatusOverview: React.FC<QuickStatusOverviewProps> = ({
           </div>
           
           <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
-            <p className="text-xs text-blue-800 dark:text-blue-200 font-medium mb-1">💡 What's Next?</p>
+            <p className="text-xs text-blue-800 dark:text-blue-200 font-medium mb-1">💡 Quick Navigation</p>
             <p className="text-xs text-blue-700 dark:text-blue-300">
-              These buttons will show you advanced features and take you directly to the tools you need.
+              These buttons will take you directly to the tools and information you need.
             </p>
           </div>
         </CardContent>

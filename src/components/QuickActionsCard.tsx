@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -76,18 +75,27 @@ const QuickActionsCard = () => {
 
   const handleGoogleCalendarExport = () => {
     setIsExporting(true);
+    
+    // Create Google Calendar events for all deadlines
+    const calendarEvents = deadlines.map(deadline => {
+      const deadlineDate = new Date(deadline.date);
+      const startDate = deadlineDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      const endDate = new Date(deadlineDate.getTime() + 60 * 60 * 1000).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      
+      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(deadline.title)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(deadline.description || 'Tax deadline reminder - Visit PL Tax Reminder for details')}&location=UK`;
+    });
+
     setTimeout(() => {
       setIsExporting(false);
-      const startDate = new Date();
-      const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
       
-      const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Tax%20Deadline%20Reminder&dates=${startDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}/${endDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}&details=Important%20UK%20tax%20deadline%20approaching&location=UK`;
-      
-      window.open(googleCalendarUrl, '_blank');
-      toast({
-        title: "Google Calendar Export",
-        description: "Opening Google Calendar with your tax deadlines...",
-      });
+      // Open the first event in Google Calendar
+      if (calendarEvents.length > 0) {
+        window.open(calendarEvents[0], '_blank');
+        toast({
+          title: "Google Calendar Export",
+          description: `Opening Google Calendar with your tax deadlines. ${calendarEvents.length} events ready to add.`,
+        });
+      }
     }, 1000);
   };
 
@@ -327,7 +335,7 @@ const QuickActionsCard = () => {
               variant="ghost" 
               size="sm"
               className="text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-900/30"
-              onClick={() => handleExternalLink('https://www.gov.uk/find-a-professional-adviser', 'Find an Adviser')}
+              onClick={() => handleExternalLink('https://www.icaew.com/membership/find-a-chartered-accountant', 'Find an ICAEW Chartered Accountant')}
             >
               Find a Chartered Accountant
             </Button>

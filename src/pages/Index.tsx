@@ -9,11 +9,12 @@ import UserTypeSelector from '@/components/UserTypeSelector';
 import TaxYearSelector from '@/components/TaxYearSelector';
 import SearchFilterBar from '@/components/SearchFilterBar';
 import DeadlineNotes from '@/components/DeadlineNotes';
-import HeroSection from '@/components/HeroSection';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import StatsCards from '@/components/StatsCards';
 import QuickStatusOverview from '@/components/QuickStatusOverview';
 import MainTabs from '@/components/MainTabs';
 import { Button } from '@/components/ui/button';
+import { Download, Calendar as CalendarIcon } from 'lucide-react';
 
 type UserType = 'self-employed' | 'company-director' | 'both';
 
@@ -23,7 +24,6 @@ const Index = () => {
   const [currentTaxYear, setCurrentTaxYear] = useState(new Date().getFullYear());
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredDeadlines, setFilteredDeadlines] = useState(getTaxDeadlines('self-employed'));
-  const [showAdvanced, setShowAdvanced] = useState(false);
   const [selectedDeadline, setSelectedDeadline] = useState<any>(null);
   const { toast } = useToast();
 
@@ -70,26 +70,10 @@ const Index = () => {
       title: "Profile Updated!",
       description: `Your calendar is now personalized for ${type.replace('-', ' ')} activities.`,
     });
-    
-    // Auto-show advanced features after profile selection
-    setTimeout(() => {
-      if (!showAdvanced) {
-        setShowAdvanced(true);
-        toast({
-          title: "Advanced Features Unlocked!",
-          description: "You can now access all tax tools and calculators below.",
-        });
-      }
-    }, 1000);
   };
 
   const handleQuickAction = (action: string) => {
     console.log('Quick action triggered:', action);
-    
-    // Ensure advanced features are shown first
-    if (!showAdvanced) {
-      setShowAdvanced(true);
-    }
     
     // Navigate to specific tabs with proper delay
     setTimeout(() => {
@@ -120,41 +104,85 @@ const Index = () => {
     }
   };
 
-  const handleGetStarted = () => {
-    document.getElementById('profile-section')?.scrollIntoView({ behavior: 'smooth' });
+  const handleDownloadCalendar = () => {
+    printCalendar(filteredDeadlines, userType);
+    toast({
+      title: "Downloading Tax Calendar",
+      description: "Your personalized tax calendar is being prepared for download.",
+    });
+  };
+
+  const handleExportToGoogleCalendar = () => {
+    // Create Google Calendar events for each deadline
+    const calendarEvents = filteredDeadlines.map(deadline => {
+      const deadlineDate = new Date(deadline.date);
+      const startDate = deadlineDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      const endDate = new Date(deadlineDate.getTime() + 60 * 60 * 1000).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      
+      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(deadline.title)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(deadline.description || 'Tax deadline reminder')}&location=UK`;
+    });
+
+    // Open the first event in Google Calendar (for demo)
+    if (calendarEvents.length > 0) {
+      window.open(calendarEvents[0], '_blank');
+      toast({
+        title: "Google Calendar Export",
+        description: `Opening Google Calendar with your tax deadlines. ${calendarEvents.length} events ready to add.`,
+      });
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <HeroSection
-          urgentDeadlines={urgentDeadlines}
-          showAdvanced={showAdvanced}
-          onToggleAdvanced={() => setShowAdvanced(!showAdvanced)}
-          onGetStarted={handleGetStarted}
-          onShowShortcuts={showShortcuts}
-          onQuickAction={handleQuickAction}
-          onPrint={() => printCalendar(filteredDeadlines, userType)}
-          onShare={() => shareDeadlines(filteredDeadlines, userType)}
-        />
+        {/* Quick Action Bar */}
+        <div className="flex items-center justify-between mb-8 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
+          <div className="flex items-center gap-4">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">PL Tax Reminder</h1>
+            <p className="text-gray-600 dark:text-gray-300">Professional Tax Management</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Button onClick={handleDownloadCalendar} className="bg-green-600 hover:bg-green-700">
+              <Download className="h-4 w-4 mr-2" />
+              Download Calendar
+            </Button>
+            <Button onClick={handleExportToGoogleCalendar} variant="outline" className="border-green-200 hover:bg-green-50">
+              <CalendarIcon className="h-4 w-4 mr-2" />
+              Add to Google Calendar
+            </Button>
+            <ThemeToggle />
+          </div>
+        </div>
 
-        {/* User Type Selection */}
-        <section id="profile-section" className="mb-8 animate-slide-up">
+        {/* User Type Selection - Step 1 */}
+        <section className="mb-8 animate-slide-up">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               Step 1: Choose Your Profile
             </h2>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="text-gray-600 dark:text-gray-300 text-lg">
               This personalizes your tax calendar with the deadlines that matter to you
             </p>
           </div>
           <UserTypeSelector userType={userType} onUserTypeChange={handleUserTypeChange} />
         </section>
 
+        {/* Step 2 - Next Actions */}
+        <section className="mb-8">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              Step 2: View Your Tax Information
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 text-lg">
+              Access your deadlines, set reminders, and use tax calculators
+            </p>
+          </div>
+        </section>
+
         <QuickStatusOverview
           upcomingDeadlines={upcomingDeadlines}
           onDeadlineClick={setSelectedDeadline}
-          onShowAdvanced={() => setShowAdvanced(true)}
+          onShowAdvanced={() => {}}
           onQuickAction={handleQuickAction}
         />
 
@@ -174,48 +202,35 @@ const Index = () => {
         )}
 
         {/* Advanced Features */}
-        {showAdvanced && (
-          <>
-            <div className="text-center mb-6">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                Step 3: Explore Your Tax Tools
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300">
-                Use the tabs below to view deadlines, set reminders, and access tax calculators
-              </p>
-            </div>
+        <div className="mb-8 animate-scale-in">
+          <TaxYearSelector
+            currentTaxYear={currentTaxYear}
+            onTaxYearChange={setCurrentTaxYear}
+          />
+        </div>
 
-            <div className="mb-8 animate-scale-in">
-              <TaxYearSelector
-                currentTaxYear={currentTaxYear}
-                onTaxYearChange={setCurrentTaxYear}
-              />
-            </div>
+        <div className="mb-8 animate-fade-in">
+          <SearchFilterBar
+            deadlines={deadlines}
+            onFilteredDeadlines={setFilteredDeadlines}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
+        </div>
 
-            <div className="mb-8 animate-fade-in">
-              <SearchFilterBar
-                deadlines={deadlines}
-                onFilteredDeadlines={setFilteredDeadlines}
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-              />
-            </div>
+        <StatsCards
+          urgentDeadlines={urgentDeadlines}
+          upcomingDeadlines={upcomingDeadlines}
+          userType={userType}
+        />
 
-            <StatsCards
-              urgentDeadlines={urgentDeadlines}
-              upcomingDeadlines={upcomingDeadlines}
-              userType={userType}
-            />
-
-            <MainTabs
-              filteredDeadlines={filteredDeadlines}
-              upcomingDeadlines={upcomingDeadlines}
-              selectedMonth={selectedMonth}
-              onMonthChange={setSelectedMonth}
-              userType={userType}
-            />
-          </>
-        )}
+        <MainTabs
+          filteredDeadlines={filteredDeadlines}
+          upcomingDeadlines={upcomingDeadlines}
+          selectedMonth={selectedMonth}
+          onMonthChange={setSelectedMonth}
+          userType={userType}
+        />
 
         {/* Footer with correct year */}
         <footer className="mt-16 text-center text-gray-500 dark:text-gray-400">

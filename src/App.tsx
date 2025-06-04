@@ -4,6 +4,10 @@ import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-do
 import './App.css';
 import Index from './pages/Index';
 import NotFound from './pages/NotFound';
+import SelfEmployedPage from './pages/SelfEmployedPage';
+import CompanyDirectorPage from './pages/CompanyDirectorPage';
+import BothProfilesPage from './pages/BothProfilesPage';
+import PenaltiesPage from './pages/PenaltiesPage';
 import LateSubmissionTemplates from './components/LateSubmissionTemplates';
 import HMRCGuidance from './components/HMRCGuidance';
 import DocumentationChecklist from './components/DocumentationChecklist';
@@ -32,7 +36,7 @@ function App() {
                   </svg>
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">UK Tax Calendar</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">PL Tax Reminder</h1>
                   <p className="text-sm text-gray-600">Professional Tax Management</p>
                 </div>
               </div>
@@ -43,25 +47,35 @@ function App() {
                 }>
                   Dashboard
                 </NavLink>
+                <NavLink to="/self-employed" className={({ isActive }) => 
+                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
+                }>
+                  Self-Employed
+                </NavLink>
+                <NavLink to="/company-director" className={({ isActive }) => 
+                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
+                }>
+                  Company Director
+                </NavLink>
+                <NavLink to="/both-profiles" className={({ isActive }) => 
+                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
+                }>
+                  Both
+                </NavLink>
+                <NavLink to="/penalties" className={({ isActive }) => 
+                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
+                }>
+                  Penalties
+                </NavLink>
                 <NavLink to="/common-tax-issues" className={({ isActive }) => 
                   `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
                 }>
                   Common Issues
                 </NavLink>
-                <NavLink to="/late-submission-templates" className={({ isActive }) => 
-                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
-                }>
-                  Late Submission
-                </NavLink>
                 <NavLink to="/hmrc-guidance" className={({ isActive }) => 
                   `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
                 }>
                   HMRC Guidance
-                </NavLink>
-                <NavLink to="/documentation-checklist" className={({ isActive }) => 
-                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
-                }>
-                  Documentation
                 </NavLink>
               </div>
 
@@ -82,25 +96,35 @@ function App() {
                 } onClick={() => setIsMenuOpen(false)}>
                   Dashboard
                 </NavLink>
+                <NavLink to="/self-employed" className={({ isActive }) => 
+                  `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
+                } onClick={() => setIsMenuOpen(false)}>
+                  Self-Employed
+                </NavLink>
+                <NavLink to="/company-director" className={({ isActive }) => 
+                  `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
+                } onClick={() => setIsMenuOpen(false)}>
+                  Company Director
+                </NavLink>
+                <NavLink to="/both-profiles" className={({ isActive }) => 
+                  `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
+                } onClick={() => setIsMenuOpen(false)}>
+                  Both
+                </NavLink>
+                <NavLink to="/penalties" className={({ isActive }) => 
+                  `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
+                } onClick={() => setIsMenuOpen(false)}>
+                  Penalties
+                </NavLink>
                 <NavLink to="/common-tax-issues" className={({ isActive }) => 
                   `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
                 } onClick={() => setIsMenuOpen(false)}>
                   Common Issues
                 </NavLink>
-                <NavLink to="/late-submission-templates" className={({ isActive }) => 
-                  `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
-                } onClick={() => setIsMenuOpen(false)}>
-                  Late Submission
-                </NavLink>
                 <NavLink to="/hmrc-guidance" className={({ isActive }) => 
                   `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
                 } onClick={() => setIsMenuOpen(false)}>
                   HMRC Guidance
-                </NavLink>
-                <NavLink to="/documentation-checklist" className={({ isActive }) => 
-                  `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
-                } onClick={() => setIsMenuOpen(false)}>
-                  Documentation
                 </NavLink>
               </div>
             )}
@@ -110,6 +134,10 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/self-employed" element={<SelfEmployedPage />} />
+            <Route path="/company-director" element={<CompanyDirectorPage />} />
+            <Route path="/both-profiles" element={<BothProfilesPage />} />
+            <Route path="/penalties" element={<PenaltiesPage />} />
             <Route path="/common-tax-issues" element={<CommonTaxIssues />} />
             <Route path="/late-submission-templates" element={
               <div className="container mx-auto py-8 px-4">
