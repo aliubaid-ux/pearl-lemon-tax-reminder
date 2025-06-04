@@ -1,4 +1,3 @@
-
 import React from 'react';
 import EmailReminders from '@/components/EmailReminders';
 import AccessibilityFeatures from '@/components/AccessibilityFeatures';
@@ -6,7 +5,7 @@ import DeadlineTemplates from '@/components/DeadlineTemplates';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Settings, Download, Printer, RotateCcw, ArrowLeft } from 'lucide-react';
+import { Settings, Download, Printer, RotateCcw, ArrowLeft, BookOpen, Heart, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
@@ -15,11 +14,15 @@ const SettingsPage: React.FC = () => {
 
   const handleExportData = () => {
     try {
-      // Export all localStorage data
+      // Export all localStorage data including new beginner features
       const data = {
         userData: localStorage.getItem('uk-tax-calendar-user-data'),
         notes: localStorage.getItem('uk-tax-calendar-notes'),
         progress: localStorage.getItem('uk-tax-calendar-progress'),
+        gettingStartedSteps: localStorage.getItem('uk-tax-doctor-getting-started-steps'),
+        welcomeDismissed: localStorage.getItem('uk-tax-doctor-welcome-dismissed'),
+        onboardingComplete: localStorage.getItem('uk-tax-doctor-onboarding-complete'),
+        streak: localStorage.getItem('uk-tax-doctor-streak'),
         exportDate: new Date().toISOString()
       };
       
@@ -27,7 +30,7 @@ const SettingsPage: React.FC = () => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `uk-tax-calendar-backup-${new Date().toISOString().split('T')[0]}.json`;
+      a.download = `uk-tax-doctor-backup-${new Date().toISOString().split('T')[0]}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -35,7 +38,7 @@ const SettingsPage: React.FC = () => {
 
       toast({
         title: 'Data Exported Successfully',
-        description: 'Your calendar data has been downloaded as a backup file.',
+        description: 'Your complete tax calendar data and progress has been downloaded as a backup file.',
       });
     } catch (error) {
       toast({
@@ -72,16 +75,21 @@ const SettingsPage: React.FC = () => {
   };
 
   const handleResetData = () => {
-    if (window.confirm('Are you sure you want to reset all data? This action cannot be undone.')) {
+    if (window.confirm('Are you sure you want to reset all data? This will remove your progress, learning streak, and all personalized settings. This action cannot be undone.')) {
       try {
+        // Clear all data including new beginner features
         localStorage.removeItem('uk-tax-calendar-user-data');
         localStorage.removeItem('uk-tax-calendar-notes');
         localStorage.removeItem('uk-tax-calendar-progress');
         localStorage.removeItem('dismissed-suggestions');
+        localStorage.removeItem('uk-tax-doctor-getting-started-steps');
+        localStorage.removeItem('uk-tax-doctor-welcome-dismissed');
+        localStorage.removeItem('uk-tax-doctor-onboarding-complete');
+        localStorage.removeItem('uk-tax-doctor-streak');
         
         toast({
           title: 'Data Reset Successfully',
-          description: 'All your data has been cleared. The page will reload.',
+          description: 'All your data has been cleared. The page will reload to show the beginner welcome experience.',
         });
         
         setTimeout(() => {
@@ -95,6 +103,17 @@ const SettingsPage: React.FC = () => {
         });
       }
     }
+  };
+
+  const handleRestoreBeginnerExperience = () => {
+    localStorage.removeItem('uk-tax-doctor-welcome-dismissed');
+    localStorage.removeItem('uk-tax-doctor-onboarding-complete');
+    localStorage.removeItem('uk-tax-doctor-getting-started-steps');
+    
+    toast({
+      title: 'Beginner Experience Restored',
+      description: 'You\'ll see the welcome banner and getting started guide again when you return to the main page.',
+    });
   };
 
   return (
@@ -127,7 +146,7 @@ const SettingsPage: React.FC = () => {
           <EmailReminders />
           <AccessibilityFeatures />
           
-          {/* Data Management Card */}
+          {/* Enhanced Data Management Card */}
           <Card className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border-0 shadow-lg">
             <CardHeader>
               <CardTitle className="text-gray-900 dark:text-white flex items-center gap-3">
@@ -144,7 +163,7 @@ const SettingsPage: React.FC = () => {
                 onClick={handleExportData}
               >
                 <Download className="h-4 w-4 mr-2" />
-                Export Calendar Data
+                Export All Data & Progress
               </Button>
               <Button 
                 variant="outline" 
@@ -153,6 +172,14 @@ const SettingsPage: React.FC = () => {
               >
                 <Printer className="h-4 w-4 mr-2" />
                 Print Calendar
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full justify-start bg-white dark:bg-gray-800 border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                onClick={handleRestoreBeginnerExperience}
+              >
+                <BookOpen className="h-4 w-4 mr-2" />
+                Restore Beginner Experience
               </Button>
               <Button 
                 variant="outline" 

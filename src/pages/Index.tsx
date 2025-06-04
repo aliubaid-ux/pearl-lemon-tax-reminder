@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
@@ -15,6 +14,11 @@ import ModernCard from '@/components/ModernCard';
 import AnimatedButton from '@/components/AnimatedButton';
 import ModernBadge from '@/components/ModernBadge';
 import ComprehensiveUserGuide from '@/components/ComprehensiveUserGuide';
+import FriendlyWelcomeBanner from '@/components/FriendlyWelcomeBanner';
+import BeginnerGettingStarted from '@/components/BeginnerGettingStarted';
+import TaxEducationHub from '@/components/TaxEducationHub';
+import EmotionalSupportFeatures from '@/components/EmotionalSupportFeatures';
+import ContextualHelpSystem from '@/components/ContextualHelpSystem';
 import { AlertTriangle, CheckCircle, Calendar, Search, Filter, ExternalLink, Download, Settings, Sparkles, Target, Clock, Book } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -44,7 +48,10 @@ const Index = () => {
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
   const [isUserGuideOpen, setIsUserGuideOpen] = useState(false);
+  const [isGettingStartedOpen, setIsGettingStartedOpen] = useState(false);
   const [currentTaxYear, setCurrentTaxYear] = useState('2024-2025');
+  const [currentSection, setCurrentSection] = useState('user-type-selection');
+  const [completedTasks, setCompletedTasks] = useState(0);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -249,9 +256,35 @@ END:VCALENDAR`;
     return isAfterApril5 ? `${currentYear}-${currentYear + 1}` : `${currentYear - 1}-${currentYear}`;
   };
 
+  const handleGetStarted = () => {
+    setIsGettingStartedOpen(true);
+    setCurrentSection('getting-started');
+  };
+
+  const handleStepComplete = (step: number) => {
+    setCompletedTasks(prev => prev + 1);
+    toast({
+      title: "Step completed! 🎉",
+      description: `You're making great progress on your tax journey.`,
+    });
+  };
+
+  // Update current section based on user interactions
+  useEffect(() => {
+    const handleSectionChange = (event: CustomEvent) => {
+      setCurrentSection(event.detail.section);
+    };
+
+    document.addEventListener('sectionChange', handleSectionChange as EventListener);
+    return () => document.removeEventListener('sectionChange', handleSectionChange as EventListener);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
+        {/* Friendly Welcome Banner */}
+        <FriendlyWelcomeBanner onGetStarted={handleGetStarted} />
+
         {/* Modern Header */}
         <div className="relative mb-12">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 rounded-3xl blur-3xl" />
@@ -482,11 +515,21 @@ END:VCALENDAR`;
           </div>
         </div>
 
-        {/* Tax Year Toggle */}
-        <section className="mb-8">
-          <TaxYearToggle 
-            currentTaxYear={currentTaxYear}
-            onTaxYearChange={handleTaxYearChange}
+        {/* Beginner Getting Started Guide */}
+        {isGettingStartedOpen && (
+          <section className="mb-12">
+            <BeginnerGettingStarted 
+              userType={userType} 
+              onStepComplete={handleStepComplete}
+            />
+          </section>
+        )}
+
+        {/* Emotional Support Features */}
+        <section className="mb-12">
+          <EmotionalSupportFeatures 
+            completedTasks={completedTasks}
+            totalTasks={filteredDeadlines.length}
           />
         </section>
 
@@ -509,7 +552,7 @@ END:VCALENDAR`;
         </section>
 
         {/* Step 1: Enhanced User Type Selection */}
-        <section className="mb-12 animate-slide-up">
+        <section className="mb-12 animate-slide-up" onFocus={() => setCurrentSection('user-type-selection')}>
           <div className="text-center mb-8">
             <ModernBadge variant="info" size="lg" className="mb-4">
               Step 1
@@ -522,6 +565,11 @@ END:VCALENDAR`;
             </p>
           </div>
           <EnhancedUserTypeSelector userType={userType} onUserTypeChange={handleUserTypeChange} />
+        </section>
+
+        {/* Tax Education Hub */}
+        <section className="mb-12">
+          <TaxEducationHub userType={userType} />
         </section>
 
         {/* Enhanced Quick Actions */}
@@ -564,7 +612,7 @@ END:VCALENDAR`;
         </section>
 
         {/* Step 2: Critical Upcoming Deadlines */}
-        <section className="mb-12">
+        <section className="mb-12" onFocus={() => setCurrentSection('deadlines')}>
           <div className="text-center mb-8">
             <ModernBadge variant="warning" size="lg" className="mb-4">
               Step 2
@@ -647,7 +695,7 @@ END:VCALENDAR`;
         </section>
 
         {/* Step 3: Calendar Integration */}
-        <section id="calendar-integration" className="mb-12">
+        <section id="calendar-integration" className="mb-12" onFocus={() => setCurrentSection('calendar-integration')}>
           <div className="text-center mb-8">
             <ModernBadge variant="success" size="lg" className="mb-4">
               Step 3
@@ -736,6 +784,12 @@ END:VCALENDAR`;
       <KeyboardShortcuts
         isOpen={isShortcutsOpen}
         onClose={() => setIsShortcutsOpen(false)}
+      />
+
+      {/* Contextual Help System */}
+      <ContextualHelpSystem 
+        currentSection={currentSection}
+        userType={userType}
       />
     </div>
   );
