@@ -74,113 +74,115 @@ const BeginnerGettingStarted: React.FC<BeginnerGettingStartedProps> = ({ userTyp
   const progress = (completedSteps.length / steps.length) * 100;
 
   return (
-    <Card className="mb-12 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-2 border-emerald-200 dark:border-emerald-700 shadow-xl">
-      <CardHeader className="pb-8 pt-8">
-        <div className="flex items-center justify-between mb-6">
-          <CardTitle className="text-3xl text-emerald-900 dark:text-emerald-100 flex items-center gap-4">
-            <div className="p-3 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl text-white shadow-lg">
-              <Lightbulb className="h-7 w-7" />
-            </div>
-            Your Getting Started Journey
-          </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200 px-4 py-2 text-lg font-medium">
-            {completedSteps.length} of {steps.length} complete
-          </Badge>
-        </div>
-        
-        <div className="space-y-4">
-          <div className="flex justify-between text-lg text-emerald-700 dark:text-emerald-300 font-medium">
-            <span>Progress</span>
-            <span>{Math.round(progress)}%</span>
+    <div className="mb-16">
+      <Card className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-2 border-emerald-200 dark:border-emerald-700 shadow-2xl">
+        <CardHeader className="pb-8 pt-10 px-8 lg:px-12">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-8 gap-6">
+            <CardTitle className="text-3xl lg:text-4xl text-emerald-900 dark:text-emerald-100 flex items-center gap-5">
+              <div className="p-4 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl text-white shadow-lg">
+                <Lightbulb className="h-8 w-8" />
+              </div>
+              Your Getting Started Journey
+            </CardTitle>
+            <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200 px-6 py-3 text-lg font-medium">
+              {completedSteps.length} of {steps.length} complete
+            </Badge>
           </div>
-          <Progress value={progress} className="h-3 bg-emerald-100 dark:bg-emerald-900/30" />
-        </div>
-      </CardHeader>
-      
-      <CardContent className="space-y-8 pb-10">
-        {steps.map((step) => {
-          const isCompleted = completedSteps.includes(step.id);
-          const Icon = step.icon;
           
-          return (
-            <div 
-              key={step.id}
-              className={`p-6 rounded-xl border-2 transition-all duration-200 hover:shadow-lg ${
-                isCompleted 
-                  ? 'bg-white/90 dark:bg-gray-800/90 border-green-200 dark:border-green-700 shadow-md'
-                  : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-600'
-              }`}
-            >
-              <div className="flex items-start gap-6">
-                <div className={`p-4 rounded-xl shadow-sm ${
-                  isCompleted ? 'bg-green-100 dark:bg-green-900/30' : `bg-${step.color}-100 dark:bg-${step.color}-900/30`
-                }`}>
-                  {isCompleted ? (
-                    <CheckCircle className="h-7 w-7 text-green-600 dark:text-green-400" />
-                  ) : (
-                    <Icon className={`h-7 w-7 text-${step.color}-600 dark:text-${step.color}-400`} />
-                  )}
-                </div>
-                
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-3">
-                    <h3 className={`text-xl font-bold ${isCompleted ? 'text-green-900 dark:text-green-100' : 'text-gray-900 dark:text-white'}`}>
-                      Step {step.id}: {step.title}
-                    </h3>
-                    {isCompleted && (
-                      <Badge className="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200 px-3 py-1">
-                        ✓ Done
-                      </Badge>
+          <div className="space-y-6">
+            <div className="flex justify-between text-xl text-emerald-700 dark:text-emerald-300 font-medium">
+              <span>Progress</span>
+              <span>{Math.round(progress)}%</span>
+            </div>
+            <Progress value={progress} className="h-4 bg-emerald-100 dark:bg-emerald-900/30" />
+          </div>
+        </CardHeader>
+        
+        <CardContent className="space-y-10 pb-12 px-8 lg:px-12">
+          {steps.map((step) => {
+            const isCompleted = completedSteps.includes(step.id);
+            const Icon = step.icon;
+            
+            return (
+              <div 
+                key={step.id}
+                className={`p-8 rounded-xl border-2 transition-all duration-300 hover:shadow-xl ${
+                  isCompleted 
+                    ? 'bg-white/90 dark:bg-gray-800/90 border-green-200 dark:border-green-700 shadow-lg scale-105'
+                    : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-600 hover:scale-102'
+                }`}
+              >
+                <div className="flex items-start gap-8">
+                  <div className={`p-5 rounded-xl shadow-md flex-shrink-0 ${
+                    isCompleted ? 'bg-green-100 dark:bg-green-900/30' : `bg-${step.color}-100 dark:bg-${step.color}-900/30`
+                  }`}>
+                    {isCompleted ? (
+                      <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
+                    ) : (
+                      <Icon className={`h-8 w-8 text-${step.color}-600 dark:text-${step.color}-400`} />
                     )}
                   </div>
                   
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 text-lg">{step.description}</p>
-                  
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-5 rounded-xl mb-5 border border-blue-100 dark:border-blue-800">
-                    <p className="text-blue-900 dark:text-blue-100 font-semibold mb-2 text-lg">{step.content}</p>
-                    <p className="text-blue-700 dark:text-blue-300">{step.details}</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col lg:flex-row lg:items-center gap-4 mb-4">
+                      <h3 className={`text-2xl font-bold ${isCompleted ? 'text-green-900 dark:text-green-100' : 'text-gray-900 dark:text-white'}`}>
+                        Step {step.id}: {step.title}
+                      </h3>
+                      {isCompleted && (
+                        <Badge className="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200 px-4 py-2 text-base w-fit">
+                          ✓ Done
+                        </Badge>
+                      )}
+                    </div>
+                    
+                    <p className="text-gray-600 dark:text-gray-400 mb-6 text-lg leading-relaxed">{step.description}</p>
+                    
+                    <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-xl mb-6 border border-blue-100 dark:border-blue-800">
+                      <p className="text-blue-900 dark:text-blue-100 font-semibold mb-3 text-lg">{step.content}</p>
+                      <p className="text-blue-700 dark:text-blue-300 leading-relaxed">{step.details}</p>
+                    </div>
+                    
+                    {!isCompleted && (
+                      <Button 
+                        onClick={() => handleStepComplete(step.id)}
+                        size="lg"
+                        className={`bg-gradient-to-r from-${step.color}-600 to-${step.color}-700 hover:from-${step.color}-700 hover:to-${step.color}-800 text-white px-8 py-4 font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg h-14`}
+                      >
+                        {step.action}
+                        <ArrowRight className="h-5 w-5 ml-3" />
+                      </Button>
+                    )}
                   </div>
-                  
-                  {!isCompleted && (
-                    <Button 
-                      onClick={() => handleStepComplete(step.id)}
-                      size="lg"
-                      className={`bg-${step.color}-600 hover:bg-${step.color}-700 text-white px-6 py-3 font-medium shadow-md hover:shadow-lg transition-all`}
-                    >
-                      {step.action}
-                      <ArrowRight className="h-5 w-5 ml-3" />
-                    </Button>
-                  )}
                 </div>
               </div>
-            </div>
-          );
-        })}
-        
-        {completedSteps.length === steps.length && (
-          <div className="text-center p-8 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl border-2 border-green-200 dark:border-green-700 shadow-lg">
-            <div className="mb-6">
-              <div className="inline-flex p-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full text-white shadow-lg">
-                <Star className="h-8 w-8" />
+            );
+          })}
+          
+          {completedSteps.length === steps.length && (
+            <div className="text-center p-10 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl border-2 border-green-200 dark:border-green-700 shadow-xl">
+              <div className="mb-8">
+                <div className="inline-flex p-5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full text-white shadow-xl">
+                  <Star className="h-10 w-10" />
+                </div>
               </div>
+              <h3 className="text-3xl font-bold text-green-900 dark:text-green-100 mb-6">
+                🎉 Congratulations! You're Ready!
+              </h3>
+              <p className="text-green-700 dark:text-green-300 mb-8 text-xl leading-relaxed max-w-3xl mx-auto">
+                You've completed your getting started journey. You now have the knowledge and tools to manage your taxes confidently!
+              </p>
+              <Button 
+                size="lg"
+                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-10 py-5 text-xl font-medium shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 h-16"
+              >
+                <FileText className="h-6 w-6 mr-4" />
+                View My Complete Dashboard
+              </Button>
             </div>
-            <h3 className="text-2xl font-bold text-green-900 dark:text-green-100 mb-4">
-              🎉 Congratulations! You're Ready!
-            </h3>
-            <p className="text-green-700 dark:text-green-300 mb-6 text-lg leading-relaxed max-w-2xl mx-auto">
-              You've completed your getting started journey. You now have the knowledge and tools to manage your taxes confidently!
-            </p>
-            <Button 
-              size="lg"
-              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 text-lg font-medium shadow-lg hover:shadow-xl transition-all"
-            >
-              <FileText className="h-5 w-5 mr-3" />
-              View My Complete Dashboard
-            </Button>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

@@ -84,51 +84,45 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
     .slice(0, 6);
 
   return (
-    <div className="space-y-8">
-      {/* Enhanced Profile Selection with Loading States and Micro-interactions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="space-y-12">
+      {/* Enhanced Profile Selection */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {userTypes.map((type) => (
-          <ModernCard
+          <Card
             key={type.id}
-            variant={selectedType === type.id ? 'elevated' : 'glass'}
-            className={`group relative overflow-hidden transition-all duration-300 ${
+            className={`group relative overflow-hidden transition-all duration-300 cursor-pointer border-2 min-h-[400px] ${
               selectedType === type.id 
-                ? `bg-gradient-to-br ${type.bgGradient} border-2 border-white shadow-2xl transform scale-105` 
-                : 'hover:shadow-xl hover:scale-102'
+                ? `bg-gradient-to-br ${type.bgGradient} border-2 border-blue-400 shadow-2xl transform scale-105` 
+                : 'hover:shadow-xl hover:scale-102 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
             }`}
             onClick={() => handleTypeSelection(type.id)}
           >
-            {/* Animated Gradient Overlay */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${type.gradient} transition-opacity duration-300 ${
-              selectedType === type.id ? 'opacity-10' : 'opacity-0 group-hover:opacity-5'
-            }`} />
-            
             {/* Selection Indicator */}
             {selectedType === type.id && (
-              <div className="absolute top-4 right-4 z-20">
-                <div className={`p-2 rounded-full bg-gradient-to-r ${type.gradient} text-white shadow-lg animate-scale-in`}>
-                  <Check className="h-4 w-4" />
+              <div className="absolute top-6 right-6 z-20">
+                <div className={`p-3 rounded-full bg-gradient-to-r ${type.gradient} text-white shadow-xl`}>
+                  <Check className="h-5 w-5" />
                 </div>
               </div>
             )}
             
-            <CardHeader className="pb-4 relative z-10">
-              <CardTitle className="flex items-center gap-3">
-                <div className={`p-3 rounded-xl transition-all duration-300 ${
+            <CardHeader className="pb-6 relative z-10 pt-8">
+              <CardTitle className="flex items-center gap-4">
+                <div className={`p-4 rounded-xl transition-all duration-300 ${
                   selectedType === type.id 
                     ? `bg-gradient-to-r ${type.gradient} text-white shadow-lg scale-110` 
-                    : 'bg-gray-100 text-gray-600 group-hover:bg-gray-200 group-hover:scale-105'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 group-hover:bg-gray-200 dark:group-hover:bg-gray-600 group-hover:scale-105'
                 }`}>
-                  <type.icon className="h-6 w-6" />
+                  <type.icon className="h-8 w-8" />
                 </div>
                 <div className="flex-1">
-                  <h3 className={`font-bold text-lg transition-colors duration-200 ${
-                    selectedType === type.id ? 'text-gray-900' : 'text-gray-700 group-hover:text-gray-900'
+                  <h3 className={`font-bold text-xl transition-colors duration-200 ${
+                    selectedType === type.id ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white'
                   }`}>
                     {type.title}
                   </h3>
-                  <p className={`text-sm transition-colors duration-200 ${
-                    selectedType === type.id ? 'text-gray-600' : 'text-gray-500 group-hover:text-gray-600'
+                  <p className={`text-base transition-colors duration-200 mt-1 ${
+                    selectedType === type.id ? 'text-gray-600 dark:text-gray-300' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300'
                   }`}>
                     {type.description}
                   </p>
@@ -136,40 +130,41 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
               </CardTitle>
             </CardHeader>
             
-            <CardContent className="space-y-4 relative z-10">
-              {/* Enhanced Badge with Animation */}
-              <div className="flex items-center justify-between mb-4">
-                <ModernBadge 
-                  variant={selectedType === type.id ? "success" : "default"}
-                  className="transition-all duration-300"
+            <CardContent className="space-y-6 relative z-10 px-6 pb-8">
+              {/* Badge */}
+              <div className="flex items-center justify-between mb-6">
+                <Badge 
+                  variant={selectedType === type.id ? "default" : "secondary"}
+                  className={`transition-all duration-300 px-4 py-2 text-base ${
+                    selectedType === type.id 
+                      ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200' 
+                      : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
+                  }`}
                 >
-                  <Calendar className="h-3 w-3 mr-1" />
+                  <Calendar className="h-4 w-4 mr-2" />
                   {type.deadlineCount} deadlines
-                </ModernBadge>
+                </Badge>
                 {selectedType === type.id && (
-                  <ModernBadge variant="info" size="sm" className="animate-fade-in">
+                  <Badge variant="default" className="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200 px-3 py-1">
                     Active
-                  </ModernBadge>
+                  </Badge>
                 )}
               </div>
               
-              {/* Feature List with Enhanced Styling */}
-              <div className="space-y-3">
+              {/* Feature List */}
+              <div className="space-y-4">
                 {type.features.map((feature, index) => (
                   <div 
                     key={index} 
-                    className={`flex items-center gap-3 text-sm transition-all duration-200 ${
-                      selectedType === type.id ? 'animate-fade-in' : ''
-                    }`}
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    className={`flex items-center gap-4 text-base transition-all duration-200`}
                   >
-                    <div className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    <div className={`w-3 h-3 rounded-full transition-all duration-300 flex-shrink-0 ${
                       selectedType === type.id 
                         ? `bg-gradient-to-r ${type.gradient} shadow-md` 
                         : 'bg-gray-400 group-hover:bg-gray-500'
                     }`} />
                     <span className={`transition-colors duration-200 ${
-                      selectedType === type.id ? 'text-gray-700 font-medium' : 'text-gray-600 group-hover:text-gray-700'
+                      selectedType === type.id ? 'text-gray-700 dark:text-gray-200 font-medium' : 'text-gray-600 dark:text-gray-300 group-hover:text-gray-700 dark:group-hover:text-gray-200'
                     }`}>
                       {feature}
                     </span>
@@ -177,160 +172,163 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
                 ))}
               </div>
 
-              {/* Enhanced Action Button */}
-              <AnimatedButton
-                variant={selectedType === type.id ? "primary" : "glass"}
-                size="sm"
-                icon={selectedType === type.id ? Check : ArrowRight}
-                onClick={() => handleTypeSelection(type.id)}
-                className={`w-full mt-6 transition-all duration-300 ${
-                  selectedType === type.id 
-                    ? 'shadow-lg transform scale-105' 
-                    : 'hover:shadow-md hover:transform hover:scale-102'
-                }`}
-              >
-                {selectedType === type.id ? '✓ Active Profile' : 'Select Profile'}
-              </AnimatedButton>
+              {/* Action Button */}
+              <div className="pt-6">
+                <button
+                  onClick={() => handleTypeSelection(type.id)}
+                  className={`w-full py-4 px-6 rounded-xl transition-all duration-300 font-medium text-lg border-2 ${
+                    selectedType === type.id 
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl border-transparent hover:shadow-2xl transform scale-105' 
+                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:shadow-lg hover:scale-102'
+                  }`}
+                >
+                  {selectedType === type.id ? (
+                    <span className="flex items-center justify-center gap-3">
+                      <Check className="h-5 w-5" />
+                      ✓ Active Profile
+                    </span>
+                  ) : (
+                    <span className="flex items-center justify-center gap-3">
+                      Select Profile
+                      <ArrowRight className="h-5 w-5" />
+                    </span>
+                  )}
+                </button>
+              </div>
             </CardContent>
-          </ModernCard>
+          </Card>
         ))}
       </div>
 
-      {/* Enhanced View Mode Toggle with Better UX */}
+      {/* View Mode Toggle */}
       {showDeadlines && currentDeadlines.length > 0 && (
         <div className="flex justify-center">
-          <div className="flex gap-1 p-2 bg-white/90 backdrop-blur-md rounded-2xl border border-gray-200/50 shadow-xl">
+          <div className="flex gap-2 p-3 bg-white/90 backdrop-blur-md rounded-2xl border border-gray-200/50 shadow-xl">
             {[
               { mode: 'enhanced', label: 'Enhanced View', icon: Check },
               { mode: 'visual', label: 'Visual Overview', icon: Calendar },
               { mode: 'comparison', label: 'Compare Deadlines', icon: ArrowRight }
             ].map((item) => (
-              <AnimatedButton
+              <button
                 key={item.mode}
-                variant={viewMode === item.mode ? 'primary' : 'minimal'}
-                size="sm"
-                icon={item.icon}
                 onClick={() => setViewMode(item.mode as any)}
-                className={`rounded-xl transition-all duration-300 ${
+                className={`flex items-center gap-3 px-6 py-3 rounded-xl transition-all duration-300 font-medium ${
                   viewMode === item.mode 
-                    ? 'shadow-lg transform scale-105' 
-                    : 'hover:bg-gray-50 border-0 hover:scale-102'
+                    ? 'bg-blue-600 text-white shadow-lg transform scale-105' 
+                    : 'bg-transparent text-gray-600 hover:bg-gray-100 hover:scale-102'
                 }`}
               >
+                <item.icon className="h-4 w-4" />
                 {item.label}
-              </AnimatedButton>
+              </button>
             ))}
           </div>
         </div>
       )}
 
-      {/* Enhanced Smart Suggestions */}
+      {/* Smart Suggestions */}
       <SmartSuggestions deadlines={currentDeadlines} userType={selectedType} />
 
-      {/* Enhanced Seasonal Tips */}
+      {/* Seasonal Tips */}
       <SeasonalTaxTips />
 
-      {/* Enhanced Deadline Display with Loading States */}
+      {/* Deadline Display */}
       {showDeadlines && currentDeadlines.length > 0 && (
-        <div className="space-y-6">
-          <ModernCard variant="glass" className="p-6 animate-fade-in">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl text-white shadow-lg">
-                <AlertTriangle className="h-6 w-6" />
+        <div className="space-y-8">
+          <Card className="p-8 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-2 border-blue-200 dark:border-blue-700 shadow-xl">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-6 mb-8">
+              <div className="p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl text-white shadow-lg">
+                <AlertTriangle className="h-8 w-8" />
               </div>
               <div className="flex-1">
-                <h3 className="font-bold text-gray-900 text-xl mb-1">
+                <h3 className="font-bold text-gray-900 dark:text-white text-2xl mb-2">
                   Your {selectedType.replace('-', ' ').toUpperCase()} Tax Calendar
                 </h3>
-                <p className="text-gray-600 text-base">
+                <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
                   Showing {currentDeadlines.length} personalized deadlines with intelligent recommendations.
                   {selectedType === 'both' && ' This includes both self-employed and company director obligations.'}
                 </p>
               </div>
-              <ModernBadge variant="success" size="lg" className="animate-pulse">
+              <Badge variant="default" className="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200 px-4 py-2 text-base">
                 Live Updates
-              </ModernBadge>
+              </Badge>
             </div>
             
-            <div className="flex flex-wrap gap-3">
-              <ModernBadge variant="info">
-                <Calendar className="h-3 w-3 mr-1" />
+            <div className="flex flex-wrap gap-4">
+              <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 px-4 py-2">
+                <Calendar className="h-4 w-4 mr-2" />
                 Enhanced view includes preparation tips and required documents
-              </ModernBadge>
-              <ModernBadge variant="warning">
+              </Badge>
+              <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200 px-4 py-2">
                 Smart notifications enabled
-              </ModernBadge>
-              <ModernBadge variant="success">
+              </Badge>
+              <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200 px-4 py-2">
                 AI-powered insights
-              </ModernBadge>
+              </Badge>
             </div>
-          </ModernCard>
+          </Card>
 
-          {/* Enhanced Content Display */}
-          <div className="space-y-6">
+          {/* Content Display */}
+          <div className="space-y-8">
             {viewMode === 'enhanced' && (
-              <div className="space-y-4 animate-fade-in">
+              <div className="space-y-6">
                 {upcomingDeadlines.map((deadline, index) => (
-                  <div 
-                    key={deadline.id}
-                    className="animate-slide-up"
-                    style={{ animationDelay: `${index * 150}ms` }}
-                  >
+                  <div key={deadline.id} className="transform transition-all duration-300 hover:scale-102">
                     <EnhancedDeadlineCard deadline={deadline} showFullDetails />
                   </div>
                 ))}
                 {upcomingDeadlines.length < currentDeadlines.length && (
-                  <ModernCard variant="minimal" className="text-center p-8 animate-fade-in">
-                    <div className="space-y-3">
-                      <p className="text-gray-600 text-lg">
+                  <Card className="text-center p-10 bg-gray-50 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700">
+                    <div className="space-y-4">
+                      <p className="text-gray-600 dark:text-gray-300 text-xl">
                         Showing next {upcomingDeadlines.length} critical deadlines
                       </p>
-                      <ModernBadge variant="default" size="lg">
+                      <Badge variant="secondary" className="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 px-6 py-3 text-lg">
                         Total of {currentDeadlines.length} deadlines in your complete calendar
-                      </ModernBadge>
-                      <p className="text-sm text-gray-500">
+                      </Badge>
+                      <p className="text-gray-500 dark:text-gray-400 text-base">
                         Export your complete calendar to see all deadlines for the year
                       </p>
                     </div>
-                  </ModernCard>
+                  </Card>
                 )}
               </div>
             )}
 
             {viewMode === 'visual' && (
-              <div className="animate-fade-in">
-                <VisualDeadlineDisplay 
-                  deadlines={currentDeadlines} 
-                  userType={selectedType}
-                />
-              </div>
+              <VisualDeadlineDisplay 
+                deadlines={currentDeadlines} 
+                userType={selectedType}
+              />
             )}
 
             {viewMode === 'comparison' && (
-              <div className="animate-fade-in">
-                <DeadlineComparison deadlines={currentDeadlines} />
-              </div>
+              <DeadlineComparison deadlines={currentDeadlines} />
             )}
           </div>
         </div>
       )}
 
-      {/* Enhanced Empty State */}
+      {/* Empty State */}
       {currentDeadlines.length === 0 && showDeadlines && (
-        <ModernCard variant="minimal" className="text-center py-16 animate-fade-in">
-          <div className="space-y-4">
-            <div className="text-gray-400 mb-6">
-              <Calendar className="h-16 w-16 mx-auto" />
+        <Card className="text-center py-20 bg-gray-50 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700">
+          <div className="space-y-6">
+            <div className="text-gray-400 mb-8">
+              <Calendar className="h-20 w-20 mx-auto" />
             </div>
-            <h3 className="text-gray-600 text-xl font-semibold">No tax deadlines found</h3>
-            <p className="text-gray-500 max-w-md mx-auto">
+            <h3 className="text-gray-600 dark:text-gray-300 text-2xl font-semibold">No tax deadlines found</h3>
+            <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto text-lg">
               This profile type doesn't have any active deadlines. Try selecting a different profile or check back later.
             </p>
-            <AnimatedButton variant="glass" onClick={() => handleTypeSelection('self-employed')}>
+            <button
+              onClick={() => handleTypeSelection('self-employed')}
+              className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-300 hover:scale-105 shadow-lg font-medium"
+            >
               Try Self-Employed Profile
-            </AnimatedButton>
+              <ArrowRight className="h-5 w-5" />
+            </button>
           </div>
-        </ModernCard>
+        </Card>
       )}
     </div>
   );
