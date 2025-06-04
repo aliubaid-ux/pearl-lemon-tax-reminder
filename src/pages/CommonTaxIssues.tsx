@@ -2,9 +2,9 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Calculator, FileCheck, CreditCard, HelpCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import SharedHeader from '@/components/SharedHeader';
+import StreamlinedNavigation from '@/components/StreamlinedNavigation';
 import CommonMistakesAlert from '@/components/CommonMistakesAlert';
 import RegistrationTracker from '@/components/RegistrationTracker';
 import TradingAllowanceCalculator from '@/components/TradingAllowanceCalculator';
@@ -16,90 +16,116 @@ const CommonTaxIssues: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
-      <SharedHeader 
-        title="Common Tax Issues & Solutions"
-        subtitle="Tools and guidance for the most frequently reported HMRC challenges"
-      />
+      <StreamlinedNavigation />
       
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="mb-6">
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="mb-8">
           <Button 
             variant="outline" 
             onClick={() => navigate('/')}
             className="mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Calendar
+            Back to Dashboard
           </Button>
+          
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Common Tax Issues & Solutions
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              Quick solutions to the most frequently reported HMRC challenges
+            </p>
+          </div>
         </div>
 
         <Tabs defaultValue="mistakes" className="space-y-6">
-          <TabsList className="grid grid-cols-5 mb-4 w-full max-w-4xl bg-white dark:bg-gray-800">
-            <TabsTrigger value="mistakes">Common Mistakes</TabsTrigger>
-            <TabsTrigger value="registration">Registration</TabsTrigger>
-            <TabsTrigger value="trading">Trading Allowance</TabsTrigger>
-            <TabsTrigger value="payments">Payments on Account</TabsTrigger>
-            <TabsTrigger value="support">HMRC Support</TabsTrigger>
+          <TabsList className="grid grid-cols-5 w-full max-w-4xl mx-auto bg-white dark:bg-gray-800">
+            <TabsTrigger value="mistakes" className="flex items-center gap-2 text-sm">
+              <AlertTriangle className="h-4 w-4" />
+              <span className="hidden sm:inline">Common Mistakes</span>
+              <span className="sm:hidden">Mistakes</span>
+            </TabsTrigger>
+            <TabsTrigger value="registration" className="flex items-center gap-2 text-sm">
+              <FileCheck className="h-4 w-4" />
+              <span className="hidden sm:inline">Registration</span>
+              <span className="sm:hidden">Register</span>
+            </TabsTrigger>
+            <TabsTrigger value="trading" className="flex items-center gap-2 text-sm">
+              <Calculator className="h-4 w-4" />
+              <span className="hidden sm:inline">Trading</span>
+              <span className="sm:hidden">Trading</span>
+            </TabsTrigger>
+            <TabsTrigger value="payments" className="flex items-center gap-2 text-sm">
+              <CreditCard className="h-4 w-4" />
+              <span className="hidden sm:inline">Payments</span>
+              <span className="sm:hidden">Payments</span>
+            </TabsTrigger>
+            <TabsTrigger value="support" className="flex items-center gap-2 text-sm">
+              <HelpCircle className="h-4 w-4" />
+              <span className="hidden sm:inline">Support</span>
+              <span className="sm:hidden">Help</span>
+            </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="mistakes">
-            <p className="text-gray-700 dark:text-gray-300 mb-5 max-w-4xl">
-              Based on real taxpayer experiences and forum posts, these are the most common mistakes
-              that lead to unexpected penalties and stress.
-            </p>
+          <TabsContent value="mistakes" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Most Common Tax Mistakes</h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                Based on real taxpayer experiences - avoid these costly errors
+              </p>
+            </div>
             <CommonMistakesAlert />
           </TabsContent>
           
-          <TabsContent value="registration">
-            <p className="text-gray-700 dark:text-gray-300 mb-5 max-w-4xl">
-              Many businesses miss the October 5th registration deadline because they're unaware of it.
-              Use this calculator to track your registration obligations.
-            </p>
-            <div className="max-w-3xl">
+          <TabsContent value="registration" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Registration Tracker</h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                Don't miss the October 5th deadline - track your obligations
+              </p>
+            </div>
+            <div className="max-w-4xl mx-auto">
               <RegistrationTracker />
             </div>
           </TabsContent>
           
-          <TabsContent value="trading">
-            <p className="text-gray-700 dark:text-gray-300 mb-5 max-w-4xl">
-              There's widespread confusion about the £1,000 trading allowance. Use this calculator to determine 
-              your filing obligations and optimize your allowances.
-            </p>
-            <div className="max-w-3xl">
+          <TabsContent value="trading" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Trading Allowance Calculator</h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                Understand the £1,000 allowance and optimize your tax position
+              </p>
+            </div>
+            <div className="max-w-4xl mx-auto">
               <TradingAllowanceCalculator />
             </div>
           </TabsContent>
           
-          <TabsContent value="payments">
-            <p className="text-gray-700 dark:text-gray-300 mb-5 max-w-4xl">
-              Payments on account catch many first-time Self Assessment filers by surprise, leading to 
-              unexpected financial pressure. Use this guide to understand and plan for them.
-            </p>
-            <div className="max-w-3xl">
+          <TabsContent value="payments" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Payments on Account</h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                Understand and plan for advance payments to avoid surprises
+              </p>
+            </div>
+            <div className="max-w-4xl mx-auto">
               <PaymentsOnAccountGuide />
             </div>
           </TabsContent>
           
-          <TabsContent value="support">
-            <p className="text-gray-700 dark:text-gray-300 mb-5 max-w-4xl">
-              Navigating HMRC support can be challenging with long wait times and inconsistent responses.
-              Use these strategies to get effective help when you need it.
-            </p>
-            <div className="max-w-3xl">
+          <TabsContent value="support" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">HMRC Support Guide</h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                Get effective help when you need it most
+              </p>
+            </div>
+            <div className="max-w-4xl mx-auto">
               <HMRCSupportGuide />
             </div>
           </TabsContent>
         </Tabs>
-
-        <div className="mt-10 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800 max-w-2xl">
-          <h3 className="font-bold text-blue-900 dark:text-blue-100 mb-2">Why These Tools Exist</h3>
-          <p className="text-blue-800 dark:text-blue-200 text-sm">
-            These tools were created based on real user experiences and common forum complaints. 
-            They aim to address the specific pain points and challenges taxpayers face when dealing with 
-            HMRC and tax obligations. If you have suggestions for additional tools or improvements, 
-            please let us know.
-          </p>
-        </div>
       </div>
     </div>
   );
