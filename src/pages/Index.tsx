@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Calendar, AlertTriangle, Users, Building2, Clock, CheckCircle, ArrowRight, PlayCircle, Calculator, Printer, Mail, Share, Keyboard } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -40,13 +39,13 @@ const Index = () => {
   const [selectedDeadline, setSelectedDeadline] = useState<any>(null);
   const { toast } = useToast();
 
-  // Keyboard shortcuts - declare before using
+  // Keyboard shortcuts - single declaration
   const { showShortcuts } = useKeyboardNavigation({
     ...defaultShortcuts,
     'Ctrl+P': () => printCalendar(filteredDeadlines, userType),
     'Ctrl+E': () => exportToCSV(filteredDeadlines),
     'Ctrl+S': () => shareDeadlines(filteredDeadlines, userType),
-    '?': () => {} // Will be set below
+    '?': () => showShortcuts()
   });
   
   // Load user data on mount
@@ -128,15 +127,6 @@ const Index = () => {
         setShowAdvanced(true);
     }
   };
-
-  // Keyboard shortcuts
-  const { showShortcuts } = useKeyboardNavigation({
-    ...defaultShortcuts,
-    'Ctrl+P': () => printCalendar(filteredDeadlines, userType),
-    'Ctrl+E': () => exportToCSV(filteredDeadlines),
-    'Ctrl+S': () => shareDeadlines(filteredDeadlines, userType),
-    '?': showShortcuts
-  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50">
