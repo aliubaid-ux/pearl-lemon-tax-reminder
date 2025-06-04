@@ -10,10 +10,11 @@ import NotificationCenter from '@/components/NotificationCenter';
 import CalendarIntegration from '@/components/CalendarIntegration';
 import EnhancedMobileNavigation from '@/components/EnhancedMobileNavigation';
 import UserOnboarding from '@/components/UserOnboarding';
-import { AlertTriangle, CheckCircle, Calendar, Search, Filter, Bell, ExternalLink, Download, Settings } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import ModernCard from '@/components/ModernCard';
+import AnimatedButton from '@/components/AnimatedButton';
+import ModernBadge from '@/components/ModernBadge';
+import { AlertTriangle, CheckCircle, Calendar, Search, Filter, ExternalLink, Download, Settings, Sparkles, Target, Clock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -244,169 +245,223 @@ END:VCALENDAR`;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
-        {/* Header with Enhanced Controls */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-              UK Tax Calendar Professional
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
-              Never miss a tax deadline - sync all your deadlines to your calendar in seconds
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            {/* Desktop Navigation Menu */}
-            <div className="hidden lg:block">
-              <NavigationMenu>
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger>Tax Calculators</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="grid gap-3 p-4 w-[400px] bg-white">
-                        <NavigationMenuLink 
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
-                          onClick={() => navigate('/penalty-calculator')}
-                        >
-                          <div className="text-sm font-medium leading-none">Penalty Calculator</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Calculate late filing and payment penalties
-                          </p>
-                        </NavigationMenuLink>
-                        <NavigationMenuLink 
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
-                          onClick={() => navigate('/vat-calculator')}
-                        >
-                          <div className="text-sm font-medium leading-none">VAT Calculator</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Calculate VAT amounts and check thresholds
-                          </p>
-                        </NavigationMenuLink>
-                        <NavigationMenuLink 
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
-                          onClick={() => navigate('/trading-allowance')}
-                        >
-                          <div className="text-sm font-medium leading-none">Trading Allowance</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Check if you qualify for trading allowance
-                          </p>
-                        </NavigationMenuLink>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                  
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger>Tax Resources</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="grid gap-3 p-4 w-[400px] bg-white">
-                        <NavigationMenuLink 
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
-                          onClick={() => navigate('/common-tax-issues')}
-                        >
-                          <div className="text-sm font-medium leading-none">Common Tax Issues</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Solutions for frequent tax problems
-                          </p>
-                        </NavigationMenuLink>
-                        <NavigationMenuLink 
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
-                          onClick={() => navigate('/hmrc-support-guide')}
-                        >
-                          <div className="text-sm font-medium leading-none">HMRC Support Guide</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            How to get help from HMRC
-                          </p>
-                        </NavigationMenuLink>
-                        <NavigationMenuLink 
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
-                          onClick={() => navigate('/common-mistakes')}
-                        >
-                          <div className="text-sm font-medium leading-none">Common Mistakes</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Avoid these common tax filing errors
-                          </p>
-                        </NavigationMenuLink>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="grid gap-3 p-4 w-[400px] bg-white">
-                        <NavigationMenuLink 
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
-                          onClick={() => navigate('/employment-status')}
-                        >
-                          <div className="text-sm font-medium leading-none">Employment Status</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Check your employment status
-                          </p>
-                        </NavigationMenuLink>
-                        <NavigationMenuLink 
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
-                          onClick={() => navigate('/registration-tracker')}
-                        >
-                          <div className="text-sm font-medium leading-none">Registration Tracker</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Track your tax registrations
-                          </p>
-                        </NavigationMenuLink>
-                        <NavigationMenuLink 
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
-                          onClick={() => navigate('/payments-on-account')}
-                        >
-                          <div className="text-sm font-medium leading-none">Payments on Account</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Understand advance tax payments
-                          </p>
-                        </NavigationMenuLink>
-                        <NavigationMenuLink 
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
-                          onClick={() => navigate('/settings')}
-                        >
-                          <div className="text-sm font-medium leading-none">Settings</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Manage your preferences
-                          </p>
-                        </NavigationMenuLink>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
+        {/* Modern Header */}
+        <div className="relative mb-12">
+          {/* Background decoration */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 rounded-3xl blur-3xl" />
+          
+          <div className="relative flex items-center justify-between mb-8">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl text-white shadow-lg">
+                  <Sparkles className="h-6 w-6" />
+                </div>
+                <ModernBadge variant="info" size="sm">
+                  2025 Edition
+                </ModernBadge>
+              </div>
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent dark:from-white dark:via-blue-200 dark:to-purple-200">
+                UK Tax Calendar Professional
+              </h1>
+              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
+                Never miss a tax deadline - sync all your deadlines to your calendar in seconds with AI-powered insights
+              </p>
             </div>
-
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => setIsSearchOpen(true)}
-              className="hidden md:flex"
-            >
-              <Search className="h-4 w-4 mr-2" />
-              Search
-              <Badge variant="secondary" className="ml-2 text-xs">⌘K</Badge>
-            </Button>
             
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => setIsFiltersOpen(true)}
-              className="hidden md:flex"
-            >
-              <Filter className="h-4 w-4 mr-2" />
-              Filter
-            </Button>
+            {/* Header Actions */}
+            <div className="flex items-center gap-3">
+              {/* Modern Navigation Menu */}
+              <div className="hidden lg:block">
+                <NavigationMenu>
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger>Tax Calculators</NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="grid gap-3 p-4 w-[400px] bg-white">
+                          <NavigationMenuLink 
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                            onClick={() => navigate('/penalty-calculator')}
+                          >
+                            <div className="text-sm font-medium leading-none">Penalty Calculator</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              Calculate late filing and payment penalties
+                            </p>
+                          </NavigationMenuLink>
+                          <NavigationMenuLink 
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                            onClick={() => navigate('/vat-calculator')}
+                          >
+                            <div className="text-sm font-medium leading-none">VAT Calculator</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              Calculate VAT amounts and check thresholds
+                            </p>
+                          </NavigationMenuLink>
+                          <NavigationMenuLink 
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                            onClick={() => navigate('/trading-allowance')}
+                          >
+                            <div className="text-sm font-medium leading-none">Trading Allowance</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              Check if you qualify for trading allowance
+                            </p>
+                          </NavigationMenuLink>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                    
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger>Tax Resources</NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="grid gap-3 p-4 w-[400px] bg-white">
+                          <NavigationMenuLink 
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                            onClick={() => navigate('/common-tax-issues')}
+                          >
+                            <div className="text-sm font-medium leading-none">Common Tax Issues</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              Solutions for frequent tax problems
+                            </p>
+                          </NavigationMenuLink>
+                          <NavigationMenuLink 
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                            onClick={() => navigate('/hmrc-support-guide')}
+                          >
+                            <div className="text-sm font-medium leading-none">HMRC Support Guide</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              How to get help from HMRC
+                            </p>
+                          </NavigationMenuLink>
+                          <NavigationMenuLink 
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                            onClick={() => navigate('/common-mistakes')}
+                          >
+                            <div className="text-sm font-medium leading-none">Common Mistakes</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              Avoid these common tax filing errors
+                            </p>
+                          </NavigationMenuLink>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
 
-            <NotificationCenter deadlines={filteredDeadlines} />
-            <EnhancedMobileNavigation 
-              urgentCount={urgentCount}
-              onQuickAction={handleQuickAction}
-              onOpenSearch={() => setIsSearchOpen(true)}
-              onOpenFilters={() => setIsFiltersOpen(true)}
-            />
-            <ThemeToggle />
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="grid gap-3 p-4 w-[400px] bg-white">
+                          <NavigationMenuLink 
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                            onClick={() => navigate('/employment-status')}
+                          >
+                            <div className="text-sm font-medium leading-none">Employment Status</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              Check your employment status
+                            </p>
+                          </NavigationMenuLink>
+                          <NavigationMenuLink 
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                            onClick={() => navigate('/registration-tracker')}
+                          >
+                            <div className="text-sm font-medium leading-none">Registration Tracker</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              Track your tax registrations
+                            </p>
+                          </NavigationMenuLink>
+                          <NavigationMenuLink 
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                            onClick={() => navigate('/payments-on-account')}
+                          >
+                            <div className="text-sm font-medium leading-none">Payments on Account</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              Understand advance tax payments
+                            </p>
+                          </NavigationMenuLink>
+                          <NavigationMenuLink 
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                            onClick={() => navigate('/settings')}
+                          >
+                            <div className="text-sm font-medium leading-none">Settings</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              Manage your preferences
+                            </p>
+                          </NavigationMenuLink>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              </div>
+
+              <AnimatedButton
+                variant="glass"
+                size="sm"
+                icon={Search}
+                onClick={() => setIsSearchOpen(true)}
+                className="hidden md:flex"
+              >
+                Search
+                <Badge variant="secondary" className="ml-2 text-xs">⌘K</Badge>
+              </AnimatedButton>
+              
+              <AnimatedButton
+                variant="glass"
+                size="sm"
+                icon={Filter}
+                onClick={() => setIsFiltersOpen(true)}
+                className="hidden md:flex"
+              >
+                Filter
+              </AnimatedButton>
+
+              <NotificationCenter deadlines={filteredDeadlines} />
+              <EnhancedMobileNavigation 
+                urgentCount={urgentCount}
+                onQuickAction={handleQuickAction}
+                onOpenSearch={() => setIsSearchOpen(true)}
+                onOpenFilters={() => setIsFiltersOpen(true)}
+              />
+              <ThemeToggle />
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <ModernCard variant="glass" className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl text-white">
+                  <Target className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Active Deadlines</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{filteredDeadlines.length}</p>
+                </div>
+              </div>
+            </ModernCard>
+            
+            <ModernCard variant="glass" className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl text-white">
+                  <Clock className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Upcoming (3 months)</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{upcomingDeadlines.length}</p>
+                </div>
+              </div>
+            </ModernCard>
+            
+            <ModernCard variant="glass" className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-r from-red-500 to-pink-600 rounded-xl text-white">
+                  <AlertTriangle className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Urgent (1 week)</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{urgentCount}</p>
+                </div>
+              </div>
+            </ModernCard>
           </div>
         </div>
 
@@ -420,25 +475,33 @@ END:VCALENDAR`;
 
         {/* Smart Suggestions Section */}
         <section className="mb-12">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Personalized Recommendations
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 text-lg">
-              AI-powered suggestions to help you stay on top of your tax obligations
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl text-white">
+                <Sparkles className="h-6 w-6" />
+              </div>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+                AI-Powered Recommendations
+              </h2>
+            </div>
+            <p className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">
+              Intelligent suggestions tailored to your tax profile to help you stay compliant and optimize your filings
             </p>
           </div>
           <SmartSuggestions deadlines={filteredDeadlines} userType={userType} />
         </section>
 
-        {/* Step 1: Enhanced User Type Selection with Visual Deadlines */}
+        {/* Step 1: Enhanced User Type Selection */}
         <section className="mb-12 animate-slide-up">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Step 1: Choose Your Profile
+          <div className="text-center mb-8">
+            <ModernBadge variant="info" size="lg" className="mb-4">
+              Step 1
+            </ModernBadge>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Choose Your Tax Profile
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 text-lg">
-              This personalizes your tax calendar and shows your specific deadlines
+            <p className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">
+              This personalizes your entire tax calendar experience and shows your specific deadlines with intelligent recommendations
             </p>
           </div>
           <EnhancedUserTypeSelector userType={userType} onUserTypeChange={handleUserTypeChange} />
@@ -446,8 +509,8 @@ END:VCALENDAR`;
 
         {/* Enhanced Quick Actions */}
         <section className="mb-12">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
               Quick Access Tools
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-lg">
@@ -464,12 +527,12 @@ END:VCALENDAR`;
 
         {/* Progress Tracker and Smart Groups */}
         <section className="mb-12">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Deadline Management
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Intelligent Deadline Management
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-lg">
-              Track your progress and organize deadlines intelligently
+              Track your progress and organize deadlines with smart categorization
             </p>
           </div>
           <div className="grid lg:grid-cols-2 gap-6">
@@ -485,37 +548,44 @@ END:VCALENDAR`;
 
         {/* Step 2: Critical Upcoming Deadlines */}
         <section className="mb-12">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Step 2: Critical Deadlines to Act On Now
+          <div className="text-center mb-8">
+            <ModernBadge variant="warning" size="lg" className="mb-4">
+              Step 2
+            </ModernBadge>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Critical Action Items
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 text-lg">
-              Important deadlines you need to prepare for in the next 3 months
+            <p className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">
+              Important deadlines requiring your immediate attention in the next 3 months
               {urgentCount > 0 && (
-                <Badge variant="destructive" className="ml-2">
+                <ModernBadge variant="error" className="ml-2">
                   {urgentCount} urgent
-                </Badge>
+                </ModernBadge>
               )}
             </p>
           </div>
 
-          <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-lg max-w-4xl mx-auto">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-3 text-xl">
-                <AlertTriangle className="h-6 w-6 text-amber-500" />
-                Next 3 Months - Take Action Now
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+          <ModernCard variant="elevated" className="max-w-4xl mx-auto overflow-hidden">
+            <div className="bg-gradient-to-r from-amber-500 to-orange-600 p-6 text-white">
+              <div className="flex items-center gap-3">
+                <AlertTriangle className="h-6 w-6" />
+                <div>
+                  <h3 className="text-xl font-semibold">Next 3 Months - Take Action Now</h3>
+                  <p className="text-amber-100">Stay ahead of your tax obligations</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-6">
               {upcomingDeadlines.length > 0 ? (
                 <div className="space-y-4">
                   {upcomingDeadlines.map((deadline) => (
                     <div 
                       key={deadline.id} 
-                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900 rounded-xl hover:shadow-md transition-all duration-200"
                     >
                       <div className="flex-1">
-                        <h3 className="font-medium text-gray-900 dark:text-white">{deadline.title}</h3>
+                        <h4 className="font-semibold text-gray-900 dark:text-white">{deadline.title}</h4>
                         <p className="text-sm text-gray-600 dark:text-gray-300">
                           {new Date(deadline.date).toLocaleDateString('en-GB', { 
                             weekday: 'long',
@@ -531,39 +601,43 @@ END:VCALENDAR`;
                         )}
                       </div>
                       <div className="flex items-center gap-3">
-                        <Badge className={deadline.priority === 'high' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'}>
-                          {deadline.priority}
-                        </Badge>
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          onClick={() => window.open('https://www.gov.uk/government/organisations/hm-revenue-customs/services-information', '_blank')}
+                        <ModernBadge 
+                          variant={deadline.priority === 'high' ? 'error' : 'warning'}
                         >
-                          <ExternalLink className="h-4 w-4" />
-                        </Button>
+                          {deadline.priority}
+                        </ModernBadge>
+                        <AnimatedButton 
+                          variant="minimal"
+                          size="sm"
+                          icon={ExternalLink}
+                          onClick={() => window.open('https://www.gov.uk/government/organisations/hm-revenue-customs/services-information', '_blank')}
+                        />
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-3" />
-                  <p className="text-gray-600 dark:text-gray-300 font-medium">All caught up!</p>
+                  <CheckCircle className="h-12 w-12 text-emerald-500 mx-auto mb-3" />
+                  <p className="text-gray-600 dark:text-gray-300 font-medium text-lg">All caught up!</p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">No urgent deadlines in the next 3 months</p>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </ModernCard>
         </section>
 
         {/* Step 3: Calendar Integration */}
         <section id="calendar-integration" className="mb-12">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Step 3: Integrate with Your Calendar
+          <div className="text-center mb-8">
+            <ModernBadge variant="success" size="lg" className="mb-4">
+              Step 3
+            </ModernBadge>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Seamless Calendar Integration
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 text-lg">
-              Add ALL your tax deadlines for the next 12 months to your calendar app
+            <p className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">
+              Add ALL your tax deadlines for the next 12 months to your preferred calendar app with one click
             </p>
           </div>
           
@@ -572,40 +646,46 @@ END:VCALENDAR`;
 
         {/* Success Message */}
         <section className="mb-12">
-          <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 max-w-4xl mx-auto">
-            <CardContent className="p-8 text-center">
-              <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-green-900 mb-2">
+          <ModernCard variant="elevated" className="bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 max-w-4xl mx-auto overflow-hidden">
+            <div className="p-8 text-center">
+              <div className="mb-6">
+                <div className="inline-flex p-4 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl text-white shadow-lg">
+                  <CheckCircle className="h-8 w-8" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-emerald-900 mb-2">
                 🎉 You're All Set!
               </h3>
-              <p className="text-green-800 text-lg mb-4">
+              <p className="text-emerald-800 text-lg mb-6">
                 Your tax deadlines are now integrated with your calendar. You'll never miss another deadline.
               </p>
               <div className="flex gap-4 justify-center">
-                <Button 
+                <AnimatedButton 
+                  variant="primary"
+                  icon={ExternalLink}
                   onClick={() => window.open('https://www.gov.uk/government/organisations/hm-revenue-customs/services-information', '_blank')}
-                  className="bg-green-600 hover:bg-green-700"
                 >
-                  <ExternalLink className="h-4 w-4 mr-2" />
                   Visit HMRC Portal
-                </Button>
-                <Button 
-                  variant="outline"
+                </AnimatedButton>
+                <AnimatedButton 
+                  variant="glass"
+                  icon={Settings}
                   onClick={() => navigate('/settings')}
                 >
-                  <Settings className="h-4 w-4 mr-2" />
                   Manage Settings
-                </Button>
+                </AnimatedButton>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </ModernCard>
         </section>
 
         {/* Footer */}
-        <footer className="mt-16 text-center text-gray-500 dark:text-gray-400">
-          <p className="text-sm">
-            2025 UK Tax Calendar Professional - Advanced tax deadline management by Pearl Lemon Accountants
-          </p>
+        <footer className="mt-16 text-center">
+          <div className="p-6 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900 rounded-2xl">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              2025 UK Tax Calendar Professional - Advanced tax deadline management by Pearl Lemon Accountants
+            </p>
+          </div>
         </footer>
       </div>
 
