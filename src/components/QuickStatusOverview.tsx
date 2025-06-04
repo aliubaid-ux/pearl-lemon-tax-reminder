@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { AlertTriangle, Calendar, CheckCircle, Calculator, Mail, Download, FileText } from 'lucide-react';
+import { AlertTriangle, Calendar, CheckCircle, Calculator, Mail, FileText, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -23,19 +23,17 @@ const QuickStatusOverview: React.FC<QuickStatusOverviewProps> = ({
 
   const handleViewAllDeadlines = () => {
     onShowAdvanced();
-    // Small delay to ensure advanced features are shown before scrolling
     setTimeout(() => {
-      const deadlinesSection = document.querySelector('[value="deadlines"]');
-      if (deadlinesSection) {
-        (deadlinesSection as HTMLElement).click();
-        deadlinesSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const deadlinesTab = document.querySelector('[value="deadlines"]') as HTMLElement;
+      if (deadlinesTab) {
+        deadlinesTab.click();
+        deadlinesTab.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }, 100);
   };
 
   const handleQuickActionClick = (action: string) => {
     onShowAdvanced();
-    // Small delay to ensure advanced features are shown before navigating
     setTimeout(() => {
       onQuickAction(action);
     }, 100);
@@ -47,7 +45,7 @@ const QuickStatusOverview: React.FC<QuickStatusOverviewProps> = ({
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-3 text-xl">
             <AlertTriangle className="h-6 w-6 text-amber-500" />
-            Priority Deadlines
+            Your Priority Deadlines
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -97,11 +95,8 @@ const QuickStatusOverview: React.FC<QuickStatusOverviewProps> = ({
       <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-lg hover-lift">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-3 text-xl">
-            <Calendar className="h-6 w-6 text-blue-500" />
-            Next Steps
-            <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full ml-auto">
-              Step 2
-            </span>
+            <ArrowRight className="h-6 w-6 text-blue-500" />
+            Step 2: Next Actions
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -112,8 +107,8 @@ const QuickStatusOverview: React.FC<QuickStatusOverviewProps> = ({
               onClick={() => handleQuickActionClick('calendar')}
             >
               <Calendar className="h-4 w-4 mr-2 text-green-600" />
-              View Tax Calendar
-              <span className="ml-auto text-xs text-gray-500">See all dates</span>
+              View Your Tax Calendar
+              <span className="ml-auto text-xs text-gray-500">See all important dates</span>
             </Button>
             <Button 
               variant="outline" 
@@ -121,8 +116,8 @@ const QuickStatusOverview: React.FC<QuickStatusOverviewProps> = ({
               onClick={() => handleQuickActionClick('tools')}
             >
               <Calculator className="h-4 w-4 mr-2 text-purple-600" />
-              Tax Tools & Calculators
-              <span className="ml-auto text-xs text-gray-500">Calculate penalties</span>
+              Use Tax Calculators
+              <span className="ml-auto text-xs text-gray-500">Calculate penalties & VAT</span>
             </Button>
             <Button 
               variant="outline" 
@@ -130,15 +125,15 @@ const QuickStatusOverview: React.FC<QuickStatusOverviewProps> = ({
               onClick={() => handleQuickActionClick('reminders')}
             >
               <Mail className="h-4 w-4 mr-2 text-orange-600" />
-              Set Email Reminders
+              Set Up Email Alerts
               <span className="ml-auto text-xs text-gray-500">Never miss a deadline</span>
             </Button>
           </div>
           
           <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
-            <p className="text-xs text-blue-800 dark:text-blue-200 font-medium mb-1">💡 Quick Tip</p>
+            <p className="text-xs text-blue-800 dark:text-blue-200 font-medium mb-1">💡 What's Next?</p>
             <p className="text-xs text-blue-700 dark:text-blue-300">
-              These buttons will show the advanced features and take you directly to the right section.
+              These buttons will show you advanced features and take you directly to the tools you need.
             </p>
           </div>
         </CardContent>

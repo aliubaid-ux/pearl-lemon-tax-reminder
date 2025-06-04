@@ -67,14 +67,18 @@ const Index = () => {
     setFilteredDeadlines(getTaxDeadlines(type));
     saveUserData({ userType: type });
     toast({
-      title: "Profile Updated",
-      description: `Switched to ${type.replace('-', ' ')} profile. Your calendar is now personalized!`,
+      title: "Profile Updated!",
+      description: `Your calendar is now personalized for ${type.replace('-', ' ')} activities.`,
     });
     
-    // Auto-show some features after profile selection
+    // Auto-show advanced features after profile selection
     setTimeout(() => {
       if (!showAdvanced) {
         setShowAdvanced(true);
+        toast({
+          title: "Advanced Features Unlocked!",
+          description: "You can now access all tax tools and calculators below.",
+        });
       }
     }, 1000);
   };
@@ -94,22 +98,10 @@ const Index = () => {
         tabElement.click();
         tabElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         console.log(`Navigated to ${action} tab`);
-      } else {
-        console.log(`Tab element for ${action} not found`);
-        // Fallback: try to find by text content
-        const allTabs = document.querySelectorAll('[role="tab"]');
-        allTabs.forEach(tab => {
-          const tabText = tab.textContent?.toLowerCase();
-          if (
-            (action === 'calendar' && tabText?.includes('calendar')) ||
-            (action === 'tools' && tabText?.includes('tools')) ||
-            (action === 'reminders' && tabText?.includes('reminders')) ||
-            (action === 'deadlines' && tabText?.includes('deadlines'))
-          ) {
-            (tab as HTMLElement).click();
-            tab.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            console.log(`Found and clicked tab: ${tabText}`);
-          }
+        
+        toast({
+          title: "Section Opened",
+          description: `Showing ${action} section for you.`,
         });
       }
     }, 200);
@@ -124,9 +116,6 @@ const Index = () => {
         break;
       case 'share':
         shareDeadlines(filteredDeadlines, userType);
-        break;
-      case 'settings':
-        // Settings action
         break;
     }
   };
@@ -189,10 +178,10 @@ const Index = () => {
           <>
             <div className="text-center mb-6">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                Step 3: Explore Your Tax Calendar
+                Step 3: Explore Your Tax Tools
               </h2>
               <p className="text-gray-600 dark:text-gray-300">
-                Use the tabs below to view deadlines, set reminders, and access tax tools
+                Use the tabs below to view deadlines, set reminders, and access tax calculators
               </p>
             </div>
 
@@ -228,7 +217,7 @@ const Index = () => {
           </>
         )}
 
-        {/* Footer with updated year */}
+        {/* Footer with correct year */}
         <footer className="mt-16 text-center text-gray-500 dark:text-gray-400">
           <p className="text-sm">
             2025 UK Tax Calendar - Professional tax deadline management by Pearl Lemon Accountants

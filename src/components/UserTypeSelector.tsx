@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, Building2, UserCog, ArrowRight, HelpCircle, CheckCircle } from 'lucide-react';
+import { Users, Building2, UserCog, CheckCircle, HelpCircle } from 'lucide-react';
 
 type UserType = 'self-employed' | 'company-director' | 'both';
 
@@ -47,15 +47,17 @@ const UserTypeSelector: React.FC<UserTypeSelectorProps> = ({ userType, onUserTyp
 
   const selectedOption = userTypes.find(option => option.type === userType);
 
-  // Dynamic help text based on selection
   const getHelpText = () => {
-    if (!userType || userType === 'self-employed') {
-      return "Start with \"Self-Employed\" if you work for yourself. You can always change this later in the advanced settings.";
+    if (userType === 'self-employed') {
+      return "Perfect! As someone who's self-employed, you'll see deadlines for self-assessment, VAT registration thresholds, and National Insurance contributions.";
     }
     if (userType === 'company-director') {
-      return "Perfect choice if you run a limited company. This will show you corporation tax and company filing deadlines.";
+      return "Excellent choice! As a company director, you'll see corporation tax deadlines, PAYE obligations, and company filing requirements.";
     }
-    return "Great for those who are both self-employed and run a company. You'll see all relevant deadlines.";
+    if (userType === 'both') {
+      return "Great! You'll see the complete picture with all deadlines for both your self-employed work and company director responsibilities.";
+    }
+    return "Start with \"Self-Employed\" if you work for yourself. You can always change this later in the advanced settings.";
   };
 
   return (
@@ -125,16 +127,16 @@ const UserTypeSelector: React.FC<UserTypeSelectorProps> = ({ userType, onUserTyp
           })}
         </div>
         
-        {selectedOption && (
+        {userType && (
           <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700 mb-4">
             <div className="flex items-start gap-2">
               <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
               <div className="text-sm">
                 <p className="font-medium text-green-900 dark:text-green-100 mb-1">
-                  Perfect! You've selected: {selectedOption.title}
+                  Profile Updated!
                 </p>
                 <p className="text-green-700 dark:text-green-200">
-                  {selectedOption.nextSteps}
+                  {getHelpText()}
                 </p>
               </div>
             </div>
@@ -146,10 +148,10 @@ const UserTypeSelector: React.FC<UserTypeSelectorProps> = ({ userType, onUserTyp
             <HelpCircle className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
             <div className="text-sm">
               <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">
-                {userType ? 'Good choice!' : 'Not sure which one?'}
+                Need Help Choosing?
               </p>
               <p className="text-blue-700 dark:text-blue-200">
-                {getHelpText()}
+                Most people start with "Self-Employed" if they work for themselves. Company Directors should choose that option if they run a limited company.
               </p>
             </div>
           </div>
