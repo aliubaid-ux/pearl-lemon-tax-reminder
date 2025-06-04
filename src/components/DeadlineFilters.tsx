@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Filter, Calendar, Tag, AlertTriangle, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -70,7 +69,7 @@ const DeadlineFilters: React.FC<DeadlineFiltersProps> = ({
     // User type filter
     if (filters.userTypes.length > 0) {
       filtered = filtered.filter(d => 
-        filters.userTypes.some(type => d.applicableTo.includes(type as any))
+        filters.userTypes.some(type => d.userTypes.includes(type as any))
       );
     }
 

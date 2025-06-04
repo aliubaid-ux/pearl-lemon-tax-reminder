@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { 
   Menu, Calendar, Settings, FileText, Calculator, Users, Bell, Download, 
-  Share, Search, Filter, Home, ChevronRight, Star 
+  Share, Search, Filter, Home, ChevronRight, Star, Smartphone
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
