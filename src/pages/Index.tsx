@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
 import { loadUserData, saveUserData } from '@/utils/storage';
-import UserTypeSelector from '@/components/UserTypeSelector';
+import EnhancedUserTypeSelector from '@/components/EnhancedUserTypeSelector';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import GlobalSearch from '@/components/GlobalSearch';
 import DeadlineFilters from '@/components/DeadlineFilters';
@@ -359,17 +359,17 @@ END:VCALENDAR`;
           </div>
         </div>
 
-        {/* Step 1: User Type Selection */}
+        {/* Step 1: Enhanced User Type Selection with Visual Deadlines */}
         <section className="mb-12 animate-slide-up">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               Step 1: Choose Your Profile
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-lg">
-              This personalizes your tax calendar with the deadlines that matter to you
+              This personalizes your tax calendar and shows your specific deadlines
             </p>
           </div>
-          <UserTypeSelector userType={userType} onUserTypeChange={handleUserTypeChange} />
+          <EnhancedUserTypeSelector userType={userType} onUserTypeChange={handleUserTypeChange} />
         </section>
 
         {/* Step 2: Critical Upcoming Deadlines */}
