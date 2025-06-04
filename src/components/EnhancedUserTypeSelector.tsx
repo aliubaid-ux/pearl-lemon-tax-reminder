@@ -140,11 +140,10 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
               {/* Enhanced Badge with Animation */}
               <div className="flex items-center justify-between mb-4">
                 <ModernBadge 
-                  variant={selectedType === type.id ? "success" : "neutral"}
-                  icon={Calendar}
-                  pulse={selectedType === type.id}
+                  variant={selectedType === type.id ? "success" : "default"}
                   className="transition-all duration-300"
                 >
+                  <Calendar className="h-3 w-3 mr-1" />
                   {type.deadlineCount} deadlines
                 </ModernBadge>
                 {selectedType === type.id && (
@@ -254,7 +253,8 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
             </div>
             
             <div className="flex flex-wrap gap-3">
-              <ModernBadge variant="info" icon={Calendar}>
+              <ModernBadge variant="info">
+                <Calendar className="h-3 w-3 mr-1" />
                 Enhanced view includes preparation tips and required documents
               </ModernBadge>
               <ModernBadge variant="warning">
@@ -285,7 +285,7 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
                       <p className="text-gray-600 text-lg">
                         Showing next {upcomingDeadlines.length} critical deadlines
                       </p>
-                      <ModernBadge variant="neutral" size="lg">
+                      <ModernBadge variant="default" size="lg">
                         Total of {currentDeadlines.length} deadlines in your complete calendar
                       </ModernBadge>
                       <p className="text-sm text-gray-500">
