@@ -13,6 +13,7 @@ import SearchFilterBar from '@/components/SearchFilterBar';
 import TaxYearSelector from '@/components/TaxYearSelector';
 import DeadlineTemplates from '@/components/DeadlineTemplates';
 import SettingsModal from '@/components/SettingsModal';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
 import { useToast } from '@/hooks/use-toast';
 
@@ -73,9 +74,9 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 transition-colors duration-300">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Enhanced Header with settings */}
+        {/* Enhanced Header with settings and theme toggle */}
         <header className="text-center mb-12 animate-fade-in">
           <div className="flex items-center justify-between mb-6">
             <div></div>
@@ -87,19 +88,22 @@ const Index = () => {
                 UK Tax Calendar
               </h1>
             </div>
-            <SettingsModal>
-              <Button variant="outline" size="sm">
-                <Settings className="h-4 w-4" />
-              </Button>
-            </SettingsModal>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <SettingsModal>
+                <Button variant="outline" size="sm">
+                  <Settings className="h-4 w-4" />
+                </Button>
+              </SettingsModal>
+            </div>
           </div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
             Never miss a tax deadline again. Our comprehensive calendar keeps you organized with timely reminders 
             for self-employed individuals and company directors across the UK.
           </p>
           {urgentDeadlines.length > 0 && (
-            <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg inline-block">
-              <div className="flex items-center gap-2 text-amber-800">
+            <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-lg inline-block">
+              <div className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
                 <AlertTriangle className="h-5 w-5" />
                 <span className="font-semibold">
                   {urgentDeadlines.length} urgent deadline{urgentDeadlines.length > 1 ? 's' : ''} approaching
@@ -118,8 +122,8 @@ const Index = () => {
         {/* User Type Selection */}
         <div className="mb-12">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-2">Choose Your Tax Profile</h2>
-            <p className="text-gray-600">{getUserTypeDescription(userType)}</p>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Choose Your Tax Profile</h2>
+            <p className="text-gray-600 dark:text-gray-300">{getUserTypeDescription(userType)}</p>
           </div>
           <UserTypeSelector userType={userType} onUserTypeChange={handleUserTypeChange} />
         </div>
@@ -134,10 +138,10 @@ const Index = () => {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {/* ... keep existing code (quick stats cards) */}
+          {/* ... keep existing code (quick stats cards with dark mode classes) */}
           {isLoading ? (
             Array.from({ length: 3 }).map((_, i) => (
-              <Card key={i} className="bg-white/90 backdrop-blur-sm border-0 shadow-xl">
+              <Card key={i} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl">
                 <CardContent className="p-6">
                   <Skeleton className="h-4 w-20 mb-2" />
                   <Skeleton className="h-8 w-16 mb-1" />
@@ -147,16 +151,16 @@ const Index = () => {
             ))
           ) : (
             <>
-              <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
                 <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-700">Upcoming Deadlines</CardTitle>
-                  <div className="ml-auto p-2 bg-amber-100 rounded-full">
-                    <AlertTriangle className="h-4 w-4 text-amber-600" />
+                  <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">Upcoming Deadlines</CardTitle>
+                  <div className="ml-auto p-2 bg-amber-100 dark:bg-amber-900/30 rounded-full">
+                    <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-gray-900 mb-1">{upcomingDeadlines.length}</div>
-                  <p className="text-sm text-gray-600">Next 3 months</p>
+                  <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{upcomingDeadlines.length}</div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Next 3 months</p>
                   {urgentDeadlines.length > 0 && (
                     <Badge variant="destructive" className="mt-2">
                       {urgentDeadlines.length} urgent
@@ -165,38 +169,38 @@ const Index = () => {
                 </CardContent>
               </Card>
               
-              <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
                 <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-700">Tax Profile</CardTitle>
-                  <div className="ml-auto p-2 bg-blue-100 rounded-full">
+                  <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">Tax Profile</CardTitle>
+                  <div className="ml-auto p-2 bg-blue-100 dark:bg-blue-900/30 rounded-full">
                     {userType === 'self-employed' ? 
-                      <Users className="h-4 w-4 text-blue-600" /> : 
+                      <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" /> : 
                       userType === 'company-director' ?
-                      <Building2 className="h-4 w-4 text-green-600" /> :
-                      <Users className="h-4 w-4 text-purple-600" />
+                      <Building2 className="h-4 w-4 text-green-600 dark:text-green-400" /> :
+                      <Users className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                     }
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-gray-900 mb-1 capitalize">
+                  <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1 capitalize">
                     {userType === 'both' ? 'Combined' : userType.replace('-', ' ')}
                   </div>
-                  <p className="text-sm text-gray-600">Current selection</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Current selection</p>
                 </CardContent>
               </Card>
               
-              <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
                 <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-700">Current Period</CardTitle>
-                  <div className="ml-auto p-2 bg-purple-100 rounded-full">
-                    <Clock className="h-4 w-4 text-purple-600" />
+                  <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">Current Period</CardTitle>
+                  <div className="ml-auto p-2 bg-purple-100 dark:bg-purple-900/30 rounded-full">
+                    <Clock className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-gray-900 mb-1">
+                  <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
                     {new Date().toLocaleDateString('en-GB', { month: 'long' })}
                   </div>
-                  <p className="text-sm text-gray-600">{new Date().getFullYear()} Tax Year</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{new Date().getFullYear()} Tax Year</p>
                 </CardContent>
               </Card>
             </>
@@ -215,23 +219,24 @@ const Index = () => {
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
               {/* Enhanced Calendar View */}
               <div className="xl:col-span-2">
-                <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-xl">
-                  <CardHeader className="border-b border-gray-100">
+                <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl">
+                  <CardHeader className="border-b border-gray-100 dark:border-gray-700">
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle className="flex items-center gap-3 text-xl">
-                          <div className="p-2 bg-blue-100 rounded-lg">
-                            <Calendar className="h-5 w-5 text-blue-600" />
+                        <CardTitle className="flex items-center gap-3 text-xl text-gray-900 dark:text-white">
+                          <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                            <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                           </div>
                           Tax Calendar Overview
                         </CardTitle>
-                        <CardDescription className="mt-2">
+                        <CardDescription className="mt-2 text-gray-600 dark:text-gray-400">
                           Navigate through months to view all your important tax deadlines and preparation periods
                         </CardDescription>
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent className="p-6">
+                    {/* ... keep existing code (calendar content) */}
                     {isLoading ? (
                       <div className="space-y-4">
                         <Skeleton className="h-80 w-full" />
@@ -254,15 +259,15 @@ const Index = () => {
               {/* Enhanced Sidebar */}
               <div className="space-y-8">
                 {/* Upcoming Deadlines */}
-                <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-xl">
-                  <CardHeader className="border-b border-gray-100">
-                    <CardTitle className="flex items-center gap-3">
-                      <div className="p-2 bg-amber-100 rounded-lg">
-                        <AlertTriangle className="h-5 w-5 text-amber-600" />
+                <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl">
+                  <CardHeader className="border-b border-gray-100 dark:border-gray-700">
+                    <CardTitle className="flex items-center gap-3 text-gray-900 dark:text-white">
+                      <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+                        <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
                       </div>
                       Upcoming Deadlines
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-gray-600 dark:text-gray-400">
                       Your most important tax dates in the next 3 months
                     </CardDescription>
                   </CardHeader>
@@ -284,8 +289,8 @@ const Index = () => {
                           <DeadlineCard key={deadline.id} deadline={deadline} />
                         ))}
                         {upcomingDeadlines.length > 5 && (
-                          <div className="text-center pt-4 border-t border-gray-100">
-                            <p className="text-sm text-gray-600 mb-3">
+                          <div className="text-center pt-4 border-t border-gray-100 dark:border-gray-700">
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                               {upcomingDeadlines.length - 5} more deadlines upcoming
                             </p>
                             <Button variant="outline" size="sm" className="w-full">
@@ -296,11 +301,11 @@ const Index = () => {
                       </div>
                     ) : (
                       <div className="text-center py-8">
-                        <div className="p-4 bg-green-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                          <Calendar className="h-8 w-8 text-green-600" />
+                        <div className="p-4 bg-green-50 dark:bg-green-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                          <Calendar className="h-8 w-8 text-green-600 dark:text-green-400" />
                         </div>
-                        <h3 className="font-semibold text-gray-900 mb-2">All caught up!</h3>
-                        <p className="text-gray-600 text-sm mb-4">
+                        <h3 className="font-semibold text-gray-900 dark:text-white mb-2">All caught up!</h3>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
                           No upcoming deadlines in the next 3 months for your current profile.
                         </p>
                         <Button variant="outline" size="sm" onClick={() => setSelectedMonth(new Date(new Date().setMonth(new Date().getMonth() + 3)))}>
@@ -324,10 +329,10 @@ const Index = () => {
                   <DeadlineCard key={deadline.id} deadline={deadline} />
                 ))
               ) : (
-                <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-xl">
+                <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl">
                   <CardContent className="p-8 text-center">
-                    <h3 className="font-semibold text-gray-900 mb-2">No deadlines found</h3>
-                    <p className="text-gray-600 text-sm">
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">No deadlines found</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
                       Try adjusting your search criteria or filters.
                     </p>
                   </CardContent>
@@ -342,12 +347,12 @@ const Index = () => {
         </Tabs>
 
         {/* Enhanced Footer */}
-        <footer className="mt-16 pt-8 border-t border-gray-200">
-          <div className="text-center text-gray-600">
+        <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
+          <div className="text-center text-gray-600 dark:text-gray-400">
             <p className="text-sm mb-2">
               Tax information is based on current UK tax regulations. Always consult with a qualified accountant for advice specific to your situation.
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-gray-500">
               Last updated: {new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long' })}
             </p>
           </div>
