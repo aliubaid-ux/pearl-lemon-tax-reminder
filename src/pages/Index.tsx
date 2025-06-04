@@ -5,14 +5,13 @@ import { getTaxDeadlines } from '@/utils/taxDeadlines';
 import { loadUserData, saveUserData } from '@/utils/storage';
 import UserTypeSelector from '@/components/UserTypeSelector';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import SmartDeadlineGroups from '@/components/SmartDeadlineGroups';
 import GlobalSearch from '@/components/GlobalSearch';
 import DeadlineFilters from '@/components/DeadlineFilters';
 import NotificationCenter from '@/components/NotificationCenter';
 import CalendarIntegration from '@/components/CalendarIntegration';
 import EnhancedMobileNavigation from '@/components/EnhancedMobileNavigation';
 import UserOnboarding from '@/components/UserOnboarding';
-import { AlertTriangle, CheckCircle, Calendar, Search, Filter, Bell } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Calendar, Search, Filter, Bell, Download, ExternalLink } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -52,7 +51,7 @@ const Index = () => {
       return deadlineDate >= today && deadlineDate <= threeMonthsFromNow;
     })
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .slice(0, 3);
+    .slice(0, 5);
 
   const urgentCount = filteredDeadlines.filter(deadline => {
     const deadlineDate = new Date(deadline.date);
@@ -82,6 +81,10 @@ const Index = () => {
       case 'filter':
         setIsFiltersOpen(true);
         break;
+      case 'calendar-integration':
+        // Scroll to calendar integration section
+        document.getElementById('calendar-integration')?.scrollIntoView({ behavior: 'smooth' });
+        break;
       default:
         console.log('Quick action:', action);
     }
@@ -98,6 +101,51 @@ const Index = () => {
       title: "Welcome aboard! 🎉",
       description: "You're all set to manage your tax deadlines like a pro.",
       duration: 5000,
+    });
+  };
+
+  const handleQuickCalendarExport = () => {
+    // Generate ICS content for all deadlines for the year
+    const allYearDeadlines = getTaxDeadlines(userType);
+    const icsEvents = allYearDeadlines.map(deadline => {
+      const date = new Date(deadline.date);
+      const dateStr = date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      
+      return `BEGIN:VEVENT
+UID:${deadline.id}@uktaxcalendar.com
+DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}Z
+DTSTART;VALUE=DATE:${dateStr.substring(0, 8)}
+SUMMARY:${deadline.title}
+DESCRIPTION:${deadline.description || 'UK Tax Deadline'}\\n\\nPriority: ${deadline.priority}\\nCategory: ${deadline.category}
+CATEGORIES:TAX,DEADLINE,${deadline.priority.toUpperCase()}
+BEGIN:VALARM
+TRIGGER:-P7D
+ACTION:DISPLAY
+DESCRIPTION:Reminder: ${deadline.title} due in 7 days
+END:VALARM
+END:VEVENT`;
+    }).join('\n');
+
+    const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//UK Tax Calendar Professional//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:UK Tax Calendar - ${userType.replace('-', ' ').toUpperCase()}
+${icsEvents}
+END:VCALENDAR`;
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `uk-tax-calendar-${userType}-${new Date().getFullYear()}.ics`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast({
+      title: 'Calendar Export Complete',
+      description: `All ${allYearDeadlines.length} tax deadlines exported. Import the file to your calendar app.`,
     });
   };
 
@@ -128,19 +176,18 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Header with Enhanced Controls */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-              Welcome to Your Tax Dashboard
+              UK Tax Calendar Professional
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              Stay on top of your UK tax deadlines with personalized reminders and tools
+              Never miss a tax deadline - sync all your deadlines to your calendar in seconds
             </p>
           </div>
           <div className="flex items-center gap-3">
-            {/* Quick Action Buttons */}
             <Button 
               variant="outline" 
               size="sm" 
@@ -186,14 +233,14 @@ const Index = () => {
           <UserTypeSelector userType={userType} onUserTypeChange={handleUserTypeChange} />
         </section>
 
-        {/* Step 2: Priority Deadlines */}
+        {/* Step 2: CEO Upcoming Deadlines */}
         <section className="mb-12">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Step 2: Your Priority Deadlines
+              Step 2: Your CEO Upcoming Deadlines
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-lg">
-              Your most important upcoming tax deadlines
+              Critical deadlines you need to act on now
               {urgentCount > 0 && (
                 <Badge variant="destructive" className="ml-2">
                   {urgentCount} urgent
@@ -206,21 +253,16 @@ const Index = () => {
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-3 text-xl">
                 <AlertTriangle className="h-6 w-6 text-amber-500" />
-                Next 3 Months
+                Next 3 Months - Take Action Now
                 <div className="flex gap-2 ml-auto">
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    onClick={() => setIsSearchOpen(true)}
+                    onClick={handleQuickCalendarExport}
+                    className="text-green-600 hover:bg-green-50"
                   >
-                    <Search className="h-4 w-4" />
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => setIsFiltersOpen(true)}
-                  >
-                    <Filter className="h-4 w-4" />
+                    <Download className="h-4 w-4 mr-2" />
+                    Quick Export
                   </Button>
                 </div>
               </CardTitle>
@@ -253,8 +295,12 @@ const Index = () => {
                         <Badge className={deadline.priority === 'high' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'}>
                           {deadline.priority}
                         </Badge>
-                        <Button variant="ghost" size="sm">
-                          <Bell className="h-4 w-4" />
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => window.open('https://www.gov.uk/government/organisations/hm-revenue-customs', '_blank')}
+                        >
+                          <ExternalLink className="h-4 w-4" />
                         </Button>
                       </div>
                     </div>
@@ -272,31 +318,49 @@ const Index = () => {
         </section>
 
         {/* Step 3: Calendar Integration */}
-        <section className="mb-12">
+        <section id="calendar-integration" className="mb-12">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Step 3: Calendar Integration
+              Step 3: Integrate with Your Calendar
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-lg">
-              Sync your deadlines with your preferred calendar application
+              Add all your tax deadlines to your calendar app - never miss a deadline again
             </p>
           </div>
           
           <CalendarIntegration deadlines={filteredDeadlines} userType={userType} />
         </section>
 
-        {/* Step 4: All Deadlines */}
+        {/* Success Message */}
         <section className="mb-12">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Step 4: Complete Deadlines Calendar
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 text-lg">
-              All your tax deadlines organized by category and importance
-            </p>
-          </div>
-          
-          <SmartDeadlineGroups deadlines={displayDeadlines} />
+          <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 max-w-4xl mx-auto">
+            <CardContent className="p-8 text-center">
+              <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-green-900 mb-2">
+                🎉 You're All Set!
+              </h3>
+              <p className="text-green-800 text-lg mb-4">
+                Your tax deadlines are now integrated with your calendar. You'll never miss another deadline.
+              </p>
+              <div className="flex gap-4 justify-center">
+                <Button 
+                  onClick={() => window.open('https://www.gov.uk/government/organisations/hm-revenue-customs', '_blank')}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Visit HMRC Portal
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={handleQuickCalendarExport}
+                  className="border-green-300 text-green-700 hover:bg-green-50"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Export Again
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </section>
 
         {/* Footer */}
