@@ -28,6 +28,7 @@ import ProgressTracker from '@/components/ProgressTracker';
 import KeyboardShortcuts from '@/components/KeyboardShortcuts';
 import SmartDeadlineGroups from '@/components/SmartDeadlineGroups';
 import EnhancedQuickActions from '@/components/EnhancedQuickActions';
+import SmartSuggestions from '@/components/SmartSuggestions';
 
 type UserType = 'self-employed' | 'company-director' | 'both';
 
@@ -406,6 +407,19 @@ END:VCALENDAR`;
             currentTaxYear={currentTaxYear}
             onTaxYearChange={handleTaxYearChange}
           />
+        </section>
+
+        {/* Smart Suggestions Section */}
+        <section className="mb-12">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              Personalized Recommendations
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 text-lg">
+              AI-powered suggestions to help you stay on top of your tax obligations
+            </p>
+          </div>
+          <SmartSuggestions deadlines={filteredDeadlines} userType={userType} />
         </section>
 
         {/* Step 1: Enhanced User Type Selection with Visual Deadlines */}

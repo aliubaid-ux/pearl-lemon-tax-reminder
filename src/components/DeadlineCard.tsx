@@ -1,13 +1,16 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, AlertTriangle, Clock, Info, ExternalLink } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Calendar, AlertTriangle, Clock, Info, ExternalLink, CheckCircle2 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { TaxDeadline } from '@/types/tax';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { getDeadlineProgress, setDeadlineProgress } from '@/utils/storage';
+import DeadlineDetailsModal from '@/components/DeadlineDetailsModal';
 
 interface DeadlineCardProps {
   deadline: TaxDeadline;
@@ -15,6 +18,9 @@ interface DeadlineCardProps {
 
 const DeadlineCard: React.FC<DeadlineCardProps> = ({ deadline }) => {
   const { toast } = useToast();
+  const [progress, setProgress] = useState(getDeadlineProgress(deadline.id));
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  
   const deadlineDate = new Date(deadline.date);
   const today = new Date();
   const daysUntil = Math.ceil((deadlineDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
@@ -42,10 +48,12 @@ const DeadlineCard: React.FC<DeadlineCardProps> = ({ deadline }) => {
     }
   };
 
-  const handleViewDetails = () => {
+  const handleProgressUpdate = (newProgress: number) => {
+    setProgress(newProgress);
+    setDeadlineProgress(deadline.id, newProgress);
     toast({
-      title: "More Information",
-      description: "Detailed guidance coming soon. Visit HMRC website for official information.",
+      title: "Progress Updated",
+      description: `${deadline.title} is now ${newProgress}% complete`,
     });
   };
 
@@ -59,111 +67,151 @@ const DeadlineCard: React.FC<DeadlineCardProps> = ({ deadline }) => {
   };
 
   return (
-    <Collapsible>
-      <Card className={cn("border-l-4 transition-all duration-200 hover:shadow-md", getPriorityColor(deadline.priority))}>
-        <CardContent className="p-4">
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex-1">
-              <h4 className="font-semibold text-gray-900 mb-1">{deadline.title}</h4>
-              <Badge 
-                className={cn(getUrgencyColor(daysUntil), "text-white text-xs")}
-              >
-                {getUrgencyText(daysUntil)}
-              </Badge>
-            </div>
-            <div className="flex flex-col items-end gap-1">
-              <Badge variant="outline" className="text-xs">
-                {deadline.category.replace('-', ' ').toUpperCase()}
-              </Badge>
-              {deadline.priority === 'high' && (
-                <Badge variant="destructive" className="text-xs">
-                  High Priority
+    <>
+      <Collapsible>
+        <Card className={cn("border-l-4 transition-all duration-200 hover:shadow-md", getPriorityColor(deadline.priority))}>
+          <CardContent className="p-4">
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex-1">
+                <h4 className="font-semibold text-gray-900 mb-1">{deadline.title}</h4>
+                <div className="flex items-center gap-2">
+                  <Badge 
+                    className={cn(getUrgencyColor(daysUntil), "text-white text-xs")}
+                  >
+                    {getUrgencyText(daysUntil)}
+                  </Badge>
+                  {progress === 100 && (
+                    <Badge variant="default" className="bg-green-600 text-white text-xs">
+                      <CheckCircle2 className="h-3 w-3 mr-1" />
+                      Complete
+                    </Badge>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col items-end gap-1">
+                <Badge variant="outline" className="text-xs">
+                  {deadline.category.replace('-', ' ').toUpperCase()}
                 </Badge>
+                {deadline.priority === 'high' && (
+                  <Badge variant="destructive" className="text-xs">
+                    High Priority
+                  </Badge>
+                )}
+              </div>
+            </div>
+            
+            {/* Progress Bar */}
+            <div className="mb-3">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-xs text-gray-600">Progress</span>
+                <span className="text-xs font-medium">{progress}%</span>
+              </div>
+              <Progress value={progress} className="h-2" />
+              <div className="flex gap-1 mt-1">
+                {[25, 50, 75, 100].map((value) => (
+                  <Button
+                    key={value}
+                    variant="ghost"
+                    size="sm"
+                    className="h-6 px-2 text-xs"
+                    onClick={() => handleProgressUpdate(value)}
+                  >
+                    {value}%
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="space-y-3 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4 flex-shrink-0" />
+                <span className="font-medium">{formatDate(deadline.date)}</span>
+              </div>
+              
+              {daysUntil > 0 && (
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 flex-shrink-0" />
+                  <span>
+                    {daysUntil} day{daysUntil !== 1 ? 's' : ''} remaining
+                  </span>
+                </div>
+              )}
+              
+              <p className="text-xs leading-relaxed">{deadline.description}</p>
+              
+              {deadline.preparationStart && (
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <div className="flex items-center gap-1 text-blue-700 mb-1">
+                    <Info className="h-3 w-3" />
+                    <span className="text-xs font-medium">Preparation Period</span>
+                  </div>
+                  <p className="text-xs text-blue-600">
+                    Started: {formatDate(deadline.preparationStart)}
+                  </p>
+                </div>
               )}
             </div>
-          </div>
-          
-          <div className="space-y-3 text-sm text-gray-600">
-            <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 flex-shrink-0" />
-              <span className="font-medium">{formatDate(deadline.date)}</span>
+            
+            <div className="flex gap-2 mt-4">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex-1"
+                onClick={() => setIsDetailsOpen(true)}
+              >
+                <Info className="h-3 w-3 mr-1" />
+                Full Details
+              </Button>
+              
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" size="sm" className="flex-1">
+                  <ExternalLink className="h-3 w-3 mr-1" />
+                  Quick Info
+                </Button>
+              </CollapsibleTrigger>
             </div>
             
-            {daysUntil > 0 && (
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 flex-shrink-0" />
-                <span>
-                  {daysUntil} day{daysUntil !== 1 ? 's' : ''} remaining
-                </span>
-              </div>
-            )}
-            
-            <p className="text-xs leading-relaxed">{deadline.description}</p>
-            
-            {deadline.preparationStart && (
-              <div className="p-2 bg-blue-50 rounded-lg">
-                <div className="flex items-center gap-1 text-blue-700 mb-1">
-                  <Info className="h-3 w-3" />
-                  <span className="text-xs font-medium">Preparation Period</span>
+            <CollapsibleContent className="mt-3 space-y-3">
+              {deadline.latePenalty && (
+                <div className="p-3 bg-red-50 rounded-lg border border-red-200">
+                  <div className="flex items-center gap-1 text-red-700 mb-2">
+                    <AlertTriangle className="h-4 w-4" />
+                    <span className="text-sm font-medium">Late Penalties</span>
+                  </div>
+                  <p className="text-xs text-red-600 leading-relaxed">{deadline.latePenalty}</p>
                 </div>
-                <p className="text-xs text-blue-600">
-                  Started: {formatDate(deadline.preparationStart)}
-                </p>
-              </div>
-            )}
-          </div>
-          
-          <CollapsibleTrigger asChild>
-            <Button variant="ghost" size="sm" className="w-full mt-3 hover:bg-gray-100">
-              <span className="text-xs">View Details</span>
-              <ExternalLink className="h-3 w-3 ml-1" />
-            </Button>
-          </CollapsibleTrigger>
-          
-          <CollapsibleContent className="mt-3 space-y-3">
-            {deadline.latePenalty && (
-              <div className="p-3 bg-red-50 rounded-lg border border-red-200">
-                <div className="flex items-center gap-1 text-red-700 mb-2">
-                  <AlertTriangle className="h-4 w-4" />
-                  <span className="text-sm font-medium">Late Penalties</span>
+              )}
+              
+              {deadline.preparationTips && (
+                <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <div className="flex items-center gap-1 text-blue-700 mb-2">
+                    <Info className="h-4 w-4" />
+                    <span className="text-sm font-medium">Preparation Tips</span>
+                  </div>
+                  <p className="text-xs text-blue-600 leading-relaxed">{deadline.preparationTips}</p>
                 </div>
-                <p className="text-xs text-red-600 leading-relaxed">{deadline.latePenalty}</p>
-              </div>
-            )}
-            
-            {deadline.preparationTips && (
-              <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                <div className="flex items-center gap-1 text-blue-700 mb-2">
-                  <Info className="h-4 w-4" />
-                  <span className="text-sm font-medium">Preparation Tips</span>
-                </div>
-                <p className="text-xs text-blue-600 leading-relaxed">{deadline.preparationTips}</p>
-              </div>
-            )}
+              )}
 
-            {deadline.lateSubmissionGuidance && (
-              <div className="p-3 bg-amber-50 rounded-lg border border-amber-200">
-                <div className="flex items-center gap-1 text-amber-700 mb-2">
-                  <Clock className="h-4 w-4" />
-                  <span className="text-sm font-medium">Late Submission Guidance</span>
+              {deadline.lateSubmissionGuidance && (
+                <div className="p-3 bg-amber-50 rounded-lg border border-amber-200">
+                  <div className="flex items-center gap-1 text-amber-700 mb-2">
+                    <Clock className="h-4 w-4" />
+                    <span className="text-sm font-medium">Late Submission Guidance</span>
+                  </div>
+                  <p className="text-xs text-amber-600 leading-relaxed">{deadline.lateSubmissionGuidance}</p>
                 </div>
-                <p className="text-xs text-amber-600 leading-relaxed">{deadline.lateSubmissionGuidance}</p>
-              </div>
-            )}
-            
-            <div className="flex gap-2 pt-2">
-              <Button size="sm" variant="outline" className="flex-1" onClick={handleViewDetails}>
-                <ExternalLink className="h-3 w-3 mr-1" />
-                HMRC Guide
-              </Button>
-              <Button size="sm" className="flex-1">
-                Set Reminder
-              </Button>
-            </div>
-          </CollapsibleContent>
-        </CardContent>
-      </Card>
-    </Collapsible>
+              )}
+            </CollapsibleContent>
+          </CardContent>
+        </Card>
+      </Collapsible>
+
+      <DeadlineDetailsModal
+        deadline={deadline}
+        isOpen={isDetailsOpen}
+        onClose={() => setIsDetailsOpen(false)}
+      />
+    </>
   );
 };
 
