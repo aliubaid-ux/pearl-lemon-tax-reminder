@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Calendar, AlertTriangle, Users, Building2, Clock } from 'lucide-react';
+import { Calendar, AlertTriangle, Users, Building2, Clock, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -55,39 +55,82 @@ const Index = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-blue-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Header */}
-        <header className="text-center mb-12">
-          <div className="bg-white/80 dark:bg-gray-800/80 rounded-3xl p-8 border shadow-xl">
-            <div className="flex items-center justify-between mb-6">
+        {/* Hero Section */}
+        <section className="text-center mb-16 animate-fade-in">
+          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-12 border shadow-xl hover-lift">
+            <div className="flex items-center justify-between mb-8">
               <div></div>
-              <div className="flex items-center gap-4">
-                <div className="p-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl">
-                  <Calendar className="h-8 w-8 text-white" />
+              <div className="flex items-center gap-6">
+                <div className="p-6 pearl-gradient rounded-3xl shadow-lg">
+                  <Calendar className="h-12 w-12 text-white" />
                 </div>
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  UK Tax Calendar
-                </h1>
+                <div className="text-left">
+                  <h1 className="text-5xl font-bold text-gray-900 mb-2">
+                    UK Tax Calendar
+                  </h1>
+                  <p className="text-xl pearl-text-gradient font-semibold">
+                    Professional Tax Management
+                  </p>
+                </div>
               </div>
               <ThemeToggle />
             </div>
-            <p className="text-lg text-gray-700 dark:text-gray-200 max-w-3xl mx-auto">
-              Professional tax deadline management for UK taxpayers
+            
+            <p className="text-xl text-gray-700 max-w-4xl mx-auto mb-8 leading-relaxed">
+              Streamline your tax compliance with our comprehensive deadline management system. 
+              Never miss a filing deadline or payment due date again.
             </p>
+            
             {urgentDeadlines.length > 0 && (
-              <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-xl">
-                <AlertTriangle className="h-5 w-5" />
-                <span className="font-semibold">
-                  {urgentDeadlines.length} urgent deadline{urgentDeadlines.length > 1 ? 's' : ''}
+              <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl shadow-lg animate-pulse">
+                <AlertTriangle className="h-6 w-6" />
+                <span className="font-semibold text-lg">
+                  {urgentDeadlines.length} urgent deadline{urgentDeadlines.length > 1 ? 's' : ''} approaching
                 </span>
               </div>
             )}
           </div>
-        </header>
+        </section>
+
+        {/* Features Section */}
+        <section className="mb-12 animate-slide-up">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover-lift border">
+              <div className="w-14 h-14 pearl-gradient rounded-2xl flex items-center justify-center mb-6">
+                <CheckCircle className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Never Miss a Deadline</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Smart calendar system with automated reminders and priority-based deadline tracking.
+              </p>
+            </div>
+            
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover-lift border">
+              <div className="w-14 h-14 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6">
+                <Users className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Multi-Profile Support</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Tailored for self-employed individuals, company directors, and combined profiles.
+              </p>
+            </div>
+            
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover-lift border">
+              <div className="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6">
+                <Building2 className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Professional Grade</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Built for accountants and tax professionals with comprehensive HMRC guidance.
+              </p>
+            </div>
+          </div>
+        </section>
 
         {/* Tax Year Selector */}
-        <div className="mb-8">
+        <div className="mb-8 animate-scale-in">
           <TaxYearSelector
             currentTaxYear={currentTaxYear}
             onTaxYearChange={setCurrentTaxYear}
@@ -95,15 +138,16 @@ const Index = () => {
         </div>
 
         {/* User Type Selection */}
-        <div className="mb-8">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold mb-2">Select Your Profile</h2>
+        <div className="mb-8 animate-slide-up">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Select Your Profile</h2>
+            <p className="text-gray-600 text-lg">Choose your taxpayer type for personalized deadline management</p>
           </div>
           <UserTypeSelector userType={userType} onUserTypeChange={handleUserTypeChange} />
         </div>
 
         {/* Search and Filter */}
-        <div className="mb-8">
+        <div className="mb-8 animate-fade-in">
           <SearchFilterBar
             deadlines={deadlines}
             onFilteredDeadlines={setFilteredDeadlines}
@@ -113,78 +157,78 @@ const Index = () => {
         </div>
 
         {/* Stats Dashboard */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
-          <Card className="bg-gradient-to-br from-amber-500 to-orange-500 text-white border-0">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12 animate-slide-up">
+          <Card className="bg-gradient-to-br from-amber-500 to-orange-500 text-white border-0 shadow-xl hover-lift">
             <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Urgent</CardTitle>
-              <AlertTriangle className="h-4 w-4 ml-auto" />
+              <CardTitle className="text-lg font-semibold">Urgent</CardTitle>
+              <AlertTriangle className="h-6 w-6 ml-auto" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{urgentDeadlines.length}</div>
-              <p className="text-xs opacity-80">Next 30 days</p>
+              <div className="text-3xl font-bold">{urgentDeadlines.length}</div>
+              <p className="text-sm opacity-90">Next 30 days</p>
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-blue-500 to-indigo-500 text-white border-0">
+          <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 shadow-xl hover-lift">
             <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Upcoming</CardTitle>
-              <Calendar className="h-4 w-4 ml-auto" />
+              <CardTitle className="text-lg font-semibold">Upcoming</CardTitle>
+              <Calendar className="h-6 w-6 ml-auto" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{upcomingDeadlines.length}</div>
-              <p className="text-xs opacity-80">Next 3 months</p>
+              <div className="text-3xl font-bold">{upcomingDeadlines.length}</div>
+              <p className="text-sm opacity-90">Next 3 months</p>
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-green-500 to-emerald-500 text-white border-0">
+          <Card className="bg-gradient-to-br from-green-500 to-emerald-500 text-white border-0 shadow-xl hover-lift">
             <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Profile</CardTitle>
+              <CardTitle className="text-lg font-semibold">Profile</CardTitle>
               {userType === 'company-director' ? 
-                <Building2 className="h-4 w-4 ml-auto" /> : 
-                <Users className="h-4 w-4 ml-auto" />
+                <Building2 className="h-6 w-6 ml-auto" /> : 
+                <Users className="h-6 w-6 ml-auto" />
               }
             </CardHeader>
             <CardContent>
-              <div className="text-lg font-bold capitalize">
+              <div className="text-xl font-bold capitalize">
                 {userType === 'both' ? 'Combined' : userType.replace('-', ' ')}
               </div>
-              <p className="text-xs opacity-80">Active profile</p>
+              <p className="text-sm opacity-90">Active profile</p>
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-purple-500 to-pink-500 text-white border-0">
+          <Card className="bg-gradient-to-br from-purple-500 to-pink-500 text-white border-0 shadow-xl hover-lift">
             <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Period</CardTitle>
-              <Clock className="h-4 w-4 ml-auto" />
+              <CardTitle className="text-lg font-semibold">Period</CardTitle>
+              <Clock className="h-6 w-6 ml-auto" />
             </CardHeader>
             <CardContent>
-              <div className="text-lg font-bold">
+              <div className="text-xl font-bold">
                 {new Date().toLocaleDateString('en-GB', { month: 'long' })}
               </div>
-              <p className="text-xs opacity-80">{new Date().getFullYear()}</p>
+              <p className="text-sm opacity-90">{new Date().getFullYear()}</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Main Content */}
-        <Tabs defaultValue="calendar" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 h-12 bg-white/80 dark:bg-gray-800/80 rounded-xl">
-            <TabsTrigger value="calendar">Calendar</TabsTrigger>
-            <TabsTrigger value="deadlines">Deadlines</TabsTrigger>
-            <TabsTrigger value="templates">Templates</TabsTrigger>
+        <Tabs defaultValue="calendar" className="space-y-8 animate-fade-in">
+          <TabsList className="grid w-full grid-cols-3 h-14 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg">
+            <TabsTrigger value="calendar" className="text-lg font-medium rounded-xl">Calendar</TabsTrigger>
+            <TabsTrigger value="deadlines" className="text-lg font-medium rounded-xl">Deadlines</TabsTrigger>
+            <TabsTrigger value="templates" className="text-lg font-medium rounded-xl">Templates</TabsTrigger>
           </TabsList>
           
           <TabsContent value="calendar">
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
               <div className="xl:col-span-2">
-                <Card className="bg-white/95 dark:bg-gray-800/95 border-0 shadow-xl">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-3">
-                      <Calendar className="h-5 w-5" />
+                <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-2xl rounded-3xl">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center gap-4 text-2xl">
+                      <Calendar className="h-7 w-7 text-blue-600" />
                       Tax Calendar
                     </CardTitle>
-                    <CardDescription>
-                      View your tax deadlines by month
+                    <CardDescription className="text-lg text-gray-600">
+                      View your tax deadlines by month with intelligent priority sorting
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -197,23 +241,27 @@ const Index = () => {
                 </Card>
               </div>
 
-              <div className="space-y-6">
-                <Card className="bg-white/95 dark:bg-gray-800/95 border-0 shadow-xl">
+              <div className="space-y-8">
+                <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-2xl rounded-3xl">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-3">
-                      <AlertTriangle className="h-5 w-5" />
+                    <CardTitle className="flex items-center gap-4 text-xl">
+                      <AlertTriangle className="h-6 w-6 text-amber-500" />
                       Priority Deadlines
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     {upcomingDeadlines.length > 0 ? (
-                      <div className="space-y-3">
+                      <div className="space-y-4">
                         {upcomingDeadlines.slice(0, 3).map((deadline) => (
                           <DeadlineCard key={deadline.id} deadline={deadline} />
                         ))}
                       </div>
                     ) : (
-                      <p className="text-gray-500 text-center py-4">No upcoming deadlines</p>
+                      <div className="text-center py-8">
+                        <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
+                        <p className="text-gray-500 text-lg">No upcoming deadlines</p>
+                        <p className="text-gray-400">You're all caught up!</p>
+                      </div>
                     )}
                   </CardContent>
                 </Card>
