@@ -405,7 +405,7 @@ END:VCALENDAR`;
 
       <UserOnboarding
         isOpen={isOnboardingOpen}
-        onClose={() => setIsOnboardingClose(false)}
+        onClose={() => setIsOnboardingOpen(false)}
         onComplete={handleOnboardingComplete}
       />
     </div>
