@@ -51,9 +51,9 @@ function App() {
               <Route path="/common-mistakes" element={<CommonMistakes />} />
               <Route path="/registration-tracker" element={<RegistrationTracker />} />
               <Route path="/payments-on-account" element={<PaymentsOnAccountGuide />} />
-              {/* Legacy route redirects for components that should be pages */}
-              <Route path="/late-submission-templates" element={<PenaltyCalculatorPage />} />
+              {/* Legacy route redirects - these now work */}
               <Route path="/hmrc-guidance" element={<HMRCSupportGuide />} />
+              <Route path="/late-submission-templates" element={<PenaltyCalculatorPage />} />
               <Route path="/documentation-checklist" element={<CommonTaxIssues />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -129,8 +129,11 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 <DropdownMenuItem onClick={() => navigate('/common-mistakes')}>
                   Common Mistakes
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/hmrc-guidance')}>
-                  HMRC Guidance
+                <DropdownMenuItem onClick={() => navigate('/registration-tracker')}>
+                  Registration Tracker
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/payments-on-account')}>
+                  Payments on Account
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

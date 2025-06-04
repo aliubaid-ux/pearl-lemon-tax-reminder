@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Heart, Sparkles, CheckCircle, X, BookOpen, Users, Shield } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface FriendlyWelcomeBannerProps {
   userName?: string;
@@ -19,6 +20,7 @@ const FriendlyWelcomeBanner: React.FC<FriendlyWelcomeBannerProps> = ({
     return !localStorage.getItem('uk-tax-doctor-welcome-dismissed');
   });
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleDismiss = () => {
     setIsVisible(false);
@@ -26,6 +28,14 @@ const FriendlyWelcomeBanner: React.FC<FriendlyWelcomeBannerProps> = ({
     toast({
       title: "Welcome banner hidden",
       description: "You can always find help in our user guide!",
+    });
+  };
+
+  const handleExploreHelpCenter = () => {
+    navigate('/common-tax-issues');
+    toast({
+      title: "Opening Help Center",
+      description: "Explore common tax issues and solutions",
     });
   };
 
@@ -108,7 +118,7 @@ const FriendlyWelcomeBanner: React.FC<FriendlyWelcomeBannerProps> = ({
             <Button 
               variant="outline"
               size="lg"
-              onClick={() => document.getElementById('help-center')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={handleExploreHelpCenter}
               className="border-2 border-purple-200 text-purple-700 hover:bg-purple-50 dark:border-purple-700 dark:text-purple-300 dark:hover:bg-purple-900/20 px-8 py-4 text-xl font-medium h-14 hover:shadow-lg transition-all duration-300"
             >
               <Users className="h-6 w-6 mr-4" />
