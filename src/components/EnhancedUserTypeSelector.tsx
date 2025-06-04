@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -19,9 +19,18 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
   onUserTypeChange
 }) => {
   const [selectedType, setSelectedType] = useState<UserType>(userType);
-  const [showDeadlines, setShowDeadlines] = useState(false);
+  const [showDeadlines, setShowDeadlines] = useState(true);
+  const [currentDeadlines, setCurrentDeadlines] = useState(getTaxDeadlines(userType));
+
+  // Update deadlines when user type changes
+  useEffect(() => {
+    const newDeadlines = getTaxDeadlines(selectedType);
+    setCurrentDeadlines(newDeadlines);
+    console.log(`Deadlines updated for ${selectedType}:`, newDeadlines.length);
+  }, [selectedType]);
 
   const handleTypeSelection = (type: UserType) => {
+    console.log('User selected type:', type);
     setSelectedType(type);
     setShowDeadlines(true);
     onUserTypeChange(type);
@@ -53,8 +62,6 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
       deadlineCount: getTaxDeadlines('both').length
     }
   ];
-
-  const selectedDeadlines = getTaxDeadlines(selectedType);
 
   return (
     <div className="space-y-6">
@@ -126,10 +133,21 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
 
       {/* Visual Deadline Display */}
       {showDeadlines && (
-        <VisualDeadlineDisplay 
-          deadlines={selectedDeadlines} 
-          userType={selectedType}
-        />
+        <div className="mt-6">
+          <div className="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <h3 className="font-semibold text-blue-900 mb-2">
+              Your {selectedType.replace('-', ' ').toUpperCase()} Tax Deadlines
+            </h3>
+            <p className="text-sm text-blue-700">
+              Showing {currentDeadlines.length} deadlines specific to your profile. 
+              {selectedType === 'both' && ' This includes both self-employed and company director obligations.'}
+            </p>
+          </div>
+          <VisualDeadlineDisplay 
+            deadlines={currentDeadlines} 
+            userType={selectedType}
+          />
+        </div>
       )}
     </div>
   );
