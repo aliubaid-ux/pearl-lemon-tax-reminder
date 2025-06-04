@@ -1,14 +1,13 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Badge } from '@/components/ui/badge';
-import { Mail, Bell, Settings, Check, X } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { saveUserData, loadUserData } from '@/utils/storage';
+import EmailReminderToggle from './email-reminders/EmailReminderToggle';
+import EmailInput from './email-reminders/EmailInput';
+import NotificationTiming from './email-reminders/NotificationTiming';
+import CurrentSettings from './email-reminders/CurrentSettings';
 
 const EmailReminders = () => {
   const [userData, setUserData] = useState(loadUserData());
@@ -77,15 +76,6 @@ const EmailReminders = () => {
     });
   };
 
-  const presetDays = [
-    { label: "1 day", value: [1] },
-    { label: "3 days", value: [3] },
-    { label: "1 week", value: [7] },
-    { label: "1 week + 1 day", value: [7, 1] },
-    { label: "2 weeks + 3 days", value: [14, 3] },
-    { label: "Custom", value: [] }
-  ];
-
   return (
     <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-lg">
       <CardHeader>
@@ -97,104 +87,31 @@ const EmailReminders = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Enable/Disable Toggle */}
-        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-          <div className="flex items-center gap-3">
-            <Bell className="h-5 w-5 text-gray-600" />
-            <div>
-              <Label className="text-base font-medium">Email Notifications</Label>
-              <p className="text-sm text-gray-600">Get notified before tax deadlines</p>
-            </div>
-          </div>
-          <Switch
-            checked={userData.emailReminders.enabled}
-            onCheckedChange={toggleReminders}
-          />
-        </div>
+        <EmailReminderToggle
+          enabled={userData.emailReminders.enabled}
+          onToggle={toggleReminders}
+        />
 
-        {/* Email Input */}
-        <div className="space-y-2">
-          <Label htmlFor="email">Email Address</Label>
-          <div className="flex gap-2">
-            <Input
-              id="email"
-              type="email"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => handleEmailChange(e.target.value)}
-              className={!isValidEmail ? 'border-red-500' : ''}
-              disabled={!userData.emailReminders.enabled}
-            />
-            <Button 
-              onClick={saveEmailSettings}
-              disabled={!isValidEmail || !email || !userData.emailReminders.enabled}
-              size="sm"
-            >
-              <Check className="h-4 w-4" />
-            </Button>
-          </div>
-          {!isValidEmail && (
-            <p className="text-sm text-red-600">Please enter a valid email address</p>
-          )}
-        </div>
+        <EmailInput
+          email={email}
+          isValidEmail={isValidEmail}
+          enabled={userData.emailReminders.enabled}
+          onEmailChange={handleEmailChange}
+          onSave={saveEmailSettings}
+        />
 
-        {/* Notification Timing */}
-        <div className="space-y-3">
-          <Label>Notification Timing</Label>
-          <div className="grid grid-cols-2 gap-2">
-            {presetDays.map((preset, index) => (
-              <Button
-                key={index}
-                variant={
-                  JSON.stringify(userData.emailReminders.daysBeforeNotification) === JSON.stringify(preset.value)
-                    ? "default" 
-                    : "outline"
-                }
-                size="sm"
-                onClick={() => updateNotificationDays(preset.value)}
-                disabled={!userData.emailReminders.enabled}
-                className="justify-start"
-              >
-                {preset.label}
-              </Button>
-            ))}
-          </div>
-        </div>
+        <NotificationTiming
+          currentDays={userData.emailReminders.daysBeforeNotification}
+          enabled={userData.emailReminders.enabled}
+          onUpdateDays={updateNotificationDays}
+        />
 
-        {/* Current Settings Display */}
-        <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <div className="flex items-center gap-2 mb-2">
-            <Settings className="h-4 w-4 text-blue-600" />
-            <span className="font-medium text-blue-900">Current Settings</span>
-          </div>
-          <div className="space-y-1 text-sm">
-            <div className="flex items-center justify-between">
-              <span>Status:</span>
-              <Badge variant={userData.emailReminders.enabled ? "default" : "secondary"}>
-                {userData.emailReminders.enabled ? "Enabled" : "Disabled"}
-              </Badge>
-            </div>
-            {userData.emailReminders.enabled && (
-              <>
-                <div className="flex items-center justify-between">
-                  <span>Email:</span>
-                  <span className="text-blue-700">{userData.emailReminders.email || 'Not set'}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Notify:</span>
-                  <span className="text-blue-700">
-                    {userData.emailReminders.daysBeforeNotification.length > 0
-                      ? `${userData.emailReminders.daysBeforeNotification.join(', ')} days before`
-                      : 'Not configured'
-                    }
-                  </span>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
+        <CurrentSettings
+          enabled={userData.emailReminders.enabled}
+          email={userData.emailReminders.email}
+          daysBeforeNotification={userData.emailReminders.daysBeforeNotification}
+        />
 
-        {/* Info Message */}
         <div className="text-xs text-gray-500 text-center p-3 bg-gray-50 rounded-lg">
           <p>Note: This is a demo feature. In a production app, this would integrate with an email service.</p>
         </div>
