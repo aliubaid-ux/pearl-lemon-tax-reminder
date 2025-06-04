@@ -68,8 +68,15 @@ const Index = () => {
     saveUserData({ userType: type });
     toast({
       title: "Profile Updated",
-      description: `Switched to ${type.replace('-', ' ')} profile.`,
+      description: `Switched to ${type.replace('-', ' ')} profile. Your calendar is now personalized!`,
     });
+    
+    // Auto-show some features after profile selection
+    setTimeout(() => {
+      if (!showAdvanced) {
+        setShowAdvanced(true);
+      }
+    }, 1000);
   };
 
   const handleQuickAction = (action: string) => {
@@ -83,30 +90,25 @@ const Index = () => {
       case 'share':
         shareDeadlines(filteredDeadlines, userType);
         break;
+      case 'settings':
+        setShowAdvanced(true);
+        setTimeout(() => {
+          const element = document.querySelector('[value="settings"]') as HTMLElement;
+          if (element) {
+            element.click();
+          }
+        }, 100);
+        break;
       case 'calendar':
-        setShowAdvanced(true);
-        setTimeout(() => {
-          const element = document.querySelector('[value="calendar"]') as HTMLElement;
-          if (element) {
-            element.click();
-          }
-        }, 100);
-        break;
       case 'deadlines':
+      case 'tools':
+      case 'reminders':
         setShowAdvanced(true);
         setTimeout(() => {
-          const element = document.querySelector('[value="deadlines"]') as HTMLElement;
+          const element = document.querySelector(`[value="${action}"]`) as HTMLElement;
           if (element) {
             element.click();
-          }
-        }, 100);
-        break;
-      case 'calculator':
-        setShowAdvanced(true);
-        setTimeout(() => {
-          const element = document.querySelector('[value="tools"]') as HTMLElement;
-          if (element) {
-            element.click();
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
         }, 100);
         break;
@@ -120,7 +122,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <HeroSection
           urgentDeadlines={urgentDeadlines}
@@ -136,8 +138,12 @@ const Index = () => {
         {/* User Type Selection */}
         <section id="profile-section" className="mb-8 animate-slide-up">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Step 1: Choose Your Profile</h2>
-            <p className="text-gray-600">This helps us show you the right deadlines and information</p>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Step 1: Choose Your Profile
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300">
+              This personalizes your tax calendar with the deadlines that matter to you
+            </p>
           </div>
           <UserTypeSelector userType={userType} onUserTypeChange={handleUserTypeChange} />
         </section>
@@ -152,10 +158,10 @@ const Index = () => {
         {/* Deadline Notes Modal */}
         {selectedDeadline && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold">{selectedDeadline.title}</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">{selectedDeadline.title}</h3>
                   <Button variant="ghost" onClick={() => setSelectedDeadline(null)}>×</Button>
                 </div>
                 <DeadlineNotes deadline={selectedDeadline} />
@@ -167,6 +173,15 @@ const Index = () => {
         {/* Advanced Features */}
         {showAdvanced && (
           <>
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Step 3: Explore Your Tax Calendar
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                Use the tabs below to view deadlines, set reminders, and access tax tools
+              </p>
+            </div>
+
             <div className="mb-8 animate-scale-in">
               <TaxYearSelector
                 currentTaxYear={currentTaxYear}
@@ -198,6 +213,13 @@ const Index = () => {
             />
           </>
         )}
+
+        {/* Footer with updated year */}
+        <footer className="mt-16 text-center text-gray-500 dark:text-gray-400">
+          <p className="text-sm">
+            2025 UK Tax Calendar - Professional tax deadline management by Pearl Lemon Accountants
+          </p>
+        </footer>
       </div>
     </div>
   );

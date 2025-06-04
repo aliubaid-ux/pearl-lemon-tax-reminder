@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Calendar, AlertTriangle, PlayCircle, Keyboard } from 'lucide-react';
+import { Calendar, AlertTriangle, PlayCircle, Download, Settings, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import MobileNavigation from '@/components/MobileNavigation';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -26,26 +26,20 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   onPrint,
   onShare
 }) => {
-  const handleShortcuts = () => {
-    onShowShortcuts();
-    // Show actual shortcuts modal or functionality
-    console.log('Showing keyboard shortcuts');
-  };
-
   return (
-    <section className="text-center mb-12 animate-fade-in">
-      <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-3xl p-8 border shadow-xl hover-lift">
-        <div className="flex items-center justify-between mb-6">
+    <section className="text-center mb-8 animate-fade-in">
+      <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-3xl p-6 border shadow-xl hover-lift">
+        <div className="flex items-center justify-between mb-4">
           <MobileNavigation 
             urgentCount={urgentDeadlines.length} 
             onQuickAction={onQuickAction}
           />
           <div className="text-center flex-1">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-              UK Tax Calendar
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+              PL Tax Reminder
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Never miss a tax deadline again
+            <p className="text-lg text-gray-600 dark:text-gray-300">
+              Never miss a deadline again
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -53,11 +47,20 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             <Button 
               variant="outline" 
               size="sm"
-              onClick={handleShortcuts}
+              onClick={() => onQuickAction('export')}
               className="hidden lg:flex items-center gap-2 border-green-200 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20"
+              title="Export your calendar data"
             >
-              <Keyboard className="h-4 w-4" />
-              Shortcuts
+              <Download className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => onQuickAction('settings')}
+              className="hidden lg:flex items-center gap-2 border-green-200 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20"
+              title="Advanced settings and tools"
+            >
+              <Settings className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -71,11 +74,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         )}
 
-        <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
+        <p className="text-gray-600 dark:text-gray-300 max-w-xl mx-auto mb-4 text-sm">
           Get started by selecting your profile below, then view your personalized tax calendar.
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-4">
+        <div className="flex flex-wrap items-center justify-center gap-3">
           <Button 
             onClick={onGetStarted} 
             className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white"
@@ -87,28 +90,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             variant="outline" 
             onClick={onToggleAdvanced}
             className="border-green-200 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20"
+            title={showAdvanced ? "Switch to simple view with just the essentials" : "Access advanced features like calculators and detailed tools"}
           >
             {showAdvanced ? 'Simple View' : 'Advanced Features'}
           </Button>
-          
-          <div className="hidden lg:flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={onPrint}
-              className="flex items-center gap-2 border-green-200 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20"
-            >
-              Print
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={onShare}
-              className="flex items-center gap-2 border-green-200 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20"
-            >
-              Share
-            </Button>
-          </div>
         </div>
       </div>
     </section>

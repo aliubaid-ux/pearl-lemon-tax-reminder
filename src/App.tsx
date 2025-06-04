@@ -149,7 +149,7 @@ function App() {
                 For guidance only. Always consult official HMRC sources or a qualified tax professional.
               </p>
               <p className="text-sm text-gray-400 mt-2">
-                © 2024 UK Tax Calendar. Not affiliated with HMRC.
+                © 2025 Pearl Lemon Accountants. Not affiliated with HMRC.
               </p>
             </div>
           </div>

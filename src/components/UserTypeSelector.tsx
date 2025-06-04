@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, Building2, UserCog, ArrowRight, HelpCircle } from 'lucide-react';
+import { Users, Building2, UserCog, ArrowRight, HelpCircle, CheckCircle } from 'lucide-react';
 
 type UserType = 'self-employed' | 'company-director' | 'both';
 
@@ -20,7 +20,8 @@ const UserTypeSelector: React.FC<UserTypeSelectorProps> = ({ userType, onUserTyp
       description: 'I work for myself',
       examples: 'Freelancer, consultant, sole trader',
       color: 'from-blue-500 to-blue-600',
-      popular: true
+      popular: true,
+      nextSteps: 'You\'ll see self-assessment deadlines, VAT thresholds, and Class 2/4 NI contributions.'
     },
     {
       type: 'company-director' as UserType,
@@ -29,7 +30,8 @@ const UserTypeSelector: React.FC<UserTypeSelectorProps> = ({ userType, onUserTyp
       description: 'I run a limited company',
       examples: 'Limited company, contractor through company',
       color: 'from-green-500 to-green-600',
-      popular: false
+      popular: false,
+      nextSteps: 'You\'ll see corporation tax, PAYE, and company filing deadlines.'
     },
     {
       type: 'both' as UserType,
@@ -38,14 +40,17 @@ const UserTypeSelector: React.FC<UserTypeSelectorProps> = ({ userType, onUserTyp
       description: 'I do both',
       examples: 'Self-employed + company director',
       color: 'from-purple-500 to-purple-600',
-      popular: false
+      popular: false,
+      nextSteps: 'You\'ll see all deadlines for both self-employed and company director activities.'
     }
   ];
+
+  const selectedOption = userTypes.find(option => option.type === userType);
 
   return (
     <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-xl">
       <CardContent className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           {userTypes.map((option) => {
             const isSelected = userType === option.type;
             const Icon = option.icon;
@@ -98,7 +103,10 @@ const UserTypeSelector: React.FC<UserTypeSelectorProps> = ({ userType, onUserTyp
                   </div>
                   
                   {isSelected && (
-                    <ArrowRight className="w-4 h-4 text-white animate-pulse" />
+                    <div className="flex items-center gap-1 text-white/90">
+                      <CheckCircle className="w-4 h-4" />
+                      <span className="text-xs">Selected</span>
+                    </div>
                   )}
                 </Button>
               </div>
@@ -106,13 +114,29 @@ const UserTypeSelector: React.FC<UserTypeSelectorProps> = ({ userType, onUserTyp
           })}
         </div>
         
-        <div className="mt-6 p-3 bg-blue-50 rounded-lg border border-blue-200">
+        {selectedOption && (
+          <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700 mb-4">
+            <div className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+              <div className="text-sm">
+                <p className="font-medium text-green-900 dark:text-green-100 mb-1">
+                  Perfect! You've selected: {selectedOption.title}
+                </p>
+                <p className="text-green-700 dark:text-green-200">
+                  {selectedOption.nextSteps}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
           <div className="flex items-start gap-2">
-            <HelpCircle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+            <HelpCircle className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
             <div className="text-sm">
-              <p className="font-medium text-blue-900 mb-1">Not sure which one?</p>
-              <p className="text-blue-700">
-                Start with "Self-Employed" if you work for yourself. You can always change this later.
+              <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">Not sure which one?</p>
+              <p className="text-blue-700 dark:text-blue-200">
+                Start with "Self-Employed" if you work for yourself. You can always change this later in the advanced settings.
               </p>
             </div>
           </div>
