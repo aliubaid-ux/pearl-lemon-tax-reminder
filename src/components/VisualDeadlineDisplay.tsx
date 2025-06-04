@@ -49,19 +49,19 @@ const VisualDeadlineDisplay: React.FC<VisualDeadlineDisplayProps> = ({
   };
 
   return (
-    <Card className="mt-4 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+    <Card className="mt-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-700">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-3 text-blue-900">
+        <CardTitle className="flex items-center gap-3 text-blue-900 dark:text-blue-100">
           <Calendar className="h-5 w-5" />
           Your {userType.replace('-', ' ').toUpperCase()} Tax Deadlines
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 pb-6">
         {/* Upcoming Deadlines */}
         {upcomingDeadlines.length > 0 && (
           <div>
-            <h3 className="text-lg font-semibold text-orange-900 mb-3 flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-orange-600" />
+            <h3 className="text-lg font-semibold text-orange-900 dark:text-orange-200 mb-3 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-orange-600 dark:text-orange-400" />
               Next 30 Days - Act Now!
             </h3>
             <div className="space-y-2">
@@ -74,18 +74,18 @@ const VisualDeadlineDisplay: React.FC<VisualDeadlineDisplayProps> = ({
                     key={deadline.id} 
                     className={`p-3 rounded-lg border-l-4 ${
                       isUrgent 
-                        ? 'bg-red-50 border-l-red-500' 
-                        : 'bg-amber-50 border-l-amber-500'
+                        ? 'bg-red-50 dark:bg-red-900/20 border-l-red-500' 
+                        : 'bg-amber-50 dark:bg-amber-900/20 border-l-amber-500'
                     }`}
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <h4 className="font-medium text-gray-900">{deadline.title}</h4>
-                        <p className="text-sm text-gray-600 mt-1">
+                        <h4 className="font-medium text-gray-900 dark:text-gray-100">{deadline.title}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                           {formatDate(deadline.date)}
                         </p>
                         {deadline.description && (
-                          <p className="text-xs text-gray-500 mt-1">
+                          <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
                             {deadline.description}
                           </p>
                         )}
@@ -100,7 +100,7 @@ const VisualDeadlineDisplay: React.FC<VisualDeadlineDisplayProps> = ({
                            `${daysUntil} days`}
                         </Badge>
                         <Badge 
-                          className={deadline.priority === 'high' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}
+                          className={deadline.priority === 'high' ? 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200' : 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200'}
                         >
                           {deadline.priority}
                         </Badge>
@@ -116,22 +116,22 @@ const VisualDeadlineDisplay: React.FC<VisualDeadlineDisplayProps> = ({
         {/* Future Deadlines Preview */}
         {futureDeadlines.length > 0 && (
           <div>
-            <h3 className="text-lg font-semibold text-blue-900 mb-3 flex items-center gap-2">
-              <Clock className="h-5 w-5 text-blue-600" />
+            <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-200 mb-3 flex items-center gap-2">
+              <Clock className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               Future Deadlines ({futureDeadlines.length})
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {futureDeadlines.slice(0, 6).map((deadline) => (
                 <div 
                   key={deadline.id} 
-                  className="p-2 bg-white rounded border border-blue-200 hover:border-blue-400 transition-colors"
+                  className="p-2 bg-white dark:bg-gray-800 rounded border border-blue-200 dark:border-blue-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors"
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
                         {deadline.title}
                       </p>
-                      <p className="text-xs text-gray-600">
+                      <p className="text-xs text-gray-600 dark:text-gray-400">
                         {formatDate(deadline.date)}
                       </p>
                     </div>
@@ -143,7 +143,7 @@ const VisualDeadlineDisplay: React.FC<VisualDeadlineDisplayProps> = ({
               ))}
             </div>
             {futureDeadlines.length > 6 && (
-              <p className="text-sm text-blue-700 mt-2">
+              <p className="text-sm text-blue-700 dark:text-blue-300 mt-2">
                 +{futureDeadlines.length - 6} more deadlines...
               </p>
             )}
@@ -153,17 +153,18 @@ const VisualDeadlineDisplay: React.FC<VisualDeadlineDisplayProps> = ({
         {/* No Deadlines */}
         {deadlines.length === 0 && (
           <div className="text-center py-6">
-            <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-600">No tax deadlines found for this profile type.</p>
+            <Calendar className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-3" />
+            <p className="text-gray-600 dark:text-gray-400">No tax deadlines found for this profile type.</p>
           </div>
         )}
 
-        {/* Quick Actions */}
-        <div className="pt-4 border-t border-blue-200">
-          <div className="flex gap-2 flex-wrap">
+        {/* Quick Actions - Fixed positioning and visibility */}
+        <div className="pt-4 border-t border-blue-200 dark:border-blue-700">
+          <div className="flex gap-3 flex-wrap">
             <Button 
               size="sm" 
               variant="outline"
+              className="bg-white dark:bg-gray-800 border-blue-200 dark:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-700 dark:text-blue-300"
               onClick={() => window.open('https://www.gov.uk/government/organisations/hm-revenue-customs/services-information', '_blank')}
             >
               <ExternalLink className="h-4 w-4 mr-2" />
@@ -172,6 +173,7 @@ const VisualDeadlineDisplay: React.FC<VisualDeadlineDisplayProps> = ({
             <Button 
               size="sm" 
               variant="outline"
+              className="bg-white dark:bg-gray-800 border-blue-200 dark:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-700 dark:text-blue-300"
               onClick={() => document.getElementById('calendar-integration')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <Calendar className="h-4 w-4 mr-2" />
