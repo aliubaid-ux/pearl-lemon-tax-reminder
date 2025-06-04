@@ -23,6 +23,11 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { useNavigate } from 'react-router-dom';
+import TaxYearToggle from '@/components/TaxYearToggle';
+import ProgressTracker from '@/components/ProgressTracker';
+import KeyboardShortcuts from '@/components/KeyboardShortcuts';
+import SmartDeadlineGroups from '@/components/SmartDeadlineGroups';
+import EnhancedQuickActions from '@/components/EnhancedQuickActions';
 
 type UserType = 'self-employed' | 'company-director' | 'both';
 
@@ -33,6 +38,8 @@ const Index = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+  const [currentTaxYear, setCurrentTaxYear] = useState('2024-2025');
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -176,7 +183,19 @@ END:VCALENDAR`;
     return () => document.removeEventListener('quickCalendarExport', handleQuickExport);
   }, [userType]);
 
-  // Keyboard shortcuts
+  const handleShowShortcuts = () => {
+    setIsShortcutsOpen(true);
+  };
+
+  const handleTaxYearChange = (taxYear: string) => {
+    setCurrentTaxYear(taxYear);
+    toast({
+      title: "Tax Year Changed",
+      description: `Now viewing deadlines for ${taxYear}`,
+    });
+  };
+
+  // Enhanced keyboard shortcuts
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.ctrlKey || event.metaKey) {
@@ -189,17 +208,39 @@ END:VCALENDAR`;
             event.preventDefault();
             setIsFiltersOpen(true);
             break;
+          case 'e':
+            event.preventDefault();
+            handleQuickCalendarExport();
+            break;
+          case 'd':
+            event.preventDefault();
+            // Jump to current tax year
+            const currentYear = getCurrentTaxYear();
+            setCurrentTaxYear(currentYear);
+            break;
         }
       }
       if (event.key === 'Escape') {
         setIsSearchOpen(false);
         setIsFiltersOpen(false);
+        setIsShortcutsOpen(false);
+      }
+      if (event.key === '?') {
+        event.preventDefault();
+        setIsShortcutsOpen(true);
       }
     };
 
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
   }, []);
+
+  const getCurrentTaxYear = () => {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const isAfterApril5 = now.getMonth() > 3 || (now.getMonth() === 3 && now.getDate() >= 6);
+    return isAfterApril5 ? `${currentYear}-${currentYear + 1}` : `${currentYear - 1}-${currentYear}`;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -359,6 +400,14 @@ END:VCALENDAR`;
           </div>
         </div>
 
+        {/* Tax Year Toggle */}
+        <section className="mb-8">
+          <TaxYearToggle 
+            currentTaxYear={currentTaxYear}
+            onTaxYearChange={handleTaxYearChange}
+          />
+        </section>
+
         {/* Step 1: Enhanced User Type Selection with Visual Deadlines */}
         <section className="mb-12 animate-slide-up">
           <div className="text-center mb-6">
@@ -370,6 +419,45 @@ END:VCALENDAR`;
             </p>
           </div>
           <EnhancedUserTypeSelector userType={userType} onUserTypeChange={handleUserTypeChange} />
+        </section>
+
+        {/* Enhanced Quick Actions */}
+        <section className="mb-12">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              Quick Access Tools
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 text-lg">
+              Essential tax tools and resources at your fingertips
+            </p>
+          </div>
+          <EnhancedQuickActions
+            onSearch={() => setIsSearchOpen(true)}
+            onFilter={() => setIsFiltersOpen(true)}
+            onExportCalendar={handleQuickCalendarExport}
+            onShowShortcuts={handleShowShortcuts}
+          />
+        </section>
+
+        {/* Progress Tracker and Smart Groups */}
+        <section className="mb-12">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              Deadline Management
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 text-lg">
+              Track your progress and organize deadlines intelligently
+            </p>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-6">
+            <ProgressTracker deadlines={filteredDeadlines} />
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Smart Deadline Groups
+              </h3>
+              <SmartDeadlineGroups deadlines={filteredDeadlines} />
+            </div>
+          </div>
         </section>
 
         {/* Step 2: Critical Upcoming Deadlines */}
@@ -509,6 +597,11 @@ END:VCALENDAR`;
         isOpen={isOnboardingOpen}
         onClose={() => setIsOnboardingOpen(false)}
         onComplete={handleOnboardingComplete}
+      />
+
+      <KeyboardShortcuts
+        isOpen={isShortcutsOpen}
+        onClose={() => setIsShortcutsOpen(false)}
       />
     </div>
   );

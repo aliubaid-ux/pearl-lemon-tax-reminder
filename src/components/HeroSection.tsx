@@ -59,7 +59,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>View keyboard shortcuts</p>
+                  <p>View keyboard shortcuts (Press ?)</p>
                 </TooltipContent>
               </Tooltip>
             </div>
@@ -99,6 +99,22 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               </TooltipTrigger>
               <TooltipContent>
                 <p>{showAdvanced ? "Switch to simple view with just the essentials" : "Access advanced features like calculators and detailed tools"}</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  onClick={onShowShortcuts}
+                  className="border-blue-200 hover:bg-blue-50 dark:border-blue-700 dark:hover:bg-blue-900/20"
+                >
+                  <HelpCircle className="h-4 w-4 mr-2" />
+                  Shortcuts
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>View keyboard shortcuts (Press ?)</p>
               </TooltipContent>
             </Tooltip>
           </div>
