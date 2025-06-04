@@ -1,4 +1,3 @@
-
 interface UserData {
   userType: 'self-employed' | 'company-director' | 'both';
   deadlineNotes: Record<string, string>;
@@ -11,6 +10,13 @@ interface UserData {
     theme: 'light' | 'dark' | 'system';
     reminderSound: boolean;
     compactView: boolean;
+    // Accessibility settings
+    highContrast?: boolean;
+    largeText?: boolean;
+    reducedMotion?: boolean;
+    screenReaderAnnouncements?: boolean;
+    keyboardNavigation?: boolean;
+    focusIndicators?: boolean;
   };
 }
 

@@ -35,10 +35,19 @@ const Index = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
   const [currentTaxYear, setCurrentTaxYear] = useState(new Date().getFullYear());
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredDeadlines, setFilteredDeadlines] = useState(getTaxDeadlines(userType));
+  const [filteredDeadlines, setFilteredDeadlines] = useState(getTaxDeadlines('self-employed'));
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [selectedDeadline, setSelectedDeadline] = useState<any>(null);
   const { toast } = useToast();
+
+  // Keyboard shortcuts - declare before using
+  const { showShortcuts } = useKeyboardNavigation({
+    ...defaultShortcuts,
+    'Ctrl+P': () => printCalendar(filteredDeadlines, userType),
+    'Ctrl+E': () => exportToCSV(filteredDeadlines),
+    'Ctrl+S': () => shareDeadlines(filteredDeadlines, userType),
+    '?': () => {} // Will be set below
+  });
   
   // Load user data on mount
   useEffect(() => {
@@ -91,19 +100,28 @@ const Index = () => {
         setShowAdvanced(true);
         // Scroll to calendar
         setTimeout(() => {
-          document.querySelector('[value="calendar"]')?.click();
+          const element = document.querySelector('[value="calendar"]') as HTMLElement;
+          if (element) {
+            element.click();
+          }
         }, 100);
         break;
       case 'deadlines':
         setShowAdvanced(true);
         setTimeout(() => {
-          document.querySelector('[value="deadlines"]')?.click();
+          const element = document.querySelector('[value="deadlines"]') as HTMLElement;
+          if (element) {
+            element.click();
+          }
         }, 100);
         break;
       case 'calculator':
         setShowAdvanced(true);
         setTimeout(() => {
-          document.querySelector('[value="tools"]')?.click();
+          const element = document.querySelector('[value="tools"]') as HTMLElement;
+          if (element) {
+            element.click();
+          }
         }, 100);
         break;
       default:
