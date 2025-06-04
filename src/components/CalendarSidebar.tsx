@@ -4,8 +4,20 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Calendar, Clock, AlertTriangle, TrendingUp, FileText, Users } from 'lucide-react';
+import { 
+  Calendar, 
+  Clock, 
+  AlertTriangle, 
+  TrendingUp, 
+  FileText, 
+  Users, 
+  CreditCard,
+  Calculator,
+  HelpCircle
+} from 'lucide-react';
 import { TaxDeadline } from '@/types/tax';
+import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface CalendarSidebarProps {
   deadlines: TaxDeadline[];
@@ -16,6 +28,8 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = ({ deadlines, selectedMo
   const today = new Date();
   const monthStart = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth(), 1);
   const monthEnd = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 0);
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   // Get deadlines for current month
   const monthDeadlines = deadlines.filter(deadline => {
@@ -45,6 +59,42 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = ({ deadlines, selectedMo
   ));
 
   const monthName = selectedMonth.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+
+  const handleButtonClick = (component: string) => {
+    // In a real app, this would navigate to specific components/pages
+    toast({
+      title: `Opening ${component}`,
+      description: `Navigating to ${component} component...`,
+    });
+    
+    // Temporary navigation simulation - in a real app replace with actual routes
+    switch (component) {
+      case 'Late Submission Templates':
+        navigate('/late-submission-templates');
+        break;
+      case 'HMRC Guidance':
+        navigate('/hmrc-guidance');
+        break;
+      case 'Documentation Checklist':
+        navigate('/documentation-checklist');
+        break;
+      case 'Common Mistakes':
+        navigate('/common-mistakes');
+        break;
+      case 'Registration Tracker':
+        navigate('/registration-tracker');
+        break;
+      case 'Trading Allowance':
+        navigate('/trading-allowance');
+        break;
+      default:
+        // Default fallback
+        toast({
+          title: 'Feature coming soon',
+          description: 'This feature is under development.'
+        });
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -134,26 +184,70 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = ({ deadlines, selectedMo
         </Card>
       )}
 
-      {/* Quick Tips */}
-      <Card>
+      {/* New Common Tax Mistakes Alert */}
+      <Card className="bg-red-50 border-red-200">
         <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <FileText className="h-4 w-4" />
-            Quick Tips
+          <CardTitle className="flex items-center gap-2 text-lg text-red-900">
+            <AlertTriangle className="h-4 w-4" />
+            Common Mistakes
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="text-sm space-y-2">
-            <div className="p-2 bg-blue-50 rounded text-blue-800">
-              💡 Set up calendar reminders 2 weeks before deadlines
+            <div className="p-2 bg-white rounded text-red-800 border border-red-100">
+              💡 Review common filing mistakes that cause penalties
             </div>
-            <div className="p-2 bg-green-50 rounded text-green-800">
-              📋 Keep all receipts and documents organized monthly
-            </div>
-            <div className="p-2 bg-purple-50 rounded text-purple-800">
-              ⏰ Submit early to avoid last-minute technical issues
+            <div className="p-2 bg-white rounded text-red-800 border border-red-100">
+              📋 Avoid issues with trading allowance misconceptions
             </div>
           </div>
+          <Button 
+            variant="destructive" 
+            size="sm" 
+            className="w-full"
+            onClick={() => handleButtonClick('Common Mistakes')}
+          >
+            View Common Mistakes
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Special Issues Cards */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <HelpCircle className="h-4 w-4" />
+            Key Tax Issues
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full flex items-center justify-between"
+            onClick={() => handleButtonClick('Registration Tracker')}
+          >
+            <span>Registration Deadlines</span>
+            <Calendar className="h-3 w-3" />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full flex items-center justify-between"
+            onClick={() => handleButtonClick('Trading Allowance')}
+          >
+            <span>Trading Allowance Calculator</span>
+            <Calculator className="h-3 w-3" />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full flex items-center justify-between"
+            onClick={() => handleButtonClick('Payments on Account')}
+          >
+            <span>Payments on Account Guide</span>
+            <CreditCard className="h-3 w-3" />
+          </Button>
         </CardContent>
       </Card>
 
@@ -166,13 +260,36 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = ({ deadlines, selectedMo
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <Button variant="outline" size="sm" className="w-full">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full"
+            onClick={() => handleButtonClick('Late Submission Templates')}
+          >
             Late Submission Templates
           </Button>
-          <Button variant="outline" size="sm" className="w-full">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full"
+            onClick={() => handleButtonClick('HMRC Guidance')}
+          >
             HMRC Guidance
           </Button>
-          <Button variant="outline" size="sm" className="w-full">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full"
+            onClick={() => handleButtonClick('HMRC Support Guide')}
+          >
+            HMRC Support Contact
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full"
+            onClick={() => handleButtonClick('Documentation Checklist')}
+          >
             Documentation Checklist
           </Button>
         </CardContent>
