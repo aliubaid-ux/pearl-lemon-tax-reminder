@@ -39,17 +39,64 @@ const USER_DATA_KEY = 'uk-tax-calendar-user-data';
 const NOTES_KEY = 'uk-tax-calendar-notes';
 const PROGRESS_KEY = 'uk-tax-calendar-progress';
 
+// Helper function to safely access localStorage
+const safeLocalStorage = {
+  getItem: (key: string): string | null => {
+    try {
+      return localStorage.getItem(key);
+    } catch (error) {
+      console.error(`Error accessing localStorage for key ${key}:`, error);
+      return null;
+    }
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      localStorage.setItem(key, value);
+    } catch (error) {
+      console.error(`Error setting localStorage for key ${key}:`, error);
+    }
+  },
+  removeItem: (key: string): void => {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.error(`Error removing localStorage for key ${key}:`, error);
+    }
+  }
+};
+
 // User data functions
 export const loadUserData = (): UserData => {
   try {
-    const stored = localStorage.getItem(USER_DATA_KEY);
+    const stored = safeLocalStorage.getItem(USER_DATA_KEY);
     if (stored) {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      // Ensure backward compatibility and proper defaults
+      return {
+        userType: parsed.userType || 'self-employed',
+        preferences: {
+          notifications: parsed.preferences?.notifications ?? true,
+          emailReminders: parsed.preferences?.emailReminders ?? false,
+          theme: parsed.preferences?.theme || 'system',
+          highContrast: parsed.preferences?.highContrast ?? false,
+          largeText: parsed.preferences?.largeText ?? false,
+          reducedMotion: parsed.preferences?.reducedMotion ?? false,
+          screenReaderAnnouncements: parsed.preferences?.screenReaderAnnouncements ?? true,
+          keyboardNavigation: parsed.preferences?.keyboardNavigation ?? true,
+          focusIndicators: parsed.preferences?.focusIndicators ?? true
+        },
+        emailReminders: {
+          enabled: parsed.emailReminders?.enabled ?? false,
+          email: parsed.emailReminders?.email || '',
+          daysBeforeNotification: parsed.emailReminders?.daysBeforeNotification || [7]
+        }
+      };
     }
   } catch (error) {
     console.error('Error loading user data:', error);
   }
   
+  // Return default data structure
   return {
     userType: 'self-employed',
     preferences: {
@@ -73,7 +120,7 @@ export const loadUserData = (): UserData => {
 
 export const saveUserData = (userData: UserData): void => {
   try {
-    localStorage.setItem(USER_DATA_KEY, JSON.stringify(userData));
+    safeLocalStorage.setItem(USER_DATA_KEY, JSON.stringify(userData));
   } catch (error) {
     console.error('Error saving user data:', error);
   }
@@ -82,7 +129,7 @@ export const saveUserData = (userData: UserData): void => {
 // Notes functions
 export const getDeadlineNote = (deadlineId: string): string => {
   try {
-    const stored = localStorage.getItem(NOTES_KEY);
+    const stored = safeLocalStorage.getItem(NOTES_KEY);
     if (stored) {
       const notes: Record<string, DeadlineNote> = JSON.parse(stored);
       return notes[deadlineId]?.content || '';
@@ -95,7 +142,7 @@ export const getDeadlineNote = (deadlineId: string): string => {
 
 export const saveDeadlineNote = (deadlineId: string, content: string): void => {
   try {
-    const stored = localStorage.getItem(NOTES_KEY);
+    const stored = safeLocalStorage.getItem(NOTES_KEY);
     let notes: Record<string, DeadlineNote> = {};
     
     if (stored) {
@@ -112,7 +159,7 @@ export const saveDeadlineNote = (deadlineId: string, content: string): void => {
       delete notes[deadlineId];
     }
     
-    localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+    safeLocalStorage.setItem(NOTES_KEY, JSON.stringify(notes));
   } catch (error) {
     console.error('Error saving deadline note:', error);
   }
@@ -121,7 +168,7 @@ export const saveDeadlineNote = (deadlineId: string, content: string): void => {
 // Progress tracking functions
 export const getDeadlineProgress = (deadlineId: string): number => {
   try {
-    const stored = localStorage.getItem(PROGRESS_KEY);
+    const stored = safeLocalStorage.getItem(PROGRESS_KEY);
     if (stored) {
       const progress: Record<string, DeadlineProgress> = JSON.parse(stored);
       return progress[deadlineId]?.progress || 0;
@@ -134,7 +181,7 @@ export const getDeadlineProgress = (deadlineId: string): number => {
 
 export const setDeadlineProgress = (deadlineId: string, progress: number): void => {
   try {
-    const stored = localStorage.getItem(PROGRESS_KEY);
+    const stored = safeLocalStorage.getItem(PROGRESS_KEY);
     let progressData: Record<string, DeadlineProgress> = {};
     
     if (stored) {
@@ -143,13 +190,13 @@ export const setDeadlineProgress = (deadlineId: string, progress: number): void 
     
     progressData[deadlineId] = {
       id: deadlineId,
-      progress,
+      progress: Math.max(0, Math.min(100, progress)), // Ensure progress is between 0-100
       completedSteps: progressData[deadlineId]?.completedSteps || [],
       notes: progressData[deadlineId]?.notes || '',
       lastUpdated: new Date().toISOString()
     };
     
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressData));
+    safeLocalStorage.setItem(PROGRESS_KEY, JSON.stringify(progressData));
   } catch (error) {
     console.error('Error saving deadline progress:', error);
   }
@@ -157,7 +204,7 @@ export const setDeadlineProgress = (deadlineId: string, progress: number): void 
 
 export const getCompletedDeadlines = (): string[] => {
   try {
-    const stored = localStorage.getItem(PROGRESS_KEY);
+    const stored = safeLocalStorage.getItem(PROGRESS_KEY);
     if (stored) {
       const progress: Record<string, DeadlineProgress> = JSON.parse(stored);
       return Object.keys(progress).filter(id => progress[id].progress === 100);
@@ -170,7 +217,7 @@ export const getCompletedDeadlines = (): string[] => {
 
 export const getAllProgress = (): Record<string, DeadlineProgress> => {
   try {
-    const stored = localStorage.getItem(PROGRESS_KEY);
+    const stored = safeLocalStorage.getItem(PROGRESS_KEY);
     if (stored) {
       return JSON.parse(stored);
     }
@@ -183,11 +230,31 @@ export const getAllProgress = (): Record<string, DeadlineProgress> => {
 // Clear all data (for reset functionality)
 export const clearAllData = (): void => {
   try {
-    localStorage.removeItem(USER_DATA_KEY);
-    localStorage.removeItem(NOTES_KEY);
-    localStorage.removeItem(PROGRESS_KEY);
-    localStorage.removeItem('dismissed-suggestions');
+    safeLocalStorage.removeItem(USER_DATA_KEY);
+    safeLocalStorage.removeItem(NOTES_KEY);
+    safeLocalStorage.removeItem(PROGRESS_KEY);
+    safeLocalStorage.removeItem('dismissed-suggestions');
+    safeLocalStorage.removeItem('uk-tax-calendar-theme');
   } catch (error) {
     console.error('Error clearing data:', error);
+  }
+};
+
+// Export all data for backup
+export const exportAllData = (): string => {
+  try {
+    const data = {
+      userData: safeLocalStorage.getItem(USER_DATA_KEY),
+      notes: safeLocalStorage.getItem(NOTES_KEY),
+      progress: safeLocalStorage.getItem(PROGRESS_KEY),
+      theme: safeLocalStorage.getItem('uk-tax-calendar-theme'),
+      dismissedSuggestions: safeLocalStorage.getItem('dismissed-suggestions'),
+      exportDate: new Date().toISOString(),
+      version: '1.0'
+    };
+    return JSON.stringify(data, null, 2);
+  } catch (error) {
+    console.error('Error exporting data:', error);
+    return '{}';
   }
 };
