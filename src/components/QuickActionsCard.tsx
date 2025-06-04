@@ -177,24 +177,28 @@ const QuickActionsCard = () => {
 
   return (
     <Card className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border-0 shadow-2xl rounded-2xl overflow-hidden">
-      <CardHeader className="border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-700 dark:to-gray-600">
+      <CardHeader className="border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
         <CardTitle className="flex items-center gap-4 text-xl">
           <div className="p-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl shadow-lg">
             <FileText className="h-5 w-5 text-white" />
           </div>
-          Quick Actions
+          <span className="text-gray-900 dark:text-white">Quick Actions</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="p-6 space-y-6">
         {/* Export & Print Section */}
         <div>
-          <h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-sm uppercase tracking-wide">Export & Print</h4>
+          <h4 className="font-semibold text-green-700 dark:text-green-400 mb-3 text-sm uppercase tracking-wide">Export & Print</h4>
           <div className="grid grid-cols-1 gap-2">
             {groupedActions.export.map((action) => (
               <Button
                 key={action.id}
                 variant={action.variant}
-                className="w-full justify-start h-auto p-4 hover:scale-105 transition-all duration-200"
+                className={`w-full justify-start h-auto p-4 hover:scale-105 transition-all duration-200 ${
+                  action.variant === 'default' 
+                    ? 'bg-green-600 hover:bg-green-700 text-white' 
+                    : 'border-green-200 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20'
+                }`}
                 onClick={action.action}
                 disabled={action.loading}
               >
@@ -202,18 +206,18 @@ const QuickActionsCard = () => {
                   <div className={`p-2 rounded-lg ${
                     action.variant === 'default' 
                       ? 'bg-white/20' 
-                      : 'bg-gray-100 dark:bg-gray-700'
+                      : 'bg-green-100 dark:bg-green-900/30'
                   }`}>
                     <action.icon className={`h-4 w-4 ${
                       action.loading ? 'animate-spin' : ''
                     } ${
                       action.variant === 'default' 
                         ? 'text-white' 
-                        : 'text-gray-600 dark:text-gray-300'
+                        : 'text-green-600 dark:text-green-400'
                     }`} />
                   </div>
                   <div className="text-left flex-1">
-                    <div className="font-medium text-sm">{action.title}</div>
+                    <div className="font-medium text-sm text-gray-900 dark:text-white">{action.title}</div>
                     <div className={`text-xs opacity-75 ${
                       action.variant === 'default' 
                         ? 'text-white' 
@@ -230,13 +234,13 @@ const QuickActionsCard = () => {
 
         {/* Calendar Integration Section */}
         <div>
-          <h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-sm uppercase tracking-wide">Calendar Integration</h4>
+          <h4 className="font-semibold text-blue-700 dark:text-blue-400 mb-3 text-sm uppercase tracking-wide">Calendar Integration</h4>
           <div className="grid grid-cols-1 gap-2">
             {groupedActions.calendar.map((action) => (
               <Button
                 key={action.id}
                 variant={action.variant}
-                className="w-full justify-start h-auto p-4 hover:scale-105 transition-all duration-200"
+                className="w-full justify-start h-auto p-4 hover:scale-105 transition-all duration-200 border-blue-200 hover:bg-blue-50 dark:border-blue-700 dark:hover:bg-blue-900/20"
                 onClick={action.action}
                 disabled={action.loading}
               >
@@ -247,7 +251,7 @@ const QuickActionsCard = () => {
                     }`} />
                   </div>
                   <div className="text-left flex-1">
-                    <div className="font-medium text-sm">{action.title}</div>
+                    <div className="font-medium text-sm text-gray-900 dark:text-white">{action.title}</div>
                     <div className="text-xs opacity-75 text-gray-600 dark:text-gray-300">
                       {action.loading ? 'Exporting...' : action.description}
                     </div>
@@ -260,13 +264,13 @@ const QuickActionsCard = () => {
 
         {/* Downloads Section */}
         <div>
-          <h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-sm uppercase tracking-wide">Downloads</h4>
+          <h4 className="font-semibold text-purple-700 dark:text-purple-400 mb-3 text-sm uppercase tracking-wide">Downloads</h4>
           <div className="grid grid-cols-1 gap-2">
             {groupedActions.download.map((action) => (
               <Button
                 key={action.id}
                 variant={action.variant}
-                className="w-full justify-start h-auto p-4 hover:scale-105 transition-all duration-200"
+                className="w-full justify-start h-auto p-4 hover:scale-105 transition-all duration-200 border-purple-200 hover:bg-purple-50 dark:border-purple-700 dark:hover:bg-purple-900/20"
                 onClick={action.action}
                 disabled={action.loading}
               >
@@ -277,7 +281,7 @@ const QuickActionsCard = () => {
                     }`} />
                   </div>
                   <div className="text-left flex-1">
-                    <div className="font-medium text-sm">{action.title}</div>
+                    <div className="font-medium text-sm text-gray-900 dark:text-white">{action.title}</div>
                     <div className="text-xs opacity-75 text-gray-600 dark:text-gray-300">
                       {action.loading ? 'Processing...' : action.description}
                     </div>
@@ -290,21 +294,21 @@ const QuickActionsCard = () => {
 
         {/* External Resources Section */}
         <div>
-          <h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-sm uppercase tracking-wide">Official Resources</h4>
+          <h4 className="font-semibold text-orange-700 dark:text-orange-400 mb-3 text-sm uppercase tracking-wide">Official Resources</h4>
           <div className="grid grid-cols-1 gap-2">
             {groupedActions.external.map((action) => (
               <Button
                 key={action.id}
                 variant={action.variant}
-                className="w-full justify-start h-auto p-4 hover:scale-105 transition-all duration-200"
+                className="w-full justify-start h-auto p-4 hover:scale-105 transition-all duration-200 border-orange-200 hover:bg-orange-50 dark:border-orange-700 dark:hover:bg-orange-900/20"
                 onClick={action.action}
               >
                 <div className="flex items-center gap-3 w-full">
-                  <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
-                    <action.icon className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+                  <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
+                    <action.icon className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                   </div>
                   <div className="text-left flex-1">
-                    <div className="font-medium text-sm">{action.title}</div>
+                    <div className="font-medium text-sm text-gray-900 dark:text-white">{action.title}</div>
                     <div className="text-xs opacity-75 text-gray-600 dark:text-gray-300">
                       {action.description}
                     </div>
@@ -322,7 +326,7 @@ const QuickActionsCard = () => {
             <Button 
               variant="ghost" 
               size="sm"
-              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+              className="text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-900/30"
               onClick={() => handleExternalLink('https://www.gov.uk/find-a-professional-adviser', 'Find an Adviser')}
             >
               Find a Chartered Accountant

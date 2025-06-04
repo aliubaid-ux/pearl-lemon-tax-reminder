@@ -26,34 +26,35 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   onPrint,
   onShare
 }) => {
+  const handleShortcuts = () => {
+    onShowShortcuts();
+    // Show actual shortcuts modal or functionality
+    console.log('Showing keyboard shortcuts');
+  };
+
   return (
     <section className="text-center mb-12 animate-fade-in">
-      <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 border shadow-xl hover-lift">
+      <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-3xl p-8 border shadow-xl hover-lift">
         <div className="flex items-center justify-between mb-6">
           <MobileNavigation 
             urgentCount={urgentDeadlines.length} 
             onQuickAction={onQuickAction}
           />
-          <div className="flex items-center gap-4">
-            <div className="p-4 pearl-gradient rounded-2xl shadow-lg">
-              <Calendar className="h-8 w-8 text-white" />
-            </div>
-            <div className="text-left">
-              <h1 className="text-3xl font-bold text-gray-900 mb-1">
-                UK Tax Calendar
-              </h1>
-              <p className="text-lg text-gray-600">
-                Never miss a tax deadline again
-              </p>
-            </div>
+          <div className="text-center flex-1">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              UK Tax Calendar
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300">
+              Never miss a tax deadline again
+            </p>
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Button 
               variant="outline" 
               size="sm"
-              onClick={onShowShortcuts}
-              className="hidden lg:flex items-center gap-2"
+              onClick={handleShortcuts}
+              className="hidden lg:flex items-center gap-2 border-green-200 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20"
             >
               <Keyboard className="h-4 w-4" />
               Shortcuts
@@ -62,7 +63,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
         
         {urgentDeadlines.length > 0 && (
-          <div className="inline-flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl shadow-lg animate-pulse mb-4">
+          <div className="inline-flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl shadow-lg animate-pulse mb-4">
             <AlertTriangle className="h-5 w-5" />
             <span className="font-medium">
               {urgentDeadlines.length} urgent deadline{urgentDeadlines.length > 1 ? 's' : ''} approaching
@@ -70,16 +71,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         )}
 
-        <p className="text-gray-600 max-w-2xl mx-auto mb-6">
+        <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
           Get started by selecting your profile below, then view your personalized tax calendar.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button onClick={onGetStarted} className="flex items-center gap-2">
+          <Button 
+            onClick={onGetStarted} 
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white"
+          >
             <PlayCircle className="h-4 w-4" />
             Get Started
           </Button>
-          <Button variant="outline" onClick={onToggleAdvanced}>
+          <Button 
+            variant="outline" 
+            onClick={onToggleAdvanced}
+            className="border-green-200 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20"
+          >
             {showAdvanced ? 'Simple View' : 'Advanced Features'}
           </Button>
           
@@ -88,7 +96,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               variant="outline" 
               size="sm"
               onClick={onPrint}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 border-green-200 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20"
             >
               Print
             </Button>
@@ -96,7 +104,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               variant="outline" 
               size="sm"
               onClick={onShare}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 border-green-200 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20"
             >
               Share
             </Button>
