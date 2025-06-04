@@ -2,11 +2,13 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Phone, Mail, MessageCircle, Clock, AlertTriangle, FileText, Users } from 'lucide-react';
+import { ExternalLink, Phone, Mail, MessageCircle, Clock, AlertTriangle, FileText, Users, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const HMRCSupportGuide: React.FC = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleExternalLink = (url: string, title: string) => {
     window.open(url, '_blank', 'noopener,noreferrer');
@@ -71,161 +73,215 @@ const HMRCSupportGuide: React.FC = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">HMRC Support Guide</h1>
-        <p className="text-gray-600">Get help with your tax obligations through official HMRC channels</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/')}
+            className="mb-4"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Calendar
+          </Button>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">HMRC Support Guide</h1>
+          <p className="text-gray-600">Get help with your tax obligations through official HMRC channels</p>
+        </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Contact Methods */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Phone className="h-5 w-5" />
-              Contact HMRC
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {contactMethods.map((contact, index) => (
-              <div key={index} className="p-4 border rounded-lg">
-                <div className="flex items-start gap-3">
-                  <contact.icon className="h-5 w-5 text-blue-600 mt-1" />
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">{contact.title}</h4>
-                    <p className="text-blue-600 font-medium">{contact.phone}</p>
-                    <p className="text-sm text-gray-600 mb-1">{contact.hours}</p>
-                    <p className="text-sm text-gray-700">{contact.description}</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Contact Methods */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Phone className="h-5 w-5" />
+                Contact HMRC
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {contactMethods.map((contact, index) => (
+                <div key={index} className="p-4 border rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <contact.icon className="h-5 w-5 text-blue-600 mt-1" />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-900">{contact.title}</h4>
+                      <p className="text-blue-600 font-medium">{contact.phone}</p>
+                      <p className="text-sm text-gray-600 mb-1">{contact.hours}</p>
+                      <p className="text-sm text-gray-700">{contact.description}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+              ))}
+            </CardContent>
+          </Card>
 
-        {/* Online Services */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ExternalLink className="h-5 w-5" />
-              Online Services
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {onlineServices.map((service, index) => (
-              <Button
-                key={index}
-                variant="outline"
-                className="w-full h-auto p-4 justify-start"
-                onClick={() => handleExternalLink(service.url, service.title)}
-              >
-                <div className="text-left">
-                  <div className="font-medium text-gray-900">{service.title}</div>
-                  <div className="text-sm text-gray-600">{service.description}</div>
+          {/* Online Services */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ExternalLink className="h-5 w-5" />
+                Online Services
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {onlineServices.map((service, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  className="w-full h-auto p-4 justify-start"
+                  onClick={() => handleExternalLink(service.url, service.title)}
+                >
+                  <div className="text-left">
+                    <div className="font-medium text-gray-900">{service.title}</div>
+                    <div className="text-sm text-gray-600">{service.description}</div>
+                  </div>
+                </Button>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Emergency Support */}
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-amber-500" />
+                Emergency & Urgent Support
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <h4 className="font-semibold text-red-900 mb-2">Payment Problems</h4>
+                  <p className="text-sm text-red-800 mb-3">If you can't pay your tax bill on time</p>
+                  <Button 
+                    size="sm" 
+                    variant="destructive"
+                    onClick={() => handleExternalLink('https://www.gov.uk/difficulties-paying-hmrc', 'Payment Support')}
+                  >
+                    Get Help
+                  </Button>
                 </div>
-              </Button>
-            ))}
-          </CardContent>
-        </Card>
+                <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                  <h4 className="font-semibold text-amber-900 mb-2">Late Filing</h4>
+                  <p className="text-sm text-amber-800 mb-3">Appeal penalties or get deadline extensions</p>
+                  <Button 
+                    size="sm" 
+                    className="bg-amber-600 hover:bg-amber-700"
+                    onClick={() => handleExternalLink('https://www.gov.uk/tax-appeals', 'Appeal Process')}
+                  >
+                    Appeal
+                  </Button>
+                </div>
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <h4 className="font-semibold text-blue-900 mb-2">Technical Issues</h4>
+                  <p className="text-sm text-blue-800 mb-3">Problems with HMRC online services</p>
+                  <Button 
+                    size="sm" 
+                    className="bg-blue-600 hover:bg-blue-700"
+                    onClick={() => handleExternalLink('https://www.gov.uk/government/organisations/hm-revenue-customs/contact/online-services-helpdesk', 'Technical Support')}
+                  >
+                    Report Issue
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Emergency Support */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-amber-500" />
-              Emergency & Urgent Support
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                <h4 className="font-semibold text-red-900 mb-2">Payment Problems</h4>
-                <p className="text-sm text-red-800 mb-3">If you can't pay your tax bill on time</p>
-                <Button 
-                  size="sm" 
-                  variant="destructive"
-                  onClick={() => handleExternalLink('https://www.gov.uk/difficulties-paying-hmrc', 'Payment Support')}
-                >
-                  Get Help
-                </Button>
+          {/* Additional Resources */}
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Additional Resources
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <h4 className="font-semibold">Guidance & Manuals</h4>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full justify-start"
+                    onClick={() => handleExternalLink('https://www.gov.uk/government/collections/hmrc-manuals', 'HMRC Manuals')}
+                  >
+                    HMRC Manuals
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full justify-start"
+                    onClick={() => handleExternalLink('https://www.gov.uk/topic/business-tax', 'Business Tax Guidance')}
+                  >
+                    Business Tax Guidance
+                  </Button>
+                </div>
+                <div className="space-y-3">
+                  <h4 className="font-semibold">Professional Support</h4>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full justify-start"
+                    onClick={() => handleExternalLink('https://www.icaew.com/membership/find-a-chartered-accountant', 'Find Accountant')}
+                  >
+                    Find a Chartered Accountant
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full justify-start"
+                    onClick={() => handleExternalLink('https://www.gov.uk/tax-help', 'Free Tax Help')}
+                  >
+                    Free Tax Help Schemes
+                  </Button>
+                </div>
               </div>
-              <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                <h4 className="font-semibold text-amber-900 mb-2">Late Filing</h4>
-                <p className="text-sm text-amber-800 mb-3">Appeal penalties or get deadline extensions</p>
-                <Button 
-                  size="sm" 
-                  className="bg-amber-600 hover:bg-amber-700"
-                  onClick={() => handleExternalLink('https://www.gov.uk/tax-appeals', 'Appeal Process')}
-                >
-                  Appeal
-                </Button>
-              </div>
-              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <h4 className="font-semibold text-blue-900 mb-2">Technical Issues</h4>
-                <p className="text-sm text-blue-800 mb-3">Problems with HMRC online services</p>
-                <Button 
-                  size="sm" 
-                  className="bg-blue-600 hover:bg-blue-700"
-                  onClick={() => handleExternalLink('https://www.gov.uk/government/organisations/hm-revenue-customs/contact/online-services-helpdesk', 'Technical Support')}
-                >
-                  Report Issue
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        {/* Additional Resources */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5" />
-              Additional Resources
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-3">
-                <h4 className="font-semibold">Guidance & Manuals</h4>
+          {/* Internal Navigation */}
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                More Tax Resources
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <Button 
                   variant="outline" 
-                  size="sm" 
-                  className="w-full justify-start"
-                  onClick={() => handleExternalLink('https://www.gov.uk/government/collections/hmrc-manuals', 'HMRC Manuals')}
+                  onClick={() => navigate('/penalty-calculator')}
+                  className="h-auto p-4"
                 >
-                  HMRC Manuals
+                  <div className="text-center">
+                    <div className="font-medium">Penalty Calculator</div>
+                    <div className="text-sm text-gray-600">Calculate late penalties</div>
+                  </div>
                 </Button>
                 <Button 
                   variant="outline" 
-                  size="sm" 
-                  className="w-full justify-start"
-                  onClick={() => handleExternalLink('https://www.gov.uk/topic/business-tax', 'Business Tax Guidance')}
+                  onClick={() => navigate('/common-tax-issues')}
+                  className="h-auto p-4"
                 >
-                  Business Tax Guidance
-                </Button>
-              </div>
-              <div className="space-y-3">
-                <h4 className="font-semibold">Professional Support</h4>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="w-full justify-start"
-                  onClick={() => handleExternalLink('https://www.icaew.com/membership/find-a-chartered-accountant', 'Find Accountant')}
-                >
-                  Find a Chartered Accountant
+                  <div className="text-center">
+                    <div className="font-medium">Common Tax Issues</div>
+                    <div className="text-sm text-gray-600">Solutions for frequent problems</div>
+                  </div>
                 </Button>
                 <Button 
                   variant="outline" 
-                  size="sm" 
-                  className="w-full justify-start"
-                  onClick={() => handleExternalLink('https://www.gov.uk/tax-help', 'Free Tax Help')}
+                  onClick={() => navigate('/vat-calculator')}
+                  className="h-auto p-4"
                 >
-                  Free Tax Help Schemes
+                  <div className="text-center">
+                    <div className="font-medium">VAT Calculator</div>
+                    <div className="text-sm text-gray-600">Calculate VAT amounts</div>
+                  </div>
                 </Button>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

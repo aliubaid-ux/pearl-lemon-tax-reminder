@@ -10,7 +10,7 @@ import NotificationCenter from '@/components/NotificationCenter';
 import CalendarIntegration from '@/components/CalendarIntegration';
 import EnhancedMobileNavigation from '@/components/EnhancedMobileNavigation';
 import UserOnboarding from '@/components/UserOnboarding';
-import { AlertTriangle, CheckCircle, Calendar, Search, Filter, Bell, ExternalLink, Download } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Calendar, Search, Filter, Bell, ExternalLink, Download, Settings } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -264,7 +264,7 @@ END:VCALENDAR`;
                   <NavigationMenuItem>
                     <NavigationMenuTrigger>Tax Calculators</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <div className="grid gap-3 p-4 w-[400px]">
+                      <div className="grid gap-3 p-4 w-[400px] bg-white">
                         <NavigationMenuLink 
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                           onClick={() => navigate('/penalty-calculator')}
@@ -299,7 +299,7 @@ END:VCALENDAR`;
                   <NavigationMenuItem>
                     <NavigationMenuTrigger>Tax Resources</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <div className="grid gap-3 p-4 w-[400px]">
+                      <div className="grid gap-3 p-4 w-[400px] bg-white">
                         <NavigationMenuLink 
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                           onClick={() => navigate('/common-tax-issues')}
@@ -334,7 +334,7 @@ END:VCALENDAR`;
                   <NavigationMenuItem>
                     <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <div className="grid gap-3 p-4 w-[400px]">
+                      <div className="grid gap-3 p-4 w-[400px] bg-white">
                         <NavigationMenuLink 
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                           onClick={() => navigate('/employment-status')}
@@ -360,6 +360,15 @@ END:VCALENDAR`;
                           <div className="text-sm font-medium leading-none">Payments on Account</div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             Understand advance tax payments
+                          </p>
+                        </NavigationMenuLink>
+                        <NavigationMenuLink 
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                          onClick={() => navigate('/settings')}
+                        >
+                          <div className="text-sm font-medium leading-none">Settings</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                            Manage your preferences
                           </p>
                         </NavigationMenuLink>
                       </div>
@@ -579,6 +588,13 @@ END:VCALENDAR`;
                 >
                   <ExternalLink className="h-4 w-4 mr-2" />
                   Visit HMRC Portal
+                </Button>
+                <Button 
+                  variant="outline"
+                  onClick={() => navigate('/settings')}
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  Manage Settings
                 </Button>
               </div>
             </CardContent>

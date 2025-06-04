@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { TaxDeadline } from '@/types/tax';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface SmartSuggestionsProps {
   deadlines: TaxDeadline[];
@@ -24,12 +25,14 @@ interface Suggestion {
   deadline?: TaxDeadline;
   priority: 'high' | 'medium' | 'low';
   dismissible: boolean;
+  action?: () => void;
 }
 
 const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({ deadlines, userType }) => {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [dismissedSuggestions, setDismissedSuggestions] = useState<string[]>([]);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const dismissed = JSON.parse(localStorage.getItem('dismissed-suggestions') || '[]');
@@ -55,7 +58,13 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({ deadlines, userType
           actionText: 'View Details',
           deadline,
           priority: daysUntil <= 7 ? 'high' : 'medium',
-          dismissible: true
+          dismissible: true,
+          action: () => {
+            toast({
+              title: "Deadline Details",
+              description: `${deadline.title} - ${deadline.description || 'No additional details available'}`,
+            });
+          }
         });
       }
 
@@ -68,7 +77,10 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({ deadlines, userType
           actionText: 'Take Action',
           deadline,
           priority: 'high',
-          dismissible: false
+          dismissible: false,
+          action: () => {
+            window.open('https://www.gov.uk/government/organisations/hm-revenue-customs/services-information', '_blank');
+          }
         });
       }
     });
@@ -82,7 +94,8 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({ deadlines, userType
         description: 'Review your finances quarterly to stay ahead of deadlines and optimize your tax position.',
         actionText: 'Learn More',
         priority: 'medium',
-        dismissible: true
+        dismissible: true,
+        action: () => navigate('/common-tax-issues')
       });
 
       newSuggestions.push({
@@ -92,7 +105,8 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({ deadlines, userType
         description: 'Use accounting software to automatically track business expenses and maximize deductions.',
         actionText: 'Explore Tools',
         priority: 'low',
-        dismissible: true
+        dismissible: true,
+        action: () => navigate('/trading-allowance')
       });
     }
 
@@ -104,7 +118,8 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({ deadlines, userType
         description: 'Plan your dividend payments to minimize tax liability while meeting Corporation Tax deadlines.',
         actionText: 'Get Guidance',
         priority: 'medium',
-        dismissible: true
+        dismissible: true,
+        action: () => navigate('/hmrc-support-guide')
       });
     }
 
@@ -191,11 +206,24 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({ deadlines, userType
                     </div>
                     <p className="text-sm text-gray-600 mb-3">{suggestion.description}</p>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline">
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={suggestion.action}
+                      >
                         {suggestion.actionText}
                       </Button>
                       {suggestion.deadline && (
-                        <Button size="sm" variant="ghost">
+                        <Button 
+                          size="sm" 
+                          variant="ghost"
+                          onClick={() => {
+                            toast({
+                              title: "Deadline Information",
+                              description: `${suggestion.deadline?.title} - Due: ${new Date(suggestion.deadline?.date).toLocaleDateString('en-GB')}`,
+                            });
+                          }}
+                        >
                           <FileText className="h-4 w-4 mr-1" />
                           View Deadline
                         </Button>

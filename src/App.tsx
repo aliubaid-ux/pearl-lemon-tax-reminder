@@ -11,9 +11,6 @@ import TradingAllowancePage from '@/pages/TradingAllowancePage';
 import CommonTaxIssues from '@/pages/CommonTaxIssues';
 import SettingsPage from '@/pages/SettingsPage';
 import NotFound from '@/pages/NotFound';
-import LateSubmissionTemplates from '@/components/LateSubmissionTemplates';
-import HMRCGuidance from '@/components/HMRCGuidance';
-import DocumentationChecklist from '@/components/DocumentationChecklist';
 import HMRCSupportGuide from '@/pages/HMRCSupportGuide';
 import CommonMistakes from '@/pages/CommonMistakes';
 import RegistrationTracker from '@/pages/RegistrationTracker';
@@ -35,13 +32,14 @@ function App() {
             <Route path="/trading-allowance" element={<TradingAllowancePage />} />
             <Route path="/common-tax-issues" element={<CommonTaxIssues />} />
             <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/late-submission-templates" element={<LateSubmissionTemplates />} />
-            <Route path="/hmrc-guidance" element={<HMRCGuidance />} />
-            <Route path="/documentation-checklist" element={<DocumentationChecklist />} />
             <Route path="/hmrc-support-guide" element={<HMRCSupportGuide />} />
             <Route path="/common-mistakes" element={<CommonMistakes />} />
             <Route path="/registration-tracker" element={<RegistrationTracker />} />
             <Route path="/payments-on-account" element={<PaymentsOnAccountGuide />} />
+            {/* Legacy route redirects for components that should be pages */}
+            <Route path="/late-submission-templates" element={<PenaltyCalculatorPage />} />
+            <Route path="/hmrc-guidance" element={<HMRCSupportGuide />} />
+            <Route path="/documentation-checklist" element={<CommonTaxIssues />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />
