@@ -14,13 +14,13 @@ export const ThemeToggle: React.FC = () => {
     { value: 'system', label: 'System', icon: Monitor },
   ] as const;
 
-  const currentThemeIcon = actualTheme === 'dark' ? Moon : Sun;
+  const CurrentThemeIcon = actualTheme === 'dark' ? Moon : Sun;
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="w-9 h-9 p-0">
-          <currentThemeIcon className="h-4 w-4" />
+          <CurrentThemeIcon className="h-4 w-4" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </PopoverTrigger>
