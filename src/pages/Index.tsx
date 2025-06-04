@@ -105,8 +105,16 @@ const Index = () => {
   };
 
   const handleQuickCalendarExport = () => {
-    // Generate ICS content for all deadlines for the year
-    const allYearDeadlines = getTaxDeadlines(userType);
+    // Generate ICS content for ALL deadlines for the next 12 months
+    const today = new Date();
+    const nextYear = new Date();
+    nextYear.setFullYear(today.getFullYear() + 1);
+    
+    const allYearDeadlines = getTaxDeadlines(userType).filter(deadline => {
+      const deadlineDate = new Date(deadline.date);
+      return deadlineDate >= today && deadlineDate <= nextYear;
+    });
+
     const icsEvents = allYearDeadlines.map(deadline => {
       const date = new Date(deadline.date);
       const dateStr = date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
@@ -145,9 +153,19 @@ END:VCALENDAR`;
 
     toast({
       title: 'Calendar Export Complete',
-      description: `All ${allYearDeadlines.length} tax deadlines exported. Import the file to your calendar app.`,
+      description: `All ${allYearDeadlines.length} tax deadlines for the next 12 months exported. Import the file to your calendar app.`,
     });
   };
+
+  // Listen for quick export event
+  useEffect(() => {
+    const handleQuickExport = () => {
+      handleQuickCalendarExport();
+    };
+
+    document.addEventListener('quickCalendarExport', handleQuickExport);
+    return () => document.removeEventListener('quickCalendarExport', handleQuickExport);
+  }, [userType]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -233,14 +251,14 @@ END:VCALENDAR`;
           <UserTypeSelector userType={userType} onUserTypeChange={handleUserTypeChange} />
         </section>
 
-        {/* Step 2: CEO Upcoming Deadlines */}
+        {/* Step 2: Critical Upcoming Deadlines */}
         <section className="mb-12">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Step 2: Your CEO Upcoming Deadlines
+              Step 2: Critical Deadlines to Act On Now
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-lg">
-              Critical deadlines you need to act on now
+              Important deadlines you need to prepare for in the next 3 months
               {urgentCount > 0 && (
                 <Badge variant="destructive" className="ml-2">
                   {urgentCount} urgent
@@ -298,7 +316,7 @@ END:VCALENDAR`;
                         <Button 
                           variant="ghost" 
                           size="sm"
-                          onClick={() => window.open('https://www.gov.uk/government/organisations/hm-revenue-customs', '_blank')}
+                          onClick={() => window.open('https://www.gov.uk/government/organisations/hm-revenue-customs/services-information', '_blank')}
                         >
                           <ExternalLink className="h-4 w-4" />
                         </Button>
@@ -324,7 +342,7 @@ END:VCALENDAR`;
               Step 3: Integrate with Your Calendar
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-lg">
-              Add all your tax deadlines to your calendar app - never miss a deadline again
+              Add ALL your tax deadlines for the next 12 months to your calendar app
             </p>
           </div>
           
@@ -344,7 +362,7 @@ END:VCALENDAR`;
               </p>
               <div className="flex gap-4 justify-center">
                 <Button 
-                  onClick={() => window.open('https://www.gov.uk/government/organisations/hm-revenue-customs', '_blank')}
+                  onClick={() => window.open('https://www.gov.uk/government/organisations/hm-revenue-customs/services-information', '_blank')}
                   className="bg-green-600 hover:bg-green-700"
                 >
                   <ExternalLink className="h-4 w-4 mr-2" />
@@ -387,7 +405,7 @@ END:VCALENDAR`;
 
       <UserOnboarding
         isOpen={isOnboardingOpen}
-        onClose={() => setIsOnboardingOpen(false)}
+        onClose={() => setIsOnboardingClose(false)}
         onComplete={handleOnboardingComplete}
       />
     </div>
