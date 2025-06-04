@@ -31,11 +31,9 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
   useEffect(() => {
     const newDeadlines = getTaxDeadlines(selectedType);
     setCurrentDeadlines(newDeadlines);
-    console.log(`Deadlines updated for ${selectedType}:`, newDeadlines.length);
   }, [selectedType]);
 
   const handleTypeSelection = (type: UserType) => {
-    console.log('User selected type:', type);
     setSelectedType(type);
     setShowDeadlines(true);
     onUserTypeChange(type);

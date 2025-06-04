@@ -11,11 +11,20 @@ const HMRCSupportGuide: React.FC = () => {
   const navigate = useNavigate();
 
   const handleExternalLink = (url: string, title: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
-    toast({
-      title: "Opening External Link",
-      description: `Redirecting to ${title}...`,
-    });
+    try {
+      window.open(url, '_blank', 'noopener,noreferrer');
+      toast({
+        title: "Opening External Link",
+        description: `Redirecting to ${title}...`,
+      });
+    } catch (error) {
+      console.error('Error opening external link:', error);
+      toast({
+        title: "Link Error",
+        description: "Unable to open external link. Please try copying the URL manually.",
+        variant: "destructive",
+      });
+    }
   };
 
   const contactMethods = [

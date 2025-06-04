@@ -77,7 +77,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Tax Calculators</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 w-[400px] bg-white">
+                    <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-50 border border-gray-200 dark:border-gray-700 shadow-lg">
                       <NavigationMenuLink 
                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/penalty-calculator')}
@@ -112,7 +112,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Tax Resources</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 w-[400px] bg-white">
+                    <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-50 border border-gray-200 dark:border-gray-700 shadow-lg">
                       <NavigationMenuLink 
                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/common-tax-issues')}
@@ -147,7 +147,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 w-[400px] bg-white">
+                    <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-50 border border-gray-200 dark:border-gray-700 shadow-lg">
                       <NavigationMenuLink 
                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/employment-status')}
