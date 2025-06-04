@@ -25,7 +25,7 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, deadlines, isToday, isC
         {dayDeadlines.map((deadline) => (
           <Badge
             key={deadline.id}
-            variant={deadline.type === 'payment' ? 'destructive' : 'default'}
+            variant={deadline.category === 'corporation-tax' ? 'destructive' : 'default'}
             className="text-xs block truncate"
           >
             {deadline.title}

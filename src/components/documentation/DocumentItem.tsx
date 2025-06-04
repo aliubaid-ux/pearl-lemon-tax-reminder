@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
+import type { CheckedState } from '@radix-ui/react-checkbox';
 
 interface DocumentItemProps {
   title: string;
@@ -24,12 +25,16 @@ const DocumentItem: React.FC<DocumentItemProps> = ({
     low: 'bg-green-100 text-green-800'
   };
 
+  const handleCheckedChange = (checked: CheckedState) => {
+    setIsChecked(checked === true);
+  };
+
   return (
     <div className={`p-4 border rounded-lg ${isChecked ? 'bg-gray-50' : 'bg-white'}`}>
       <div className="flex items-start gap-3">
         <Checkbox
           checked={isChecked}
-          onCheckedChange={setIsChecked}
+          onCheckedChange={handleCheckedChange}
           className="mt-1"
         />
         <div className="flex-1">

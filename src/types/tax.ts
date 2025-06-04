@@ -5,7 +5,7 @@ export interface TaxDeadline {
   description: string;
   date: string;
   category: 'self-assessment' | 'corporation-tax' | 'vat' | 'paye' | 'cis' | 'other';
-  userTypes: ('self-employed' | 'company-director')[];
+  userTypes: ('self-employed' | 'company-director' | 'both')[];
   preparationStart?: string;
   preparationTips?: string;
   latePenalty?: string;
