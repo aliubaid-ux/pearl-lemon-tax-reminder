@@ -1,10 +1,13 @@
-
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import SharedHeader from '@/components/SharedHeader';
 import PenaltyCalculator from '@/components/PenaltyCalculator';
+import QuickDeadlineLookup from '@/components/QuickDeadlineLookup';
+import PenaltyScenarios from '@/components/PenaltyScenarios';
+import DownloadableChecklists from '@/components/DownloadableChecklists';
+import TemplateLetters from '@/components/TemplateLetters';
 
 const PenaltyCalculatorPage: React.FC = () => {
   const navigate = useNavigate();
@@ -12,11 +15,11 @@ const PenaltyCalculatorPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <SharedHeader 
-        title="Penalty Calculator"
-        subtitle="Calculate potential HMRC penalties for late submissions and payments"
+        title="Penalty Calculator & Tools"
+        subtitle="Calculate penalties and access helpful resources for tax compliance"
       />
       
-      <div className="container mx-auto px-4 max-w-4xl">
+      <div className="container mx-auto px-4 max-w-6xl">
         <div className="mb-6">
           <Button 
             variant="outline" 
@@ -29,9 +32,21 @@ const PenaltyCalculatorPage: React.FC = () => {
         </div>
 
         <div className="grid gap-6">
+          {/* Main Calculator */}
           <PenaltyCalculator />
           
-          {/* Additional Tools for Calculator Page */}
+          {/* Additional Tools Grid */}
+          <div className="grid lg:grid-cols-2 gap-6">
+            <QuickDeadlineLookup />
+            <PenaltyScenarios />
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-6">
+            <DownloadableChecklists />
+            <TemplateLetters />
+          </div>
+          
+          {/* Existing Pro Tips */}
           <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
             <h3 className="text-lg font-semibold text-blue-900 mb-3">
               💡 Pro Tips for Avoiding Penalties
@@ -44,6 +59,7 @@ const PenaltyCalculatorPage: React.FC = () => {
             </ul>
           </div>
           
+          {/* Existing Common Scenarios */}
           <div className="bg-amber-50 p-6 rounded-lg border border-amber-200">
             <h3 className="text-lg font-semibold text-amber-900 mb-3">
               🚨 Common Penalty Scenarios
