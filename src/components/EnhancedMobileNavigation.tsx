@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -45,7 +46,11 @@ const EnhancedMobileNavigation: React.FC<EnhancedMobileNavigationProps> = ({
     { id: 'issues', label: 'Common Issues', icon: FileText, path: '/common-tax-issues' },
     { id: 'hmrc', label: 'HMRC Guidance', icon: FileText, path: '/hmrc-guidance' },
     { id: 'docs', label: 'Documentation', icon: FileText, path: '/documentation-checklist' },
-    { id: 'templates', label: 'Templates', icon: FileText, path: '/late-submission-templates' },
+    { id: 'templates', label: 'Late Submission Templates', icon: FileText, path: '/late-submission-templates' },
+    { id: 'hmrc-support', label: 'HMRC Support Guide', icon: FileText, path: '/hmrc-support-guide' },
+    { id: 'common-mistakes', label: 'Common Mistakes', icon: FileText, path: '/common-mistakes' },
+    { id: 'registration', label: 'Registration Tracker', icon: FileText, path: '/registration-tracker' },
+    { id: 'payments', label: 'Payments on Account', icon: FileText, path: '/payments-on-account' },
   ];
 
   const handleAction = (actionId: string, path?: string, action?: () => void) => {
