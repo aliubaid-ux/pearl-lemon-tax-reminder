@@ -14,7 +14,6 @@ import StatsCards from '@/components/StatsCards';
 import QuickStatusOverview from '@/components/QuickStatusOverview';
 import MainTabs from '@/components/MainTabs';
 import { Button } from '@/components/ui/button';
-import { Download, Calendar as CalendarIcon } from 'lucide-react';
 
 type UserType = 'self-employed' | 'company-director' | 'both';
 

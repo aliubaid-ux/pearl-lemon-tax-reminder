@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Calendar, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Calendar, AlertTriangle, CheckCircle, Users, Calculator, Settings, Bell } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -33,15 +33,34 @@ const MainTabs: React.FC<MainTabsProps> = ({
   userType
 }) => {
   return (
-    <Tabs defaultValue="calendar" className="space-y-8 animate-fade-in">
+    <Tabs defaultValue="deadlines" className="space-y-8 animate-fade-in">
       <TabsList className="grid w-full grid-cols-5 h-14 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg">
-        <TabsTrigger value="calendar" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">Calendar</TabsTrigger>
-        <TabsTrigger value="deadlines" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">Deadlines</TabsTrigger>
-        <TabsTrigger value="tools" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">Tax Tools</TabsTrigger>
-        <TabsTrigger value="reminders" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">Reminders</TabsTrigger>
-        <TabsTrigger value="settings" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">Settings</TabsTrigger>
+        <TabsTrigger value="deadlines" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">
+          <Users className="h-4 w-4 mr-2" />
+          Deadlines
+        </TabsTrigger>
+        <TabsTrigger value="calendar" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">
+          <Calendar className="h-4 w-4 mr-2" />
+          Calendar
+        </TabsTrigger>
+        <TabsTrigger value="tools" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">
+          <Calculator className="h-4 w-4 mr-2" />
+          Tax Tools
+        </TabsTrigger>
+        <TabsTrigger value="reminders" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">
+          <Bell className="h-4 w-4 mr-2" />
+          Reminders
+        </TabsTrigger>
+        <TabsTrigger value="settings" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">
+          <Settings className="h-4 w-4 mr-2" />
+          Settings
+        </TabsTrigger>
       </TabsList>
       
+      <TabsContent value="deadlines">
+        <SmartDeadlineGroups deadlines={filteredDeadlines} />
+      </TabsContent>
+
       <TabsContent value="calendar">
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
           <div className="xl:col-span-2">
@@ -49,10 +68,10 @@ const MainTabs: React.FC<MainTabsProps> = ({
               <CardHeader className="pb-6">
                 <CardTitle className="flex items-center gap-4 text-2xl text-gray-900 dark:text-white">
                   <Calendar className="h-7 w-7 text-green-600" />
-                  Tax Calendar
+                  Interactive Tax Calendar
                 </CardTitle>
                 <CardDescription className="text-lg text-gray-600 dark:text-gray-300">
-                  View your tax deadlines by month with intelligent priority sorting
+                  View your tax deadlines by month with intelligent priority sorting and visual indicators
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -61,6 +80,34 @@ const MainTabs: React.FC<MainTabsProps> = ({
                   selectedMonth={selectedMonth}
                   onMonthChange={onMonthChange}
                 />
+                
+                {/* Calendar Actions */}
+                <div className="flex flex-wrap gap-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                  <Button 
+                    variant="outline" 
+                    className="border-green-200 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20"
+                    onClick={() => printCalendar(filteredDeadlines, userType)}
+                  >
+                    Print Calendar
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="border-blue-200 hover:bg-blue-50 dark:border-blue-700 dark:hover:bg-blue-900/20"
+                    onClick={() => exportToCSV(filteredDeadlines)}
+                  >
+                    Export to CSV
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="border-purple-200 hover:bg-purple-50 dark:border-purple-700 dark:hover:bg-purple-900/20"
+                    onClick={() => {
+                      const today = new Date();
+                      onMonthChange(today);
+                    }}
+                  >
+                    Go to Current Month
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -76,9 +123,16 @@ const MainTabs: React.FC<MainTabsProps> = ({
               <CardContent>
                 {upcomingDeadlines.length > 0 ? (
                   <div className="space-y-4">
-                    {upcomingDeadlines.slice(0, 3).map((deadline) => (
+                    {upcomingDeadlines.slice(0, 4).map((deadline) => (
                       <DeadlineCard key={deadline.id} deadline={deadline} />
                     ))}
+                    {upcomingDeadlines.length > 4 && (
+                      <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          +{upcomingDeadlines.length - 4} more deadlines in next 3 months
+                        </p>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="text-center py-8">
@@ -93,10 +147,6 @@ const MainTabs: React.FC<MainTabsProps> = ({
             <QuickActionsCard />
           </div>
         </div>
-      </TabsContent>
-      
-      <TabsContent value="deadlines">
-        <SmartDeadlineGroups deadlines={filteredDeadlines} />
       </TabsContent>
       
       <TabsContent value="tools">
