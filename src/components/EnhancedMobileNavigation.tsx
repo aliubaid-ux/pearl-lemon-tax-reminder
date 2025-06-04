@@ -45,6 +45,31 @@ const EnhancedMobileNavigation: React.FC<EnhancedMobileNavigationProps> = ({
     setIsOpen(false);
   };
 
+  const handleCalendarExport = () => {
+    const icalContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//UK Tax Doctor//EN
+BEGIN:VEVENT
+UID:${Date.now()}@uktaxdoctor.com
+DTSTART:20250131T090000Z
+DTEND:20250131T100000Z
+SUMMARY:Self Assessment Deadline
+DESCRIPTION:Final deadline for Self Assessment tax return submission
+END:VEVENT
+END:VCALENDAR`;
+
+    const blob = new Blob([icalContent], { type: 'text/calendar' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'uk-tax-deadlines.ics';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    setIsOpen(false);
+  };
+
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -73,10 +98,10 @@ const EnhancedMobileNavigation: React.FC<EnhancedMobileNavigationProps> = ({
       action: onOpenFilters
     },
     {
-      id: 'calendar-integration',
-      title: 'Calendar Integration',
-      icon: Calendar,
-      action: () => handleQuickAction('calendar-integration'),
+      id: 'calendar-export',
+      title: 'Export Calendar',
+      icon: Download,
+      action: handleCalendarExport,
       highlight: true
     }
   ];
@@ -87,11 +112,7 @@ const EnhancedMobileNavigation: React.FC<EnhancedMobileNavigationProps> = ({
       title: 'Quick Export (.ics)',
       description: 'Download all deadlines for calendar import',
       icon: Download,
-      action: () => {
-        const event = new CustomEvent('quickCalendarExport');
-        document.dispatchEvent(event);
-        setIsOpen(false);
-      }
+      action: handleCalendarExport
     },
     {
       id: 'google-calendar',
@@ -102,13 +123,6 @@ const EnhancedMobileNavigation: React.FC<EnhancedMobileNavigationProps> = ({
         window.open('https://calendar.google.com/', '_blank');
         setIsOpen(false);
       }
-    },
-    {
-      id: 'apple-calendar',
-      title: 'Apple Calendar',
-      description: 'For iPhone, iPad & Mac',
-      icon: Smartphone,
-      action: () => handleQuickAction('calendar-integration')
     },
     {
       id: 'outlook',
@@ -141,9 +155,8 @@ const EnhancedMobileNavigation: React.FC<EnhancedMobileNavigationProps> = ({
         { title: 'Common Tax Issues', path: '/common-tax-issues' },
         { title: 'HMRC Support Guide', path: '/hmrc-support-guide' },
         { title: 'Common Mistakes', path: '/common-mistakes' },
-        { title: 'Late Submission Templates', path: '/late-submission-templates' },
-        { title: 'Documentation Checklist', path: '/documentation-checklist' },
-        { title: 'HMRC Guidance', path: '/hmrc-guidance' },
+        { title: 'Registration Tracker', path: '/registration-tracker' },
+        { title: 'Payments on Account', path: '/payments-on-account' }
       ]
     },
     {
@@ -152,9 +165,7 @@ const EnhancedMobileNavigation: React.FC<EnhancedMobileNavigationProps> = ({
       icon: Settings,
       items: [
         { title: 'Employment Status', path: '/employment-status' },
-        { title: 'Registration Tracker', path: '/registration-tracker' },
-        { title: 'Payments on Account', path: '/payments-on-account' },
-        { title: 'Settings', path: '/settings' },
+        { title: 'Settings', path: '/settings' }
       ]
     }
   ];
@@ -182,7 +193,7 @@ const EnhancedMobileNavigation: React.FC<EnhancedMobileNavigationProps> = ({
               )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-80 bg-white dark:bg-gray-800" align="end">
+          <DropdownMenuContent className="w-80 bg-white dark:bg-gray-800 z-50" align="end">
             <DropdownMenuLabel>Tax Calculators</DropdownMenuLabel>
             {navigationItems[0].items.map((item) => (
               <DropdownMenuItem key={item.path} onClick={() => handleNavigate(item.path)}>
@@ -356,7 +367,10 @@ const EnhancedMobileNavigation: React.FC<EnhancedMobileNavigationProps> = ({
                 <Button
                   variant="ghost"
                   className="w-full justify-start p-3"
-                  onClick={() => window.open('https://www.gov.uk/government/organisations/hm-revenue-customs', '_blank')}
+                  onClick={() => {
+                    window.open('https://www.gov.uk/government/organisations/hm-revenue-customs', '_blank');
+                    setIsOpen(false);
+                  }}
                 >
                   <ExternalLink className="h-4 w-4 mr-3" />
                   HMRC Portal

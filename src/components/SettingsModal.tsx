@@ -16,36 +16,109 @@ interface SettingsModalProps {
 
 const SettingsModal: React.FC<SettingsModalProps> = ({ children }) => {
   const { toast } = useToast();
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [pushNotifications, setPushNotifications] = useState(false);
-  const [reminderTiming, setReminderTiming] = useState('7');
-  const [weekendReminders, setWeekendReminders] = useState(false);
-  const [calendarSync, setCalendarSync] = useState(false);
-  const [taxYearStart, setTaxYearStart] = useState('april');
-  const [emailFrequency, setEmailFrequency] = useState('weekly');
-  const [professionalMode, setProfessionalMode] = useState(true);
+  const [emailNotifications, setEmailNotifications] = useState(() => {
+    return localStorage.getItem('uk-tax-doctor-email-notifications') === 'true';
+  });
+  const [pushNotifications, setPushNotifications] = useState(() => {
+    return localStorage.getItem('uk-tax-doctor-push-notifications') === 'true';
+  });
+  const [reminderTiming, setReminderTiming] = useState(() => {
+    return localStorage.getItem('uk-tax-doctor-reminder-timing') || '7';
+  });
+  const [weekendReminders, setWeekendReminders] = useState(() => {
+    return localStorage.getItem('uk-tax-doctor-weekend-reminders') === 'true';
+  });
+  const [calendarSync, setCalendarSync] = useState(() => {
+    return localStorage.getItem('uk-tax-doctor-calendar-sync') === 'true';
+  });
+  const [taxYearStart, setTaxYearStart] = useState(() => {
+    return localStorage.getItem('uk-tax-doctor-tax-year-start') || 'april';
+  });
+  const [emailFrequency, setEmailFrequency] = useState(() => {
+    return localStorage.getItem('uk-tax-doctor-email-frequency') || 'weekly';
+  });
+  const [professionalMode, setProfessionalMode] = useState(() => {
+    return localStorage.getItem('uk-tax-doctor-professional-mode') === 'true';
+  });
 
   const handleSaveSettings = () => {
+    // Save all settings to localStorage
+    localStorage.setItem('uk-tax-doctor-email-notifications', emailNotifications.toString());
+    localStorage.setItem('uk-tax-doctor-push-notifications', pushNotifications.toString());
+    localStorage.setItem('uk-tax-doctor-reminder-timing', reminderTiming);
+    localStorage.setItem('uk-tax-doctor-weekend-reminders', weekendReminders.toString());
+    localStorage.setItem('uk-tax-doctor-calendar-sync', calendarSync.toString());
+    localStorage.setItem('uk-tax-doctor-tax-year-start', taxYearStart);
+    localStorage.setItem('uk-tax-doctor-email-frequency', emailFrequency);
+    localStorage.setItem('uk-tax-doctor-professional-mode', professionalMode.toString());
+
     toast({
       title: 'Settings Saved Successfully',
       description: 'Your preferences have been updated and will take effect immediately.',
     });
   };
 
+  const handleResetSettings = () => {
+    // Reset all settings to defaults
+    setEmailNotifications(true);
+    setPushNotifications(false);
+    setReminderTiming('7');
+    setWeekendReminders(false);
+    setCalendarSync(false);
+    setTaxYearStart('april');
+    setEmailFrequency('weekly');
+    setProfessionalMode(true);
+
+    // Clear localStorage
+    localStorage.removeItem('uk-tax-doctor-email-notifications');
+    localStorage.removeItem('uk-tax-doctor-push-notifications');
+    localStorage.removeItem('uk-tax-doctor-reminder-timing');
+    localStorage.removeItem('uk-tax-doctor-weekend-reminders');
+    localStorage.removeItem('uk-tax-doctor-calendar-sync');
+    localStorage.removeItem('uk-tax-doctor-tax-year-start');
+    localStorage.removeItem('uk-tax-doctor-email-frequency');
+    localStorage.removeItem('uk-tax-doctor-professional-mode');
+
+    toast({
+      title: 'Settings Reset',
+      description: 'All settings have been reset to their default values.',
+    });
+  };
+
   const handleExportCalendar = () => {
-    // Generate iCal content with current settings
+    const currentYear = new Date().getFullYear();
     const icalContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//UK Tax Calendar Professional//EN
+PRODID:-//UK Tax Doctor//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:${Date.now()}@uktaxcalendar.com
+UID:sa-deadline-${currentYear}@uktaxdoctor.com
 DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}Z
-DTSTART:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}Z
-SUMMARY:UK Tax Deadlines - Professional Calendar
-DESCRIPTION:Comprehensive UK tax deadline calendar with smart reminders
+DTSTART:${currentYear + 1}0131T235900Z
+DTEND:${currentYear + 1}0131T235900Z
+SUMMARY:Self Assessment Deadline
+DESCRIPTION:Final deadline for Self Assessment tax return submission
 LOCATION:United Kingdom
+BEGIN:VALARM
+TRIGGER:-P7D
+ACTION:DISPLAY
+DESCRIPTION:Self Assessment deadline in 7 days
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:poa-1-${currentYear}@uktaxdoctor.com
+DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}Z
+DTSTART:${currentYear + 1}0131T235900Z
+DTEND:${currentYear + 1}0131T235900Z
+SUMMARY:Payment on Account (1st)
+DESCRIPTION:First payment on account deadline
+LOCATION:United Kingdom
+BEGIN:VALARM
+TRIGGER:-P7D
+ACTION:DISPLAY
+DESCRIPTION:Payment on Account deadline in 7 days
+END:VALARM
 END:VEVENT
 END:VCALENDAR`;
 
@@ -56,6 +129,7 @@ END:VCALENDAR`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
 
     toast({
       title: 'Calendar Export Complete',
@@ -64,7 +138,7 @@ END:VCALENDAR`;
   };
 
   const handleGoogleCalendarSync = () => {
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=UK%20Tax%20Deadlines&details=Professional%20UK%20tax%20deadline%20management`;
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=UK%20Tax%20Deadlines&details=Professional%20UK%20tax%20deadline%20management&dates=20250131T235900Z/20250131T235900Z`;
     window.open(googleCalendarUrl, '_blank');
     
     toast({
@@ -74,6 +148,15 @@ END:VCALENDAR`;
   };
 
   const handleTestEmail = () => {
+    if (!emailNotifications) {
+      toast({
+        title: "Email Notifications Disabled",
+        description: "Please enable email notifications first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     toast({
       title: 'Test Email Sent',
       description: 'A sample deadline reminder has been sent to your email address.',
@@ -135,7 +218,7 @@ END:VCALENDAR`;
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white dark:bg-gray-800 z-50">
                     <SelectItem value="1">1 day before</SelectItem>
                     <SelectItem value="3">3 days before</SelectItem>
                     <SelectItem value="7">1 week before</SelectItem>
@@ -151,7 +234,7 @@ END:VCALENDAR`;
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white dark:bg-gray-800 z-50">
                     <SelectItem value="daily">Daily digest</SelectItem>
                     <SelectItem value="weekly">Weekly summary</SelectItem>
                     <SelectItem value="monthly">Monthly overview</SelectItem>
@@ -196,7 +279,7 @@ END:VCALENDAR`;
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white dark:bg-gray-800 z-50">
                     <SelectItem value="april">April 6th (UK Standard)</SelectItem>
                     <SelectItem value="january">January 1st (Calendar Year)</SelectItem>
                   </SelectContent>
@@ -242,7 +325,7 @@ END:VCALENDAR`;
           </Card>
 
           {/* Professional Features */}
-          <Card className="border-0 shadow-lg">
+          <Card className="border-0 shadow-lg lg:col-span-2">
             <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Palette className="h-5 w-5 text-purple-600" />
@@ -262,7 +345,7 @@ END:VCALENDAR`;
                 />
               </div>
 
-              <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div className="p-3 border rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
                   <div className="flex items-center gap-2 mb-2">
                     <Mail className="h-4 w-4 text-blue-600" />
@@ -287,39 +370,6 @@ END:VCALENDAR`;
                   <Badge variant="secondary" className="bg-purple-100 text-purple-800">Premium</Badge>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Contact & Support */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-800 dark:to-slate-800">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Smartphone className="h-5 w-5 text-gray-600" />
-                Contact & Support
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 p-6">
-              <div className="grid grid-cols-1 gap-3">
-                <div className="p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Mail className="h-4 w-4 text-blue-600" />
-                    <span className="font-medium">Professional Support</span>
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Get help from tax professionals
-                  </p>
-                </div>
-                
-                <div className="p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                  <div className="flex items-center gap-2 mb-2">
-                    <ExternalLink className="h-4 w-4 text-green-600" />
-                    <span className="font-medium">HMRC Resources</span>
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Direct links to official guidance
-                  </p>
-                </div>
-              </div>
 
               <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg">
                 <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
@@ -339,7 +389,7 @@ END:VCALENDAR`;
             <Settings className="h-4 w-4 mr-2" />
             Save All Settings
           </Button>
-          <Button variant="outline" className="flex-1">
+          <Button variant="outline" className="flex-1" onClick={handleResetSettings}>
             Reset to Defaults
           </Button>
         </div>

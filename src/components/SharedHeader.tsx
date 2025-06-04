@@ -53,6 +53,9 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
       case 'filter':
         onOpenFilters?.();
         break;
+      case 'calendar-integration':
+        navigate('/settings');
+        break;
       default:
         console.log('Quick action:', action);
     }
@@ -63,7 +66,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
       {/* Header Row: Logo/Branding on left, Navigation on right */}
       <div className="flex items-center justify-between mb-6">
         {/* Logo and Slogan - Left Side */}
-        <div className="flex flex-col">
+        <div className="flex flex-col cursor-pointer" onClick={() => navigate('/')}>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             UK Tax Doctor
           </h1>
@@ -74,7 +77,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
         {/* Right Side Navigation */}
         <div className="flex items-center gap-3">
-          {/* Simplified Desktop Navigation */}
+          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-2">
             <Button
               variant="ghost"
@@ -93,7 +96,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                   Tools
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-white dark:bg-gray-800">
+              <DropdownMenuContent align="end" className="bg-white dark:bg-gray-800 z-50">
                 <DropdownMenuLabel>Tax Tools</DropdownMenuLabel>
                 <DropdownMenuItem onClick={() => navigate('/penalty-calculator')}>
                   Penalty Calculator
@@ -118,7 +121,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                   Resources
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-white dark:bg-gray-800">
+              <DropdownMenuContent align="end" className="bg-white dark:bg-gray-800 z-50">
                 <DropdownMenuLabel>Tax Resources</DropdownMenuLabel>
                 <DropdownMenuItem onClick={() => navigate('/common-tax-issues')}>
                   Common Tax Issues

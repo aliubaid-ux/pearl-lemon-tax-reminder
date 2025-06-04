@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, Phone, Mail, MessageCircle, Clock, AlertTriangle, FileText, Users, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import SharedHeader from '@/components/SharedHeader';
 
 const HMRCSupportGuide: React.FC = () => {
   const { toast } = useToast();
@@ -54,7 +55,8 @@ const HMRCSupportGuide: React.FC = () => {
       phone: "Available online",
       hours: "8am to 6pm, Monday to Friday",
       description: "Live chat support for general tax queries",
-      icon: MessageCircle
+      icon: MessageCircle,
+      action: () => handleExternalLink('https://www.gov.uk/government/organisations/hm-revenue-customs/contact', 'HMRC Webchat')
     }
   ];
 
@@ -83,7 +85,12 @@ const HMRCSupportGuide: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
-      <div className="container mx-auto px-4 py-8">
+      <SharedHeader 
+        title="HMRC Support Guide"
+        subtitle="Get help with your tax obligations through official HMRC channels"
+      />
+      
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-6">
           <Button 
             variant="outline" 
@@ -93,8 +100,6 @@ const HMRCSupportGuide: React.FC = () => {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Calendar
           </Button>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">HMRC Support Guide</h1>
-          <p className="text-gray-600">Get help with your tax obligations through official HMRC channels</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -108,14 +113,18 @@ const HMRCSupportGuide: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               {contactMethods.map((contact, index) => (
-                <div key={index} className="p-4 border rounded-lg">
+                <div 
+                  key={index} 
+                  className={`p-4 border rounded-lg ${contact.action ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800' : ''}`}
+                  onClick={contact.action}
+                >
                   <div className="flex items-start gap-3">
                     <contact.icon className="h-5 w-5 text-blue-600 mt-1" />
                     <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900">{contact.title}</h4>
+                      <h4 className="font-semibold text-gray-900 dark:text-white">{contact.title}</h4>
                       <p className="text-blue-600 font-medium">{contact.phone}</p>
-                      <p className="text-sm text-gray-600 mb-1">{contact.hours}</p>
-                      <p className="text-sm text-gray-700">{contact.description}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{contact.hours}</p>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">{contact.description}</p>
                     </div>
                   </div>
                 </div>
@@ -136,13 +145,14 @@ const HMRCSupportGuide: React.FC = () => {
                 <Button
                   key={index}
                   variant="outline"
-                  className="w-full h-auto p-4 justify-start"
+                  className="w-full h-auto p-4 justify-start hover:bg-gray-50 dark:hover:bg-gray-800"
                   onClick={() => handleExternalLink(service.url, service.title)}
                 >
                   <div className="text-left">
-                    <div className="font-medium text-gray-900">{service.title}</div>
-                    <div className="text-sm text-gray-600">{service.description}</div>
+                    <div className="font-medium text-gray-900 dark:text-white">{service.title}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">{service.description}</div>
                   </div>
+                  <ExternalLink className="h-4 w-4 ml-auto text-gray-400" />
                 </Button>
               ))}
             </CardContent>
@@ -158,9 +168,9 @@ const HMRCSupportGuide: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <h4 className="font-semibold text-red-900 mb-2">Payment Problems</h4>
-                  <p className="text-sm text-red-800 mb-3">If you can't pay your tax bill on time</p>
+                <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                  <h4 className="font-semibold text-red-900 dark:text-red-100 mb-2">Payment Problems</h4>
+                  <p className="text-sm text-red-800 dark:text-red-200 mb-3">If you can't pay your tax bill on time</p>
                   <Button 
                     size="sm" 
                     variant="destructive"
@@ -169,9 +179,9 @@ const HMRCSupportGuide: React.FC = () => {
                     Get Help
                   </Button>
                 </div>
-                <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                  <h4 className="font-semibold text-amber-900 mb-2">Late Filing</h4>
-                  <p className="text-sm text-amber-800 mb-3">Appeal penalties or get deadline extensions</p>
+                <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                  <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-2">Late Filing</h4>
+                  <p className="text-sm text-amber-800 dark:text-amber-200 mb-3">Appeal penalties or get deadline extensions</p>
                   <Button 
                     size="sm" 
                     className="bg-amber-600 hover:bg-amber-700"
@@ -180,9 +190,9 @@ const HMRCSupportGuide: React.FC = () => {
                     Appeal
                   </Button>
                 </div>
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <h4 className="font-semibold text-blue-900 mb-2">Technical Issues</h4>
-                  <p className="text-sm text-blue-800 mb-3">Problems with HMRC online services</p>
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                  <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Technical Issues</h4>
+                  <p className="text-sm text-blue-800 dark:text-blue-200 mb-3">Problems with HMRC online services</p>
                   <Button 
                     size="sm" 
                     className="bg-blue-600 hover:bg-blue-700"
@@ -213,6 +223,7 @@ const HMRCSupportGuide: React.FC = () => {
                     className="w-full justify-start"
                     onClick={() => handleExternalLink('https://www.gov.uk/government/collections/hmrc-manuals', 'HMRC Manuals')}
                   >
+                    <FileText className="h-4 w-4 mr-2" />
                     HMRC Manuals
                   </Button>
                   <Button 
@@ -221,6 +232,7 @@ const HMRCSupportGuide: React.FC = () => {
                     className="w-full justify-start"
                     onClick={() => handleExternalLink('https://www.gov.uk/topic/business-tax', 'Business Tax Guidance')}
                   >
+                    <FileText className="h-4 w-4 mr-2" />
                     Business Tax Guidance
                   </Button>
                 </div>
@@ -232,6 +244,7 @@ const HMRCSupportGuide: React.FC = () => {
                     className="w-full justify-start"
                     onClick={() => handleExternalLink('https://www.icaew.com/membership/find-a-chartered-accountant', 'Find Accountant')}
                   >
+                    <Users className="h-4 w-4 mr-2" />
                     Find a Chartered Accountant
                   </Button>
                   <Button 
@@ -240,6 +253,7 @@ const HMRCSupportGuide: React.FC = () => {
                     className="w-full justify-start"
                     onClick={() => handleExternalLink('https://www.gov.uk/tax-help', 'Free Tax Help')}
                   >
+                    <Users className="h-4 w-4 mr-2" />
                     Free Tax Help Schemes
                   </Button>
                 </div>
@@ -264,7 +278,7 @@ const HMRCSupportGuide: React.FC = () => {
                 >
                   <div className="text-center">
                     <div className="font-medium">Penalty Calculator</div>
-                    <div className="text-sm text-gray-600">Calculate late penalties</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Calculate late penalties</div>
                   </div>
                 </Button>
                 <Button 
@@ -274,7 +288,7 @@ const HMRCSupportGuide: React.FC = () => {
                 >
                   <div className="text-center">
                     <div className="font-medium">Common Tax Issues</div>
-                    <div className="text-sm text-gray-600">Solutions for frequent problems</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Solutions for frequent problems</div>
                   </div>
                 </Button>
                 <Button 
@@ -284,7 +298,7 @@ const HMRCSupportGuide: React.FC = () => {
                 >
                   <div className="text-center">
                     <div className="font-medium">VAT Calculator</div>
-                    <div className="text-sm text-gray-600">Calculate VAT amounts</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Calculate VAT amounts</div>
                   </div>
                 </Button>
               </div>
