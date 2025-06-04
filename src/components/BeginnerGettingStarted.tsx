@@ -74,30 +74,30 @@ const BeginnerGettingStarted: React.FC<BeginnerGettingStartedProps> = ({ userTyp
   const progress = (completedSteps.length / steps.length) * 100;
 
   return (
-    <Card className="mb-8 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-emerald-200 dark:border-emerald-700">
-      <CardHeader>
-        <div className="flex items-center justify-between mb-4">
-          <CardTitle className="text-2xl text-emerald-900 dark:text-emerald-100 flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg text-white">
-              <Lightbulb className="h-6 w-6" />
+    <Card className="mb-12 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-2 border-emerald-200 dark:border-emerald-700 shadow-xl">
+      <CardHeader className="pb-8 pt-8">
+        <div className="flex items-center justify-between mb-6">
+          <CardTitle className="text-3xl text-emerald-900 dark:text-emerald-100 flex items-center gap-4">
+            <div className="p-3 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl text-white shadow-lg">
+              <Lightbulb className="h-7 w-7" />
             </div>
             Your Getting Started Journey
           </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200">
+          <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200 px-4 py-2 text-lg font-medium">
             {completedSteps.length} of {steps.length} complete
           </Badge>
         </div>
         
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm text-emerald-700 dark:text-emerald-300">
+        <div className="space-y-4">
+          <div className="flex justify-between text-lg text-emerald-700 dark:text-emerald-300 font-medium">
             <span>Progress</span>
             <span>{Math.round(progress)}%</span>
           </div>
-          <Progress value={progress} className="h-2 bg-emerald-100 dark:bg-emerald-900/30" />
+          <Progress value={progress} className="h-3 bg-emerald-100 dark:bg-emerald-900/30" />
         </div>
       </CardHeader>
       
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-8 pb-10">
         {steps.map((step) => {
           const isCompleted = completedSteps.includes(step.id);
           const Icon = step.icon;
@@ -105,50 +105,50 @@ const BeginnerGettingStarted: React.FC<BeginnerGettingStartedProps> = ({ userTyp
           return (
             <div 
               key={step.id}
-              className={`p-4 rounded-lg border-2 transition-all duration-200 ${
+              className={`p-6 rounded-xl border-2 transition-all duration-200 hover:shadow-lg ${
                 isCompleted 
-                  ? 'bg-white/80 dark:bg-gray-800/80 border-green-200 dark:border-green-700'
+                  ? 'bg-white/90 dark:bg-gray-800/90 border-green-200 dark:border-green-700 shadow-md'
                   : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-600'
               }`}
             >
-              <div className="flex items-start gap-4">
-                <div className={`p-2 rounded-lg ${
+              <div className="flex items-start gap-6">
+                <div className={`p-4 rounded-xl shadow-sm ${
                   isCompleted ? 'bg-green-100 dark:bg-green-900/30' : `bg-${step.color}-100 dark:bg-${step.color}-900/30`
                 }`}>
                   {isCompleted ? (
-                    <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+                    <CheckCircle className="h-7 w-7 text-green-600 dark:text-green-400" />
                   ) : (
-                    <Icon className={`h-5 w-5 text-${step.color}-600 dark:text-${step.color}-400`} />
+                    <Icon className={`h-7 w-7 text-${step.color}-600 dark:text-${step.color}-400`} />
                   )}
                 </div>
                 
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className={`font-semibold ${isCompleted ? 'text-green-900 dark:text-green-100' : 'text-gray-900 dark:text-white'}`}>
+                  <div className="flex items-center gap-3 mb-3">
+                    <h3 className={`text-xl font-bold ${isCompleted ? 'text-green-900 dark:text-green-100' : 'text-gray-900 dark:text-white'}`}>
                       Step {step.id}: {step.title}
                     </h3>
                     {isCompleted && (
-                      <Badge className="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200">
+                      <Badge className="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200 px-3 py-1">
                         ✓ Done
                       </Badge>
                     )}
                   </div>
                   
-                  <p className="text-gray-600 dark:text-gray-400 mb-2">{step.description}</p>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4 text-lg">{step.description}</p>
                   
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg mb-3">
-                    <p className="text-blue-900 dark:text-blue-100 font-medium mb-1">{step.content}</p>
-                    <p className="text-blue-700 dark:text-blue-300 text-sm">{step.details}</p>
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-5 rounded-xl mb-5 border border-blue-100 dark:border-blue-800">
+                    <p className="text-blue-900 dark:text-blue-100 font-semibold mb-2 text-lg">{step.content}</p>
+                    <p className="text-blue-700 dark:text-blue-300">{step.details}</p>
                   </div>
                   
                   {!isCompleted && (
                     <Button 
                       onClick={() => handleStepComplete(step.id)}
-                      size="sm"
-                      className={`bg-${step.color}-600 hover:bg-${step.color}-700 text-white`}
+                      size="lg"
+                      className={`bg-${step.color}-600 hover:bg-${step.color}-700 text-white px-6 py-3 font-medium shadow-md hover:shadow-lg transition-all`}
                     >
                       {step.action}
-                      <ArrowRight className="h-4 w-4 ml-2" />
+                      <ArrowRight className="h-5 w-5 ml-3" />
                     </Button>
                   )}
                 </div>
@@ -158,20 +158,23 @@ const BeginnerGettingStarted: React.FC<BeginnerGettingStartedProps> = ({ userTyp
         })}
         
         {completedSteps.length === steps.length && (
-          <div className="text-center p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg border-2 border-green-200 dark:border-green-700">
-            <div className="mb-4">
-              <div className="inline-flex p-3 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full text-white">
-                <Star className="h-6 w-6" />
+          <div className="text-center p-8 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl border-2 border-green-200 dark:border-green-700 shadow-lg">
+            <div className="mb-6">
+              <div className="inline-flex p-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full text-white shadow-lg">
+                <Star className="h-8 w-8" />
               </div>
             </div>
-            <h3 className="text-xl font-bold text-green-900 dark:text-green-100 mb-2">
+            <h3 className="text-2xl font-bold text-green-900 dark:text-green-100 mb-4">
               🎉 Congratulations! You're Ready!
             </h3>
-            <p className="text-green-700 dark:text-green-300 mb-4">
+            <p className="text-green-700 dark:text-green-300 mb-6 text-lg leading-relaxed max-w-2xl mx-auto">
               You've completed your getting started journey. You now have the knowledge and tools to manage your taxes confidently!
             </p>
-            <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white">
-              <FileText className="h-4 w-4 mr-2" />
+            <Button 
+              size="lg"
+              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 text-lg font-medium shadow-lg hover:shadow-xl transition-all"
+            >
+              <FileText className="h-5 w-5 mr-3" />
               View My Complete Dashboard
             </Button>
           </div>
