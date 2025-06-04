@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
@@ -13,7 +14,8 @@ import UserOnboarding from '@/components/UserOnboarding';
 import ModernCard from '@/components/ModernCard';
 import AnimatedButton from '@/components/AnimatedButton';
 import ModernBadge from '@/components/ModernBadge';
-import { AlertTriangle, CheckCircle, Calendar, Search, Filter, ExternalLink, Download, Settings, Sparkles, Target, Clock } from 'lucide-react';
+import ComprehensiveUserGuide from '@/components/ComprehensiveUserGuide';
+import { AlertTriangle, CheckCircle, Calendar, Search, Filter, ExternalLink, Download, Settings, Sparkles, Target, Clock, Book } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {
   NavigationMenu,
@@ -41,6 +43,7 @@ const Index = () => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+  const [isUserGuideOpen, setIsUserGuideOpen] = useState(false);
   const [currentTaxYear, setCurrentTaxYear] = useState('2024-2025');
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -99,8 +102,10 @@ const Index = () => {
       case 'filter':
         setIsFiltersOpen(true);
         break;
+      case 'user-guide':
+        setIsUserGuideOpen(true);
+        break;
       case 'calendar-integration':
-        // Scroll to calendar integration section
         document.getElementById('calendar-integration')?.scrollIntoView({ behavior: 'smooth' });
         break;
       default:
@@ -114,9 +119,9 @@ const Index = () => {
 
   const handleOnboardingComplete = () => {
     setIsOnboardingOpen(false);
-    localStorage.setItem('uk-tax-calendar-onboarding-complete', 'true');
+    localStorage.setItem('uk-tax-doctor-onboarding-complete', 'true');
     toast({
-      title: "Welcome aboard! 🎉",
+      title: "Welcome to UK Tax Doctor! 🎉",
       description: "You're all set to manage your tax deadlines like a pro.",
       duration: 5000,
     });
@@ -249,7 +254,6 @@ END:VCALENDAR`;
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Modern Header */}
         <div className="relative mb-12">
-          {/* Background decoration */}
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 rounded-3xl blur-3xl" />
           
           <div className="relative flex items-center justify-between mb-8">
@@ -259,27 +263,27 @@ END:VCALENDAR`;
                   <Sparkles className="h-6 w-6" />
                 </div>
                 <ModernBadge variant="info" size="sm">
-                  2025 Edition
+                  2025 Professional Edition
                 </ModernBadge>
               </div>
               <h1 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent dark:from-white dark:via-blue-200 dark:to-purple-200">
-                UK Tax Calendar Professional
+                UK Tax Doctor
               </h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
-                Never miss a tax deadline - sync all your deadlines to your calendar in seconds with AI-powered insights
+                Your AI-powered tax specialist - diagnose deadlines, prescribe solutions, and cure tax compliance headaches
               </p>
             </div>
             
             {/* Header Actions */}
             <div className="flex items-center gap-3">
-              {/* Modern Navigation Menu */}
+              {/* Fixed Navigation Menu with proper z-index and background */}
               <div className="hidden lg:block">
                 <NavigationMenu>
                   <NavigationMenuList>
                     <NavigationMenuItem>
-                      <NavigationMenuTrigger>Tax Calculators</NavigationMenuTrigger>
+                      <NavigationMenuTrigger className="bg-white/90 backdrop-blur-sm">Tax Calculators</NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <div className="grid gap-3 p-4 w-[400px] bg-white">
+                        <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-[9999] border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg backdrop-blur-sm">
                           <NavigationMenuLink 
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                             onClick={() => navigate('/penalty-calculator')}
@@ -312,9 +316,9 @@ END:VCALENDAR`;
                     </NavigationMenuItem>
                     
                     <NavigationMenuItem>
-                      <NavigationMenuTrigger>Tax Resources</NavigationMenuTrigger>
+                      <NavigationMenuTrigger className="bg-white/90 backdrop-blur-sm">Tax Resources</NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <div className="grid gap-3 p-4 w-[400px] bg-white">
+                        <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-[9999] border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg backdrop-blur-sm">
                           <NavigationMenuLink 
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                             onClick={() => navigate('/common-tax-issues')}
@@ -347,9 +351,18 @@ END:VCALENDAR`;
                     </NavigationMenuItem>
 
                     <NavigationMenuItem>
-                      <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
+                      <NavigationMenuTrigger className="bg-white/90 backdrop-blur-sm">Tools & Help</NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <div className="grid gap-3 p-4 w-[400px] bg-white">
+                        <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-[9999] border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg backdrop-blur-sm">
+                          <NavigationMenuLink 
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                            onClick={() => setIsUserGuideOpen(true)}
+                          >
+                            <div className="text-sm font-medium leading-none">📖 Complete User Guide</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              Comprehensive guide to using UK Tax Doctor
+                            </p>
+                          </NavigationMenuLink>
                           <NavigationMenuLink 
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                             onClick={() => navigate('/employment-status')}
@@ -370,15 +383,6 @@ END:VCALENDAR`;
                           </NavigationMenuLink>
                           <NavigationMenuLink 
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
-                            onClick={() => navigate('/payments-on-account')}
-                          >
-                            <div className="text-sm font-medium leading-none">Payments on Account</div>
-                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                              Understand advance tax payments
-                            </p>
-                          </NavigationMenuLink>
-                          <NavigationMenuLink 
-                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                             onClick={() => navigate('/settings')}
                           >
                             <div className="text-sm font-medium leading-none">Settings</div>
@@ -392,6 +396,16 @@ END:VCALENDAR`;
                   </NavigationMenuList>
                 </NavigationMenu>
               </div>
+
+              <AnimatedButton
+                variant="glass"
+                size="sm"
+                icon={Book}
+                onClick={() => setIsUserGuideOpen(true)}
+                className="hidden md:flex"
+              >
+                User Guide
+              </AnimatedButton>
 
               <AnimatedButton
                 variant="glass"
@@ -688,7 +702,7 @@ END:VCALENDAR`;
         <footer className="mt-16 text-center">
           <div className="p-6 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900 rounded-2xl">
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              2025 UK Tax Calendar Professional - Advanced tax deadline management by Pearl Lemon Accountants
+              2025 UK Tax Doctor - AI-powered tax deadline management by Pearl Lemon Accountants
             </p>
           </div>
         </footer>
@@ -712,6 +726,11 @@ END:VCALENDAR`;
         isOpen={isOnboardingOpen}
         onClose={() => setIsOnboardingOpen(false)}
         onComplete={handleOnboardingComplete}
+      />
+
+      <ComprehensiveUserGuide
+        isOpen={isUserGuideOpen}
+        onClose={() => setIsUserGuideOpen(false)}
       />
 
       <KeyboardShortcuts

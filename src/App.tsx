@@ -29,6 +29,11 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  // Set document title for the new branding
+  React.useEffect(() => {
+    document.title = 'UK Tax Doctor - AI-Powered Tax Deadline Management';
+  }, []);
+
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>

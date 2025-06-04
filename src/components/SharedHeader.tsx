@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, Home } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -16,6 +16,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import NotificationCenter from '@/components/NotificationCenter';
 import EnhancedMobileNavigation from '@/components/EnhancedMobileNavigation';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
+import AnimatedButton from './AnimatedButton';
 
 interface SharedHeaderProps {
   title: string;
@@ -35,7 +36,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   onOpenFilters
 }) => {
   const navigate = useNavigate();
-  const deadlines = getTaxDeadlines('self-employed'); // Default for notification count
+  const deadlines = getTaxDeadlines('self-employed');
 
   const urgentCount = deadlines.filter(deadline => {
     const deadlineDate = new Date(deadline.date);
@@ -70,14 +71,16 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           </p>
         </div>
         <div className="flex items-center gap-3">
-          {/* Desktop Navigation Menu */}
+          {/* Desktop Navigation Menu with Fixed Styling */}
           <div className="hidden lg:block">
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger>Tax Calculators</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className="bg-white/90 backdrop-blur-sm hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800">
+                    Tax Calculators
+                  </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-50 border border-gray-200 dark:border-gray-700 shadow-lg">
+                    <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-[9999] border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg backdrop-blur-sm">
                       <NavigationMenuLink 
                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/penalty-calculator')}
@@ -110,9 +113,11 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger>Tax Resources</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className="bg-white/90 backdrop-blur-sm hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800">
+                    Tax Resources
+                  </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-50 border border-gray-200 dark:border-gray-700 shadow-lg">
+                    <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-[9999] border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg backdrop-blur-sm">
                       <NavigationMenuLink 
                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/common-tax-issues')}
@@ -145,9 +150,11 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className="bg-white/90 backdrop-blur-sm hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800">
+                    Tools
+                  </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-50 border border-gray-200 dark:border-gray-700 shadow-lg">
+                    <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-[9999] border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg backdrop-blur-sm">
                       <NavigationMenuLink 
                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/employment-status')}
@@ -191,29 +198,39 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             </NavigationMenu>
           </div>
 
+          <AnimatedButton
+            variant="glass"
+            size="sm"
+            icon={Home}
+            onClick={() => navigate('/')}
+            className="hidden md:flex"
+          >
+            Dashboard
+          </AnimatedButton>
+
           {showSearch && (
-            <Button 
-              variant="outline" 
+            <AnimatedButton 
+              variant="glass"
               size="sm" 
+              icon={Search}
               onClick={onOpenSearch}
               className="hidden md:flex"
             >
-              <Search className="h-4 w-4 mr-2" />
               Search
               <Badge variant="secondary" className="ml-2 text-xs">⌘K</Badge>
-            </Button>
+            </AnimatedButton>
           )}
           
           {showFilters && (
-            <Button 
-              variant="outline" 
+            <AnimatedButton 
+              variant="glass"
               size="sm" 
+              icon={Filter}
               onClick={onOpenFilters}
               className="hidden md:flex"
             >
-              <Filter className="h-4 w-4 mr-2" />
               Filter
-            </Button>
+            </AnimatedButton>
           )}
 
           <NotificationCenter deadlines={deadlines} />
