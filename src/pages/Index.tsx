@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
@@ -303,7 +304,7 @@ END:VCALENDAR`;
                 UK Tax Doctor
               </h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
-                Your AI-powered tax specialist - diagnose deadlines, prescribe solutions, and cure tax compliance headaches
+                Smart tax deadline management
               </p>
             </div>
             
