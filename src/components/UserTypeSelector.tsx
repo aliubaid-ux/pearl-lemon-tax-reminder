@@ -47,6 +47,17 @@ const UserTypeSelector: React.FC<UserTypeSelectorProps> = ({ userType, onUserTyp
 
   const selectedOption = userTypes.find(option => option.type === userType);
 
+  // Dynamic help text based on selection
+  const getHelpText = () => {
+    if (!userType || userType === 'self-employed') {
+      return "Start with \"Self-Employed\" if you work for yourself. You can always change this later in the advanced settings.";
+    }
+    if (userType === 'company-director') {
+      return "Perfect choice if you run a limited company. This will show you corporation tax and company filing deadlines.";
+    }
+    return "Great for those who are both self-employed and run a company. You'll see all relevant deadlines.";
+  };
+
   return (
     <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-xl">
       <CardContent className="p-6">
@@ -134,9 +145,11 @@ const UserTypeSelector: React.FC<UserTypeSelectorProps> = ({ userType, onUserTyp
           <div className="flex items-start gap-2">
             <HelpCircle className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
             <div className="text-sm">
-              <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">Not sure which one?</p>
+              <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">
+                {userType ? 'Good choice!' : 'Not sure which one?'}
+              </p>
               <p className="text-blue-700 dark:text-blue-200">
-                Start with "Self-Employed" if you work for yourself. You can always change this later in the advanced settings.
+                {getHelpText()}
               </p>
             </div>
           </div>

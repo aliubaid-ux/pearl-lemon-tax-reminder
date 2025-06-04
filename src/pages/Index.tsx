@@ -80,6 +80,41 @@ const Index = () => {
   };
 
   const handleQuickAction = (action: string) => {
+    console.log('Quick action triggered:', action);
+    
+    // Ensure advanced features are shown first
+    if (!showAdvanced) {
+      setShowAdvanced(true);
+    }
+    
+    // Navigate to specific tabs with proper delay
+    setTimeout(() => {
+      const tabElement = document.querySelector(`[value="${action}"]`) as HTMLElement;
+      if (tabElement) {
+        tabElement.click();
+        tabElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        console.log(`Navigated to ${action} tab`);
+      } else {
+        console.log(`Tab element for ${action} not found`);
+        // Fallback: try to find by text content
+        const allTabs = document.querySelectorAll('[role="tab"]');
+        allTabs.forEach(tab => {
+          const tabText = tab.textContent?.toLowerCase();
+          if (
+            (action === 'calendar' && tabText?.includes('calendar')) ||
+            (action === 'tools' && tabText?.includes('tools')) ||
+            (action === 'reminders' && tabText?.includes('reminders')) ||
+            (action === 'deadlines' && tabText?.includes('deadlines'))
+          ) {
+            (tab as HTMLElement).click();
+            tab.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            console.log(`Found and clicked tab: ${tabText}`);
+          }
+        });
+      }
+    }, 200);
+
+    // Handle other actions
     switch (action) {
       case 'print':
         printCalendar(filteredDeadlines, userType);
@@ -91,29 +126,8 @@ const Index = () => {
         shareDeadlines(filteredDeadlines, userType);
         break;
       case 'settings':
-        setShowAdvanced(true);
-        setTimeout(() => {
-          const element = document.querySelector('[value="settings"]') as HTMLElement;
-          if (element) {
-            element.click();
-          }
-        }, 100);
+        // Settings action
         break;
-      case 'calendar':
-      case 'deadlines':
-      case 'tools':
-      case 'reminders':
-        setShowAdvanced(true);
-        setTimeout(() => {
-          const element = document.querySelector(`[value="${action}"]`) as HTMLElement;
-          if (element) {
-            element.click();
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        }, 100);
-        break;
-      default:
-        setShowAdvanced(true);
     }
   };
 
