@@ -19,7 +19,15 @@ export const selfEmployedDeadlines: TaxDeadline[] = (() => {
       description: 'Register for Self Assessment if you started self-employment. Required for all self-employed individuals.',
       latePenalty: '£100 late registration penalty',
       userTypes: ['self-employed'],
-      priority: 'high'
+      priority: 'high',
+      preparationStart: `${nextTaxYear}-07-01`,
+      preparationTips: 'Gather your National Insurance number, UTR (if you have one), and details of your business income. You can register online through the HMRC website.',
+      lateSubmissionGuidance: 'If you miss the deadline, register immediately and contact HMRC to explain the delay. Late registration penalties can sometimes be appealed.',
+      requiredDocuments: ['National Insurance number', 'Business details', 'Previous UTR (if applicable)', 'Bank account information'],
+      estimatedTime: '30-45 minutes',
+      hmrcLink: 'https://www.gov.uk/register-for-self-assessment',
+      dependencies: [],
+      relatedDeadlines: ['sa-return', 'sa-payment']
     },
     {
       id: 'sa-return',
@@ -29,7 +37,16 @@ export const selfEmployedDeadlines: TaxDeadline[] = (() => {
       description: 'Submit your Self Assessment return online. This is your annual tax return as a self-employed person.',
       latePenalty: '£100 immediate penalty, then £10 per day',
       userTypes: ['self-employed'],
-      priority: 'high'
+      priority: 'high',
+      preparationStart: `${nextTaxYear}-10-01`,
+      preparationTips: 'Start gathering income records, receipts, and expense documentation early. Consider using accounting software to track everything throughout the year.',
+      lateSubmissionGuidance: 'Submit as soon as possible to minimize daily penalties. Contact HMRC to discuss payment plans if you cannot pay immediately.',
+      requiredDocuments: ['P60s/P45s', 'Bank statements', 'Receipts for business expenses', 'Invoice records', 'Dividend vouchers', 'Interest certificates'],
+      estimatedTime: '2-4 hours (first time), 1-2 hours (subsequent years)',
+      hmrcLink: 'https://www.gov.uk/self-assessment-tax-returns',
+      dependencies: ['sa-register'],
+      relatedDeadlines: ['sa-payment', 'poa-july'],
+      quickWins: ['Set up digital record keeping', 'Separate business and personal expenses', 'Use HMRC app for receipts']
     },
     {
       id: 'sa-payment',
@@ -39,7 +56,16 @@ export const selfEmployedDeadlines: TaxDeadline[] = (() => {
       description: 'Pay any tax owed for the previous tax year. This is separate from your return submission.',
       latePenalty: 'Interest charged on late payments',
       userTypes: ['self-employed'],
-      priority: 'high'
+      priority: 'high',
+      preparationStart: `${nextTaxYear}-11-01`,
+      preparationTips: 'Calculate your expected tax liability early and set aside money monthly. Consider making payments on account to spread the cost.',
+      lateSubmissionGuidance: 'Set up a payment plan with HMRC if you cannot pay in full. Interest will still apply but you can avoid additional penalties.',
+      requiredDocuments: ['Self Assessment calculation', 'Bank account details', 'Payment confirmation'],
+      estimatedTime: '15-30 minutes',
+      hmrcLink: 'https://www.gov.uk/pay-self-assessment-tax-bill',
+      dependencies: ['sa-return'],
+      relatedDeadlines: ['poa-july', 'poa-january-next'],
+      quickWins: ['Set up direct debit', 'Save monthly for tax bills', 'Use HMRC online payment system']
     },
     {
       id: 'poa-july',
@@ -49,7 +75,16 @@ export const selfEmployedDeadlines: TaxDeadline[] = (() => {
       description: 'First payment on account for current tax year. Only applies if your tax bill was over £1,000.',
       latePenalty: 'Interest charged on late payments',
       userTypes: ['self-employed'],
-      priority: 'medium'
+      priority: 'medium',
+      preparationStart: `${nextTaxYear}-06-01`,
+      preparationTips: 'This is typically half of your previous year\'s tax bill. Budget for this if your previous year\'s tax was over £1,000.',
+      lateSubmissionGuidance: 'Contact HMRC to set up a payment plan. You may be able to reduce payments on account if your income has decreased.',
+      requiredDocuments: ['Previous year tax calculation', 'Current year income estimates'],
+      estimatedTime: '15-20 minutes',
+      hmrcLink: 'https://www.gov.uk/understand-self-assessment-bill/payments-on-account',
+      dependencies: ['sa-payment'],
+      relatedDeadlines: ['poa-january-next', 'sa-return'],
+      quickWins: ['Reduce if income decreased', 'Set up direct debit', 'Budget monthly']
     },
     {
       id: 'poa-january-next',
@@ -59,7 +94,16 @@ export const selfEmployedDeadlines: TaxDeadline[] = (() => {
       description: 'Second payment on account for current tax year. Due same day as your tax return.',
       latePenalty: 'Interest charged on late payments',
       userTypes: ['self-employed'],
-      priority: 'medium'
+      priority: 'medium',
+      preparationStart: `${nextTaxYear}-12-01`,
+      preparationTips: 'Plan for this payment alongside your balancing payment. Consider the total amount due on 31 January.',
+      lateSubmissionGuidance: 'This payment can be reduced if you expect to earn less. Submit form SA303 to reduce payments on account.',
+      requiredDocuments: ['Current year income calculations', 'Payment confirmation'],
+      estimatedTime: '15-20 minutes',
+      hmrcLink: 'https://www.gov.uk/understand-self-assessment-bill/payments-on-account',
+      dependencies: ['poa-july'],
+      relatedDeadlines: ['sa-payment', 'sa-return'],
+      quickWins: ['Calculate total 31 Jan liability', 'Consider reducing if appropriate', 'Plan payment timing']
     },
     {
       id: 'class-2-nic',
@@ -69,7 +113,16 @@ export const selfEmployedDeadlines: TaxDeadline[] = (() => {
       description: 'Pay Class 2 National Insurance contributions if your profits exceed £6,515.',
       latePenalty: 'Interest charged on late payments',
       userTypes: ['self-employed'],
-      priority: 'medium'
+      priority: 'medium',
+      preparationStart: `${nextTaxYear}-11-01`,
+      preparationTips: 'Class 2 NI is calculated automatically on your Self Assessment if profits exceed £6,515. You can pay voluntary contributions if below this threshold.',
+      lateSubmissionGuidance: 'Paid through Self Assessment. If you want to make voluntary contributions, contact HMRC directly.',
+      requiredDocuments: ['Self Assessment return', 'Profit calculations'],
+      estimatedTime: 'Automatic with Self Assessment',
+      hmrcLink: 'https://www.gov.uk/self-employed-national-insurance-rates',
+      dependencies: ['sa-return'],
+      relatedDeadlines: ['sa-payment'],
+      quickWins: ['Check if you qualify', 'Consider voluntary contributions', 'Understand benefits impact']
     },
     {
       id: 'vat-registration',
@@ -79,7 +132,35 @@ export const selfEmployedDeadlines: TaxDeadline[] = (() => {
       description: 'Register for VAT if your turnover exceeds £85,000 in the last 12 months.',
       latePenalty: 'Potential penalties for late registration',
       userTypes: ['self-employed'],
-      priority: 'high'
+      priority: 'high',
+      preparationStart: `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-01`,
+      preparationTips: 'Monitor your turnover monthly. You must register within 30 days of exceeding the threshold. Consider voluntary registration for benefits.',
+      lateSubmissionGuidance: 'Register immediately if you\'ve missed the deadline. Late registration can result in penalties and backdated VAT liability.',
+      requiredDocuments: ['Turnover records', 'Business details', 'Bank account information', 'Expected turnover forecast'],
+      estimatedTime: '45-60 minutes',
+      hmrcLink: 'https://www.gov.uk/vat-registration',
+      dependencies: [],
+      relatedDeadlines: ['vat-return-quarterly'],
+      quickWins: ['Monitor turnover monthly', 'Consider voluntary registration', 'Set up VAT accounting']
+    },
+    {
+      id: 'vat-return-quarterly',
+      title: 'VAT Return (Quarterly)',
+      date: `${currentMonth >= 9 ? currentYear + 1 : currentYear}-${String((Math.floor(currentMonth / 3) + 1) * 3 + 1).padStart(2, '0')}-07`,
+      category: 'vat',
+      description: 'Quarterly VAT return submission if you are VAT registered.',
+      latePenalty: '£200 default surcharge, escalating penalties',
+      userTypes: ['self-employed'],
+      priority: 'high',
+      preparationStart: `${currentMonth >= 8 ? currentYear + 1 : currentYear}-${String((Math.floor(currentMonth / 3) + 1) * 3).padStart(2, '0')}-08`,
+      preparationTips: 'Keep detailed VAT records throughout the quarter. Separate VAT on sales and purchases. Consider Making Tax Digital compliance.',
+      lateSubmissionGuidance: 'Submit late returns immediately. The longer the delay, the higher the penalty. Contact HMRC if you have reasonable excuse.',
+      requiredDocuments: ['Sales invoices', 'Purchase receipts', 'VAT account records', 'Bank statements'],
+      estimatedTime: '1-2 hours',
+      hmrcLink: 'https://www.gov.uk/vat-returns',
+      dependencies: ['vat-registration'],
+      relatedDeadlines: [],
+      quickWins: ['Use Making Tax Digital software', 'Reconcile VAT account monthly', 'Submit early to avoid last-minute issues']
     },
     {
       id: 'construction-industry-scheme',
@@ -89,7 +170,35 @@ export const selfEmployedDeadlines: TaxDeadline[] = (() => {
       description: 'Monthly return if you work in construction and are registered for CIS.',
       latePenalty: '£100 penalty for late submission',
       userTypes: ['self-employed'],
-      priority: 'medium'
+      priority: 'medium',
+      preparationStart: `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-19`,
+      preparationTips: 'Keep records of all subcontractor payments and deductions. Verify subcontractors before making payments.',
+      lateSubmissionGuidance: 'Submit nil returns even if no payments made. Late submission penalties apply even for nil returns.',
+      requiredDocuments: ['Subcontractor payment records', 'CIS deduction statements', 'Verification records'],
+      estimatedTime: '30-45 minutes',
+      hmrcLink: 'https://www.gov.uk/what-is-the-construction-industry-scheme',
+      dependencies: [],
+      relatedDeadlines: [],
+      quickWins: ['Verify subcontractors early', 'Use CIS software', 'Submit nil returns when needed']
+    },
+    {
+      id: 'tax-year-preparation',
+      title: 'Tax Year End Preparation',
+      date: `${nextTaxYear}-04-06`,
+      category: 'planning',
+      description: 'Prepare for the new tax year by reviewing allowances, rates, and planning strategies.',
+      latePenalty: 'No penalty, but missed opportunities',
+      userTypes: ['self-employed'],
+      priority: 'low',
+      preparationStart: `${nextTaxYear}-03-01`,
+      preparationTips: 'Review annual allowances, consider pension contributions, and plan for any income shifting between tax years.',
+      lateSubmissionGuidance: 'Not applicable - this is a planning deadline.',
+      requiredDocuments: ['Previous year records', 'Pension contribution records', 'Allowance calculations'],
+      estimatedTime: '1-2 hours',
+      hmrcLink: 'https://www.gov.uk/government/publications/rates-and-allowances-income-tax',
+      dependencies: [],
+      relatedDeadlines: ['sa-return'],
+      quickWins: ['Review personal allowances', 'Consider pension contributions', 'Plan income timing']
     }
   ];
 })();

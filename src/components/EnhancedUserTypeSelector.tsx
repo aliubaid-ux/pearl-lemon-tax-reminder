@@ -6,6 +6,10 @@ import { Badge } from '@/components/ui/badge';
 import { Building2, User, Users, Check } from 'lucide-react';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
 import VisualDeadlineDisplay from './VisualDeadlineDisplay';
+import EnhancedDeadlineCard from './EnhancedDeadlineCard';
+import SeasonalTaxTips from './SeasonalTaxTips';
+import DeadlineComparison from './DeadlineComparison';
+import SmartSuggestions from './SmartSuggestions';
 
 type UserType = 'self-employed' | 'company-director' | 'both';
 
@@ -21,6 +25,7 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
   const [selectedType, setSelectedType] = useState<UserType>(userType);
   const [showDeadlines, setShowDeadlines] = useState(true);
   const [currentDeadlines, setCurrentDeadlines] = useState(getTaxDeadlines(userType));
+  const [viewMode, setViewMode] = useState<'enhanced' | 'visual' | 'comparison'>('enhanced');
 
   // Update deadlines when user type changes
   useEffect(() => {
@@ -62,6 +67,16 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
       deadlineCount: getTaxDeadlines('both').length
     }
   ];
+
+  const upcomingDeadlines = currentDeadlines
+    .filter(deadline => {
+      const deadlineDate = new Date(deadline.date);
+      const today = new Date();
+      const daysUntil = Math.ceil((deadlineDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+      return daysUntil <= 90 && daysUntil > 0;
+    })
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(0, 6);
 
   return (
     <div className="space-y-6">
@@ -131,8 +146,41 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
         ))}
       </div>
 
-      {/* Visual Deadline Display */}
-      {showDeadlines && (
+      {/* View Mode Toggle */}
+      {showDeadlines && currentDeadlines.length > 0 && (
+        <div className="flex justify-center gap-2">
+          <Button
+            variant={viewMode === 'enhanced' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setViewMode('enhanced')}
+          >
+            Enhanced View
+          </Button>
+          <Button
+            variant={viewMode === 'visual' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setViewMode('visual')}
+          >
+            Visual Overview
+          </Button>
+          <Button
+            variant={viewMode === 'comparison' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setViewMode('comparison')}
+          >
+            Compare Deadlines
+          </Button>
+        </div>
+      )}
+
+      {/* Smart Suggestions */}
+      <SmartSuggestions deadlines={currentDeadlines} userType={selectedType} />
+
+      {/* Seasonal Tips */}
+      <SeasonalTaxTips />
+
+      {/* Enhanced Deadline Display */}
+      {showDeadlines && currentDeadlines.length > 0 && (
         <div className="mt-6">
           <div className="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
             <h3 className="font-semibold text-blue-900 mb-2">
@@ -141,12 +189,42 @@ const EnhancedUserTypeSelector: React.FC<EnhancedUserTypeSelectorProps> = ({
             <p className="text-sm text-blue-700">
               Showing {currentDeadlines.length} deadlines specific to your profile. 
               {selectedType === 'both' && ' This includes both self-employed and company director obligations.'}
+              {' '}Enhanced view includes preparation tips, required documents, and quick wins.
             </p>
           </div>
-          <VisualDeadlineDisplay 
-            deadlines={currentDeadlines} 
-            userType={selectedType}
-          />
+
+          {viewMode === 'enhanced' && (
+            <div className="space-y-4">
+              {upcomingDeadlines.map((deadline) => (
+                <EnhancedDeadlineCard key={deadline.id} deadline={deadline} showFullDetails />
+              ))}
+              {upcomingDeadlines.length < currentDeadlines.length && (
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <p className="text-sm text-gray-600">
+                    Showing next {upcomingDeadlines.length} deadlines. 
+                    Total of {currentDeadlines.length} deadlines for your profile.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {viewMode === 'visual' && (
+            <VisualDeadlineDisplay 
+              deadlines={currentDeadlines} 
+              userType={selectedType}
+            />
+          )}
+
+          {viewMode === 'comparison' && (
+            <DeadlineComparison deadlines={currentDeadlines} />
+          )}
+        </div>
+      )}
+
+      {currentDeadlines.length === 0 && showDeadlines && (
+        <div className="text-center py-8">
+          <p className="text-gray-600">No tax deadlines found for this profile type.</p>
         </div>
       )}
     </div>

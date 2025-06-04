@@ -19,7 +19,16 @@ export const companyDeadlines: TaxDeadline[] = (() => {
       description: 'Submit Corporation Tax return (12 months after accounting year end). Required for all limited companies.',
       latePenalty: '£100-£1,000 depending on company size',
       userTypes: ['company-director'],
-      priority: 'high'
+      priority: 'high',
+      preparationStart: `${nextAccountingYear}-09-01`,
+      preparationTips: 'Ensure annual accounts are prepared first. Gather all financial records, including P&L, balance sheet, and supporting documentation.',
+      lateSubmissionGuidance: 'Submit immediately to minimize penalties. Penalties increase based on delay period and company size.',
+      requiredDocuments: ['Annual accounts', 'Corporation tax computation', 'P11D returns', 'Dividend vouchers', 'Directors loan account details'],
+      estimatedTime: '4-8 hours (depending on complexity)',
+      hmrcLink: 'https://www.gov.uk/prepare-file-annual-accounts-for-limited-company',
+      dependencies: ['annual-accounts'],
+      relatedDeadlines: ['ct-payment', 'annual-accounts'],
+      quickWins: ['File annual accounts first', 'Use accountant for complex returns', 'Keep monthly management accounts']
     },
     {
       id: 'ct-payment',
@@ -29,7 +38,16 @@ export const companyDeadlines: TaxDeadline[] = (() => {
       description: 'Pay Corporation Tax (9 months and 1 day after accounting period end). This is the main tax payment for your company.',
       latePenalty: 'Interest charged on late payments',
       userTypes: ['company-director'],
-      priority: 'high'
+      priority: 'high',
+      preparationStart: `${nextAccountingYear}-06-01`,
+      preparationTips: 'Calculate estimated corporation tax early. Set aside 19-25% of profits. Consider quarterly instalment payments for large companies.',
+      lateSubmissionGuidance: 'Pay immediately to stop interest charges. Contact HMRC for payment plans if needed.',
+      requiredDocuments: ['Corporation tax computation', 'Company bank account details', 'Payment confirmation'],
+      estimatedTime: '15-30 minutes',
+      hmrcLink: 'https://www.gov.uk/pay-corporation-tax',
+      dependencies: ['ct600'],
+      relatedDeadlines: ['ct600', 'quarterly-instalments'],
+      quickWins: ['Set up direct debit', 'Calculate tax monthly', 'Use HMRC online payment']
     },
     {
       id: 'confirmation',
@@ -39,7 +57,16 @@ export const companyDeadlines: TaxDeadline[] = (() => {
       description: 'Annual confirmation statement to Companies House. Required for all UK companies.',
       latePenalty: '£150 late filing penalty',
       userTypes: ['company-director'],
-      priority: 'medium'
+      priority: 'medium',
+      preparationStart: `${nextAccountingYear}-07-15`,
+      preparationTips: 'Review company information including directors, shareholders, and registered office. Ensure all details are current.',
+      lateSubmissionGuidance: 'File immediately to avoid escalating penalties. Companies House may strike off companies for repeated late filing.',
+      requiredDocuments: ['Current director details', 'Shareholder information', 'Registered office address', 'SIC codes'],
+      estimatedTime: '20-30 minutes',
+      hmrcLink: 'https://www.gov.uk/file-confirmation-statement-with-companies-house',
+      dependencies: [],
+      relatedDeadlines: ['annual-accounts'],
+      quickWins: ['File online', 'Update details promptly', 'Set calendar reminders']
     },
     {
       id: 'annual-accounts',
@@ -49,7 +76,16 @@ export const companyDeadlines: TaxDeadline[] = (() => {
       description: 'File annual accounts with Companies House (9 months after year end). Statutory requirement for limited companies.',
       latePenalty: '£150-£1,500 depending on company size and delay',
       userTypes: ['company-director'],
-      priority: 'high'
+      priority: 'high',
+      preparationStart: `${nextAccountingYear}-06-01`,
+      preparationTips: 'Prepare accounts as soon as possible after year end. Consider abbreviated accounts for small companies. Use qualified accountant for complex situations.',
+      lateSubmissionGuidance: 'File immediately as penalties increase significantly with delay. Repeated late filing can lead to director disqualification.',
+      requiredDocuments: ['Profit & Loss account', 'Balance sheet', 'Directors report', 'Auditors report (if applicable)', 'Notes to accounts'],
+      estimatedTime: '8-20 hours (depending on complexity)',
+      hmrcLink: 'https://www.gov.uk/annual-accounts',
+      dependencies: [],
+      relatedDeadlines: ['ct600', 'ct-payment'],
+      quickWins: ['Use accounting software', 'File abbreviated accounts if eligible', 'Engage accountant early']
     },
     {
       id: 'paye-submission',
@@ -59,7 +95,16 @@ export const companyDeadlines: TaxDeadline[] = (() => {
       description: 'Monthly PAYE and National Insurance submission. Required if you pay yourself or employees.',
       latePenalty: '£100-£400 per month penalty',
       userTypes: ['company-director'],
-      priority: 'high'
+      priority: 'high',
+      preparationStart: `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-19`,
+      preparationTips: 'Submit even if no payments made (nil submission). Use Real Time Information (RTI) compliant software. Keep payroll records up to date.',
+      lateSubmissionGuidance: 'Submit immediately. Contact HMRC if you have reasonable excuse. Penalties can be appealed in exceptional circumstances.',
+      requiredDocuments: ['Payroll records', 'Employee details', 'PAYE/NI calculations', 'Benefits in kind information'],
+      estimatedTime: '30-60 minutes',
+      hmrcLink: 'https://www.gov.uk/running-payroll',
+      dependencies: [],
+      relatedDeadlines: ['p11d-submission', 'p60-distribution'],
+      quickWins: ['Use payroll software', 'Submit nil returns', 'Set up direct debit for payments']
     },
     {
       id: 'vat-return-company',
@@ -69,7 +114,16 @@ export const companyDeadlines: TaxDeadline[] = (() => {
       description: 'Quarterly VAT return submission for your limited company (if VAT registered).',
       latePenalty: '£200 default surcharge, escalating penalties',
       userTypes: ['company-director'],
-      priority: 'medium'
+      priority: 'medium',
+      preparationStart: `${currentMonth >= 8 ? currentYear + 1 : currentYear}-${String((Math.floor(currentMonth / 3) + 1) * 3).padStart(2, '0')}-08`,
+      preparationTips: 'Maintain detailed VAT records. Consider Making Tax Digital compliance. Separate business and personal expenses clearly.',
+      lateSubmissionGuidance: 'Submit immediately. Late submission can affect your credit rating and lead to visits from HMRC.',
+      requiredDocuments: ['Sales invoices', 'Purchase receipts', 'VAT account', 'Making Tax Digital records'],
+      estimatedTime: '1-3 hours',
+      hmrcLink: 'https://www.gov.uk/vat-returns',
+      dependencies: [],
+      relatedDeadlines: [],
+      quickWins: ['Use MTD software', 'Reconcile monthly', 'Submit early']
     },
     {
       id: 'dividend-vouchers',
@@ -79,7 +133,16 @@ export const companyDeadlines: TaxDeadline[] = (() => {
       description: 'Maintain proper dividend voucher records for any dividends paid to shareholders.',
       latePenalty: 'Potential HMRC investigation and penalties',
       userTypes: ['company-director'],
-      priority: 'low'
+      priority: 'low',
+      preparationStart: `${nextAccountingYear}-01-01`,
+      preparationTips: 'Issue dividend vouchers before payment. Ensure sufficient distributable reserves. Consider tax efficiency of dividends vs salary.',
+      lateSubmissionGuidance: 'Maintain records retrospectively. Ensure all dividends are properly documented and voted upon.',
+      requiredDocuments: ['Dividend vouchers', 'Board minutes', 'Distributable reserves calculation', 'Company accounts'],
+      estimatedTime: '15-30 minutes per dividend',
+      hmrcLink: 'https://www.gov.uk/tax-on-dividends',
+      dependencies: ['annual-accounts'],
+      relatedDeadlines: ['ct600'],
+      quickWins: ['Issue vouchers immediately', 'Check distributable reserves', 'Document board decisions']
     },
     {
       id: 'director-loan-account',
@@ -89,7 +152,54 @@ export const companyDeadlines: TaxDeadline[] = (() => {
       description: 'Review and settle any director loan account balances to avoid S455 tax charges.',
       latePenalty: '33.75% tax charge on overdrawn loan accounts',
       userTypes: ['company-director'],
-      priority: 'medium'
+      priority: 'medium',
+      preparationStart: `${nextAccountingYear}-06-01`,
+      preparationTips: 'Monitor loan account balance monthly. Consider declaring dividends or bonuses to clear overdrawn balances before year end.',
+      lateSubmissionGuidance: 'Clear overdrawn balance within 9 months of year end to avoid S455 charge. Consider all options including salary/dividend.',
+      requiredDocuments: ['Loan account records', 'Company bank statements', 'Board minutes', 'Dividend/salary calculations'],
+      estimatedTime: '1-2 hours',
+      hmrcLink: 'https://www.gov.uk/directors-loans',
+      dependencies: ['annual-accounts'],
+      relatedDeadlines: ['ct-payment', 'dividend-vouchers'],
+      quickWins: ['Monitor monthly', 'Plan year-end clearance', 'Consider tax-efficient clearance methods']
+    },
+    {
+      id: 'p11d-submission',
+      title: 'P11D Submission',
+      date: `${nextAccountingYear}-07-06`,
+      category: 'paye',
+      description: 'Submit P11D forms for benefits in kind provided to employees and directors.',
+      latePenalty: '£300 per employee plus daily penalties',
+      userTypes: ['company-director'],
+      priority: 'medium',
+      preparationStart: `${nextAccountingYear}-05-01`,
+      preparationTips: 'Record all benefits throughout the year including company cars, private medical insurance, and expense payments.',
+      lateSubmissionGuidance: 'Submit immediately as penalties are substantial and increase daily. Consider voluntary payrolling to avoid P11Ds.',
+      requiredDocuments: ['Benefit records', 'Car benefit details', 'Expense payment records', 'Medical insurance details'],
+      estimatedTime: '1-3 hours per employee',
+      hmrcLink: 'https://www.gov.uk/employer-reporting-expenses-benefits',
+      dependencies: ['paye-submission'],
+      relatedDeadlines: ['class-1a-nic'],
+      quickWins: ['Use payrolling', 'Record benefits monthly', 'Submit online']
+    },
+    {
+      id: 'class-1a-nic',
+      title: 'Class 1A National Insurance',
+      date: `${nextAccountingYear}-07-22`,
+      category: 'paye',
+      description: 'Pay Class 1A National Insurance on benefits in kind reported on P11D forms.',
+      latePenalty: 'Interest and penalties on late payment',
+      userTypes: ['company-director'],
+      priority: 'medium',
+      preparationStart: `${nextAccountingYear}-07-01`,
+      preparationTips: 'Calculate based on P11D submissions. Current rate is 13.8% of benefit value. Consider payrolling to spread cost.',
+      lateSubmissionGuidance: 'Pay immediately to avoid interest charges. Set up direct debit for future payments.',
+      requiredDocuments: ['P11D forms', 'Class 1A calculation', 'Payment confirmation'],
+      estimatedTime: '30 minutes',
+      hmrcLink: 'https://www.gov.uk/class-1a-national-insurance',
+      dependencies: ['p11d-submission'],
+      relatedDeadlines: ['p11d-submission'],
+      quickWins: ['Calculate from P11Ds', 'Set up direct debit', 'Consider payrolling benefits']
     }
   ];
 })();
