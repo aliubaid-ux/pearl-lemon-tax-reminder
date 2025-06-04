@@ -8,6 +8,8 @@ import UserOnboarding from '@/components/UserOnboarding';
 import KeyboardShortcuts from '@/components/KeyboardShortcuts';
 import GlobalSearch from '@/components/GlobalSearch';
 import DeadlineFilters from '@/components/DeadlineFilters';
+import { getTaxDeadlines } from '@/utils/taxDeadlines';
+import { TaxDeadline } from '@/types/tax';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calendar, BarChart3 } from 'lucide-react';
@@ -17,12 +19,21 @@ const Index: React.FC = () => {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState(new Date());
+  const [deadlines, setDeadlines] = useState<TaxDeadline[]>([]);
+  const [filteredDeadlines, setFilteredDeadlines] = useState<TaxDeadline[]>([]);
 
   useEffect(() => {
     const hasCompletedOnboarding = localStorage.getItem('uk-tax-doctor-onboarding-complete');
     if (!hasCompletedOnboarding) {
       setShowOnboarding(true);
     }
+
+    // Load deadlines - default to 'both' for all deadlines
+    const userType = localStorage.getItem('uk-tax-doctor-user-type') || 'both';
+    const loadedDeadlines = getTaxDeadlines(userType as any);
+    setDeadlines(loadedDeadlines);
+    setFilteredDeadlines(loadedDeadlines);
 
     // Keyboard shortcuts
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -51,6 +62,11 @@ const Index: React.FC = () => {
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);
     localStorage.setItem('uk-tax-doctor-onboarding-complete', 'true');
+  };
+
+  const handleFilterChange = (filtered: TaxDeadline[]) => {
+    setFilteredDeadlines(filtered);
+    setShowFilters(false);
   };
 
   return (
@@ -86,8 +102,9 @@ const Index: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <TaxCalendar 
-                  onOpenSearch={() => setShowSearch(true)}
-                  onOpenFilters={() => setShowFilters(true)}
+                  deadlines={filteredDeadlines}
+                  selectedMonth={selectedMonth}
+                  onMonthChange={setSelectedMonth}
                 />
               </CardContent>
             </Card>
@@ -108,14 +125,16 @@ const Index: React.FC = () => {
       />
 
       <GlobalSearch
+        deadlines={deadlines}
         isOpen={showSearch}
         onClose={() => setShowSearch(false)}
       />
 
       <DeadlineFilters
+        deadlines={deadlines}
         isOpen={showFilters}
         onClose={() => setShowFilters(false)}
-        onFiltersChange={() => {}}
+        onFilterChange={handleFilterChange}
       />
     </div>
   );
