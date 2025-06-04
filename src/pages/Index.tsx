@@ -13,6 +13,7 @@ import SearchFilterBar from '@/components/SearchFilterBar';
 import TaxYearSelector from '@/components/TaxYearSelector';
 import DeadlineTemplates from '@/components/DeadlineTemplates';
 import SettingsModal from '@/components/SettingsModal';
+import SmartDeadlineGroups from '@/components/SmartDeadlineGroups';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
 import { useToast } from '@/hooks/use-toast';
@@ -138,7 +139,6 @@ const Index = () => {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {/* ... keep existing code (quick stats cards with dark mode classes) */}
           {isLoading ? (
             Array.from({ length: 3 }).map((_, i) => (
               <Card key={i} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl">
@@ -211,13 +211,12 @@ const Index = () => {
         <Tabs defaultValue="calendar" className="space-y-6">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="calendar">Calendar View</TabsTrigger>
-            <TabsTrigger value="deadlines">Deadlines</TabsTrigger>
+            <TabsTrigger value="deadlines">Smart Deadlines</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
           </TabsList>
           
           <TabsContent value="calendar" className="space-y-6">
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-              {/* Enhanced Calendar View */}
               <div className="xl:col-span-2">
                 <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl">
                   <CardHeader className="border-b border-gray-100 dark:border-gray-700">
@@ -236,7 +235,6 @@ const Index = () => {
                     </div>
                   </CardHeader>
                   <CardContent className="p-6">
-                    {/* ... keep existing code (calendar content) */}
                     {isLoading ? (
                       <div className="space-y-4">
                         <Skeleton className="h-80 w-full" />
@@ -256,9 +254,7 @@ const Index = () => {
                 </Card>
               </div>
 
-              {/* Enhanced Sidebar */}
               <div className="space-y-8">
-                {/* Upcoming Deadlines */}
                 <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl">
                   <CardHeader className="border-b border-gray-100 dark:border-gray-700">
                     <CardTitle className="flex items-center gap-3 text-gray-900 dark:text-white">
@@ -272,7 +268,6 @@ const Index = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="p-6">
-                    {/* ... keep existing code (upcoming deadlines content) */}
                     {isLoading ? (
                       <div className="space-y-4">
                         {Array.from({ length: 3 }).map((_, i) => (
@@ -316,29 +311,34 @@ const Index = () => {
                   </CardContent>
                 </Card>
 
-                {/* Quick Actions */}
                 <QuickActionsCard />
               </div>
             </div>
           </TabsContent>
           
           <TabsContent value="deadlines" className="space-y-6">
-            <div className="grid grid-cols-1 gap-4">
-              {filteredDeadlines.length > 0 ? (
-                filteredDeadlines.map((deadline) => (
-                  <DeadlineCard key={deadline.id} deadline={deadline} />
-                ))
-              ) : (
-                <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl">
-                  <CardContent className="p-8 text-center">
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">No deadlines found</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
-                      Try adjusting your search criteria or filters.
-                    </p>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
+            {isLoading ? (
+              <div className="space-y-6">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <Card key={i} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl">
+                    <CardContent className="p-6">
+                      <Skeleton className="h-8 w-48 mb-4" />
+                      <div className="space-y-4">
+                        {Array.from({ length: 2 }).map((_, j) => (
+                          <div key={j} className="border-l-4 border-gray-200 p-4 space-y-2">
+                            <Skeleton className="h-4 w-32" />
+                            <Skeleton className="h-3 w-24" />
+                            <Skeleton className="h-3 w-full" />
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <SmartDeadlineGroups deadlines={filteredDeadlines} />
+            )}
           </TabsContent>
           
           <TabsContent value="templates" className="space-y-6">
