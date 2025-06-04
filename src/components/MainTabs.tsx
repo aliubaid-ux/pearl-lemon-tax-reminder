@@ -1,18 +1,11 @@
 
 import React from 'react';
-import { Calendar, Calculator, Settings, Bell, FileText } from 'lucide-react';
+import { Calendar, FileText } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import TaxCalendar from '@/components/TaxCalendar';
 import SmartDeadlineGroups from '@/components/SmartDeadlineGroups';
-import VATThresholdMonitor from '@/components/VATThresholdMonitor';
-import PenaltyCalculator from '@/components/PenaltyCalculator';
-import EmploymentStatusChecker from '@/components/EmploymentStatusChecker';
-import TradingAllowanceCalculator from '@/components/TradingAllowanceCalculator';
-import EmailReminders from '@/components/EmailReminders';
-import DeadlineTemplates from '@/components/DeadlineTemplates';
-import AccessibilityFeatures from '@/components/AccessibilityFeatures';
 import { exportToCSV, printCalendar } from '@/utils/exportUtils';
 
 interface MainTabsProps {
@@ -32,7 +25,7 @@ const MainTabs: React.FC<MainTabsProps> = ({
 }) => {
   return (
     <Tabs defaultValue="deadlines" className="space-y-8 animate-fade-in">
-      <TabsList className="grid w-full grid-cols-4 h-14 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg">
+      <TabsList className="grid w-full grid-cols-2 h-14 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg">
         <TabsTrigger value="deadlines" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">
           <FileText className="h-4 w-4 mr-2" />
           All Deadlines
@@ -40,14 +33,6 @@ const MainTabs: React.FC<MainTabsProps> = ({
         <TabsTrigger value="calendar" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">
           <Calendar className="h-4 w-4 mr-2" />
           Calendar View
-        </TabsTrigger>
-        <TabsTrigger value="tools" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">
-          <Calculator className="h-4 w-4 mr-2" />
-          Calculators
-        </TabsTrigger>
-        <TabsTrigger value="settings" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">
-          <Settings className="h-4 w-4 mr-2" />
-          Settings
         </TabsTrigger>
       </TabsList>
       
@@ -98,54 +83,6 @@ const MainTabs: React.FC<MainTabsProps> = ({
             </div>
           </CardContent>
         </Card>
-      </TabsContent>
-      
-      <TabsContent value="tools">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <PenaltyCalculator />
-          <VATThresholdMonitor />
-          <EmploymentStatusChecker />
-          <TradingAllowanceCalculator />
-        </div>
-      </TabsContent>
-      
-      <TabsContent value="settings">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <EmailReminders />
-          <AccessibilityFeatures />
-          <Card className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-gray-900 dark:text-white">Data Management</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => exportToCSV(filteredDeadlines)}
-              >
-                Export Calendar Data
-              </Button>
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => printCalendar(filteredDeadlines, userType)}
-              >
-                Print Calendar
-              </Button>
-              <Button 
-                variant="outline" 
-                className="w-full border-red-200 hover:bg-red-50 dark:border-red-700 dark:hover:bg-red-900/20"
-                onClick={() => {
-                  localStorage.removeItem('uk-tax-calendar-data');
-                  window.location.reload();
-                }}
-              >
-                Reset All Data
-              </Button>
-            </CardContent>
-          </Card>
-          <DeadlineTemplates />
-        </div>
       </TabsContent>
     </Tabs>
   );

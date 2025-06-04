@@ -8,6 +8,11 @@ import CommonTaxIssues from './pages/CommonTaxIssues';
 import LateSubmissionTemplates from './components/LateSubmissionTemplates';
 import HMRCGuidance from './components/HMRCGuidance';
 import DocumentationChecklist from './components/DocumentationChecklist';
+import PenaltyCalculatorPage from './pages/PenaltyCalculatorPage';
+import VATCalculatorPage from './pages/VATCalculatorPage';
+import EmploymentStatusPage from './pages/EmploymentStatusPage';
+import TradingAllowancePage from './pages/TradingAllowancePage';
+import SettingsPage from './pages/SettingsPage';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -15,7 +20,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { Calculator, FileText, Settings } from 'lucide-react';
+import { Calculator, FileText, Settings, Wrench } from 'lucide-react';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -59,6 +64,55 @@ function App() {
                     <NavigationMenuItem>
                       <NavigationMenuTrigger className="font-medium text-gray-700 hover:text-blue-600">
                         <Calculator className="h-4 w-4 mr-2" />
+                        Tools
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-80 p-4 bg-white border rounded-lg shadow-lg">
+                          <div className="grid gap-3">
+                            <NavLink to="/penalty-calculator" className="flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 transition-colors group">
+                              <div className="p-2 bg-red-100 rounded-lg group-hover:bg-red-200">
+                                <Calculator className="h-4 w-4 text-red-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">Penalty Calculator</div>
+                                <div className="text-sm text-gray-600">Calculate late filing penalties</div>
+                              </div>
+                            </NavLink>
+                            <NavLink to="/vat-calculator" className="flex items-center gap-3 p-3 rounded-lg hover:bg-green-50 transition-colors group">
+                              <div className="p-2 bg-green-100 rounded-lg group-hover:bg-green-200">
+                                <Calculator className="h-4 w-4 text-green-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">VAT Calculator</div>
+                                <div className="text-sm text-gray-600">Monitor VAT threshold</div>
+                              </div>
+                            </NavLink>
+                            <NavLink to="/employment-status" className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 transition-colors group">
+                              <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200">
+                                <Wrench className="h-4 w-4 text-blue-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">Employment Status</div>
+                                <div className="text-sm text-gray-600">Check your work status</div>
+                              </div>
+                            </NavLink>
+                            <NavLink to="/trading-allowance" className="flex items-center gap-3 p-3 rounded-lg hover:bg-purple-50 transition-colors group">
+                              <div className="p-2 bg-purple-100 rounded-lg group-hover:bg-purple-200">
+                                <Calculator className="h-4 w-4 text-purple-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">Trading Allowance</div>
+                                <div className="text-sm text-gray-600">Optimize your allowances</div>
+                              </div>
+                            </NavLink>
+                          </div>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger className="font-medium text-gray-700 hover:text-blue-600">
+                        <FileText className="h-4 w-4 mr-2" />
                         Resources
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
@@ -104,6 +158,15 @@ function App() {
                         </div>
                       </NavigationMenuContent>
                     </NavigationMenuItem>
+
+                    <NavigationMenuItem>
+                      <NavLink to="/settings" className={({ isActive }) => 
+                        `font-medium transition-colors px-3 py-2 rounded-md flex items-center gap-2 ${isActive ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"}`
+                      }>
+                        <Settings className="h-4 w-4" />
+                        Settings
+                      </NavLink>
+                    </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenu>
               </div>
@@ -126,15 +189,51 @@ function App() {
                 } onClick={() => setIsMenuOpen(false)}>
                   Dashboard
                 </NavLink>
-                <NavLink to="/common-tax-issues" className={({ isActive }) => 
+                <div className="space-y-2 pl-4">
+                  <p className="text-sm font-medium text-gray-500">Tools</p>
+                  <NavLink to="/penalty-calculator" className={({ isActive }) => 
+                    `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
+                  } onClick={() => setIsMenuOpen(false)}>
+                    Penalty Calculator
+                  </NavLink>
+                  <NavLink to="/vat-calculator" className={({ isActive }) => 
+                    `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
+                  } onClick={() => setIsMenuOpen(false)}>
+                    VAT Calculator
+                  </NavLink>
+                  <NavLink to="/employment-status" className={({ isActive }) => 
+                    `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
+                  } onClick={() => setIsMenuOpen(false)}>
+                    Employment Status
+                  </NavLink>
+                  <NavLink to="/trading-allowance" className={({ isActive }) => 
+                    `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
+                  } onClick={() => setIsMenuOpen(false)}>
+                    Trading Allowance
+                  </NavLink>
+                </div>
+                <div className="space-y-2 pl-4">
+                  <p className="text-sm font-medium text-gray-500">Resources</p>
+                  <NavLink to="/common-tax-issues" className={({ isActive }) => 
+                    `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
+                  } onClick={() => setIsMenuOpen(false)}>
+                    Common Issues
+                  </NavLink>
+                  <NavLink to="/hmrc-guidance" className={({ isActive }) => 
+                    `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
+                  } onClick={() => setIsMenuOpen(false)}>
+                    HMRC Guidance
+                  </NavLink>
+                  <NavLink to="/documentation-checklist" className={({ isActive }) => 
+                    `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
+                  } onClick={() => setIsMenuOpen(false)}>
+                    Documentation
+                  </NavLink>
+                </div>
+                <NavLink to="/settings" className={({ isActive }) => 
                   `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
                 } onClick={() => setIsMenuOpen(false)}>
-                  Common Issues
-                </NavLink>
-                <NavLink to="/hmrc-guidance" className={({ isActive }) => 
-                  `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
-                } onClick={() => setIsMenuOpen(false)}>
-                  HMRC Guidance
+                  Settings
                 </NavLink>
               </div>
             )}
@@ -144,6 +243,11 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/penalty-calculator" element={<PenaltyCalculatorPage />} />
+            <Route path="/vat-calculator" element={<VATCalculatorPage />} />
+            <Route path="/employment-status" element={<EmploymentStatusPage />} />
+            <Route path="/trading-allowance" element={<TradingAllowancePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
             <Route path="/common-tax-issues" element={<CommonTaxIssues />} />
             <Route path="/late-submission-templates" element={
               <div className="container mx-auto py-8 px-4">
@@ -161,14 +265,7 @@ function App() {
                 </div>
               </div>
             } />
-            <Route path="/documentation-checklist" element={
-              <div className="container mx-auto py-8 px-4">
-                <div className="max-w-4xl mx-auto">
-                  <h1 className="text-4xl font-bold text-gray-900 mb-6">Documentation Checklist</h1>
-                  <DocumentationChecklist />
-                </div>
-              </div>
-            } />
+            <Route path="/documentation-checklist" element={<DocumentationChecklist />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

@@ -5,9 +5,8 @@ import { getTaxDeadlines } from '@/utils/taxDeadlines';
 import { loadUserData, saveUserData } from '@/utils/storage';
 import UserTypeSelector from '@/components/UserTypeSelector';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import MainTabs from '@/components/MainTabs';
-import { Button } from '@/components/ui/button';
-import { AlertTriangle, Calendar, CheckCircle, ArrowRight } from 'lucide-react';
+import SmartDeadlineGroups from '@/components/SmartDeadlineGroups';
+import { AlertTriangle, CheckCircle, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
@@ -46,18 +45,19 @@ const Index = () => {
     });
   };
 
-  const scrollToTabs = () => {
-    const tabsElement = document.querySelector('[role="tablist"]');
-    if (tabsElement) {
-      tabsElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Simple Header with Theme Toggle */}
-        <div className="flex items-center justify-end mb-8">
+        {/* Header with Theme Toggle */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              Welcome to Your Tax Dashboard
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300">
+              Stay on top of your UK tax deadlines with personalized reminders and tools
+            </p>
+          </div>
           <ThemeToggle />
         </div>
 
@@ -133,36 +133,19 @@ const Index = () => {
           </Card>
         </section>
 
-        {/* Step 3: Access Tools */}
+        {/* Step 3: All Deadlines */}
         <section className="mb-12">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Step 3: Access Your Tax Tools
+              Step 3: Complete Deadlines Calendar
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-lg">
-              Everything you need for tax management in one place
+              All your tax deadlines organized by category and importance
             </p>
           </div>
           
-          <div className="text-center">
-            <Button 
-              onClick={scrollToTabs}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
-            >
-              <ArrowRight className="h-5 w-5 mr-2" />
-              Explore Tax Tools Below
-            </Button>
-          </div>
+          <SmartDeadlineGroups deadlines={filteredDeadlines} />
         </section>
-
-        {/* Main Tools */}
-        <MainTabs
-          filteredDeadlines={filteredDeadlines}
-          upcomingDeadlines={upcomingDeadlines}
-          selectedMonth={new Date()}
-          onMonthChange={() => {}}
-          userType={userType}
-        />
 
         {/* Footer */}
         <footer className="mt-16 text-center text-gray-500 dark:text-gray-400">
