@@ -8,6 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils';
 import { TaxDeadline } from '@/types/tax';
 import { AlertTriangle, Clock, Info, Eye, EyeOff } from 'lucide-react';
+import CalendarSidebar from './CalendarSidebar';
 
 interface TaxCalendarProps {
   deadlines: TaxDeadline[];
@@ -148,115 +149,123 @@ const TaxCalendar: React.FC<TaxCalendarProps> = ({ deadlines, selectedMonth, onM
   };
 
   return (
-    <div className="space-y-6">
-      {/* Calendar Controls */}
-      <div className="flex flex-wrap gap-4 items-center justify-between">
-        <div className="flex flex-wrap gap-2">
-          <Button
-            variant={showPreparationDates ? "default" : "outline"}
-            size="sm"
-            onClick={() => setShowPreparationDates(!showPreparationDates)}
-          >
-            {showPreparationDates ? <Eye className="h-3 w-3 mr-1" /> : <EyeOff className="h-3 w-3 mr-1" />}
-            Preparation Dates
-          </Button>
-          
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" size="sm">
-                Categories {selectedCategories.length > 0 && `(${selectedCategories.length})`}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-64" align="start">
-              <div className="space-y-2">
-                <h4 className="font-semibold text-sm">Filter by Category</h4>
-                {categories.map(category => (
-                  <label key={category} className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={selectedCategories.includes(category)}
-                      onChange={() => toggleCategory(category)}
-                      className="rounded border-gray-300"
-                    />
-                    <span className="text-sm capitalize">
-                      {category.replace('-', ' ')}
-                    </span>
-                  </label>
-                ))}
-                {selectedCategories.length > 0 && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setSelectedCategories([])}
-                    className="w-full mt-2"
-                  >
-                    Clear All
-                  </Button>
-                )}
+    <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+      {/* Main Calendar - now takes 3 columns instead of full width */}
+      <div className="xl:col-span-3 space-y-6">
+        {/* Calendar Controls */}
+        <div className="flex flex-wrap gap-4 items-center justify-between">
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant={showPreparationDates ? "default" : "outline"}
+              size="sm"
+              onClick={() => setShowPreparationDates(!showPreparationDates)}
+            >
+              {showPreparationDates ? <Eye className="h-3 w-3 mr-1" /> : <EyeOff className="h-3 w-3 mr-1" />}
+              Preparation Dates
+            </Button>
+            
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm">
+                  Categories {selectedCategories.length > 0 && `(${selectedCategories.length})`}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-64" align="start">
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-sm">Filter by Category</h4>
+                  {categories.map(category => (
+                    <label key={category} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={selectedCategories.includes(category)}
+                        onChange={() => toggleCategory(category)}
+                        className="rounded border-gray-300"
+                      />
+                      <span className="text-sm capitalize">
+                        {category.replace('-', ' ')}
+                      </span>
+                    </label>
+                  ))}
+                  {selectedCategories.length > 0 && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSelectedCategories([])}
+                      className="w-full mt-2"
+                    >
+                      Clear All
+                    </Button>
+                  )}
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
+
+        <Calendar
+          mode="single"
+          selected={selectedMonth}
+          onSelect={(date) => date && onMonthChange(date)}
+          modifiers={modifiers}
+          modifiersStyles={modifiersStyles}
+          className={cn("p-3 pointer-events-auto w-full")}
+          showOutsideDays={true}
+          components={{
+            Day: ({ date, ...props }) => {
+              return (
+                <div {...props} className={cn("hover:scale-110 transition-transform duration-200")}>
+                  {customDayContent(date)}
+                </div>
+              );
+            }
+          }}
+        />
+        
+        {/* Enhanced Legend with category filtering */}
+        <div className="bg-gray-50 rounded-lg p-4">
+          <h4 className="font-semibold text-gray-900 mb-3 text-sm">Calendar Legend</h4>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-4 h-4 bg-red-500 rounded shadow-sm"></div>
+              <div>
+                <span className="text-sm font-medium text-gray-700">Tax Deadline</span>
+                <p className="text-xs text-gray-500">Final submission date</p>
               </div>
-            </PopoverContent>
-          </Popover>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-4 h-4 bg-blue-500 rounded shadow-sm"></div>
+              <div>
+                <span className="text-sm font-medium text-gray-700">Preparation Start</span>
+                <p className="text-xs text-gray-500">Begin gathering documents</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-4 h-4 bg-amber-500 rounded shadow-sm animate-pulse"></div>
+              <div>
+                <span className="text-sm font-medium text-gray-700">Urgent (30 days)</span>
+                <p className="text-xs text-gray-500">Requires immediate attention</p>
+              </div>
+            </div>
+          </div>
+          
+          {selectedCategories.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-gray-200">
+              <p className="text-xs text-gray-600 mb-2">Filtered by:</p>
+              <div className="flex flex-wrap gap-1">
+                {selectedCategories.map(category => (
+                  <Badge key={category} variant="secondary" className="text-xs">
+                    {category.replace('-', ' ')}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      <Calendar
-        mode="single"
-        selected={selectedMonth}
-        onSelect={(date) => date && onMonthChange(date)}
-        modifiers={modifiers}
-        modifiersStyles={modifiersStyles}
-        className={cn("p-3 pointer-events-auto w-full")}
-        showOutsideDays={true}
-        components={{
-          Day: ({ date, ...props }) => {
-            return (
-              <div {...props} className={cn("hover:scale-110 transition-transform duration-200")}>
-                {customDayContent(date)}
-              </div>
-            );
-          }
-        }}
-      />
-      
-      {/* Enhanced Legend with category filtering */}
-      <div className="bg-gray-50 rounded-lg p-4">
-        <h4 className="font-semibold text-gray-900 mb-3 text-sm">Calendar Legend</h4>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-4 h-4 bg-red-500 rounded shadow-sm"></div>
-            <div>
-              <span className="text-sm font-medium text-gray-700">Tax Deadline</span>
-              <p className="text-xs text-gray-500">Final submission date</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-4 h-4 bg-blue-500 rounded shadow-sm"></div>
-            <div>
-              <span className="text-sm font-medium text-gray-700">Preparation Start</span>
-              <p className="text-xs text-gray-500">Begin gathering documents</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-4 h-4 bg-amber-500 rounded shadow-sm animate-pulse"></div>
-            <div>
-              <span className="text-sm font-medium text-gray-700">Urgent (30 days)</span>
-              <p className="text-xs text-gray-500">Requires immediate attention</p>
-            </div>
-          </div>
-        </div>
-        
-        {selectedCategories.length > 0 && (
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <p className="text-xs text-gray-600 mb-2">Filtered by:</p>
-            <div className="flex flex-wrap gap-1">
-              {selectedCategories.map(category => (
-                <Badge key={category} variant="secondary" className="text-xs">
-                  {category.replace('-', ' ')}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
+      {/* Sidebar - new addition */}
+      <div className="xl:col-span-1">
+        <CalendarSidebar deadlines={deadlines} selectedMonth={selectedMonth} />
       </div>
     </div>
   );

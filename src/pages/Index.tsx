@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Calendar, AlertTriangle, Clock, Users, Building2, Settings, Sparkles, Download, Mail } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +15,9 @@ import TaxYearSelector from '@/components/TaxYearSelector';
 import DeadlineTemplates from '@/components/DeadlineTemplates';
 import SettingsModal from '@/components/SettingsModal';
 import SmartDeadlineGroups from '@/components/SmartDeadlineGroups';
+import LateSubmissionTemplates from '@/components/LateSubmissionTemplates';
+import HMRCGuidance from '@/components/HMRCGuidance';
+import DocumentationChecklist from '@/components/DocumentationChecklist';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
 import { useToast } from '@/hooks/use-toast';
