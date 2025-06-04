@@ -12,6 +12,10 @@ import SearchFilterBar from '@/components/SearchFilterBar';
 import TaxYearSelector from '@/components/TaxYearSelector';
 import DeadlineTemplates from '@/components/DeadlineTemplates';
 import SmartDeadlineGroups from '@/components/SmartDeadlineGroups';
+import VATThresholdMonitor from '@/components/VATThresholdMonitor';
+import PenaltyCalculator from '@/components/PenaltyCalculator';
+import EmploymentStatusChecker from '@/components/EmploymentStatusChecker';
+import TradingAllowanceCalculator from '@/components/TradingAllowanceCalculator';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
 import { useToast } from '@/hooks/use-toast';
@@ -212,9 +216,11 @@ const Index = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="calendar" className="space-y-8 animate-fade-in">
-          <TabsList className="grid w-full grid-cols-3 h-14 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg">
+          <TabsList className="grid w-full grid-cols-5 h-14 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg">
             <TabsTrigger value="calendar" className="text-lg font-medium rounded-xl">Calendar</TabsTrigger>
             <TabsTrigger value="deadlines" className="text-lg font-medium rounded-xl">Deadlines</TabsTrigger>
+            <TabsTrigger value="tools" className="text-lg font-medium rounded-xl">Tax Tools</TabsTrigger>
+            <TabsTrigger value="checkers" className="text-lg font-medium rounded-xl">Calculators</TabsTrigger>
             <TabsTrigger value="templates" className="text-lg font-medium rounded-xl">Templates</TabsTrigger>
           </TabsList>
           
@@ -273,6 +279,22 @@ const Index = () => {
           
           <TabsContent value="deadlines">
             <SmartDeadlineGroups deadlines={filteredDeadlines} />
+          </TabsContent>
+          
+          <TabsContent value="tools">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <VATThresholdMonitor />
+              <PenaltyCalculator />
+              <EmploymentStatusChecker />
+              <TradingAllowanceCalculator />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="checkers">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <TradingAllowanceCalculator />
+              <PenaltyCalculator />
+            </div>
           </TabsContent>
           
           <TabsContent value="templates">
