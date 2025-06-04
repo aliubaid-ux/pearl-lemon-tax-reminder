@@ -1,49 +1,30 @@
 
 import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { useKeyboardNavigation, defaultShortcuts } from '@/hooks/useKeyboardNavigation';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
-import { printCalendar, exportToCSV, shareDeadlines } from '@/utils/exportUtils';
 import { loadUserData, saveUserData } from '@/utils/storage';
 import UserTypeSelector from '@/components/UserTypeSelector';
-import TaxYearSelector from '@/components/TaxYearSelector';
-import SearchFilterBar from '@/components/SearchFilterBar';
-import DeadlineNotes from '@/components/DeadlineNotes';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import StatsCards from '@/components/StatsCards';
-import QuickStatusOverview from '@/components/QuickStatusOverview';
 import MainTabs from '@/components/MainTabs';
 import { Button } from '@/components/ui/button';
+import { AlertTriangle, Calendar, CheckCircle, ArrowRight } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 type UserType = 'self-employed' | 'company-director' | 'both';
 
 const Index = () => {
   const [userType, setUserType] = useState<UserType>('self-employed');
-  const [selectedMonth, setSelectedMonth] = useState(new Date());
-  const [currentTaxYear, setCurrentTaxYear] = useState(new Date().getFullYear());
-  const [searchQuery, setSearchQuery] = useState('');
   const [filteredDeadlines, setFilteredDeadlines] = useState(getTaxDeadlines('self-employed'));
-  const [selectedDeadline, setSelectedDeadline] = useState<any>(null);
   const { toast } = useToast();
 
-  // Keyboard shortcuts
-  const { showShortcuts } = useKeyboardNavigation({
-    ...defaultShortcuts,
-    'Ctrl+P': () => printCalendar(filteredDeadlines, userType),
-    'Ctrl+E': () => exportToCSV(filteredDeadlines),
-    'Ctrl+S': () => shareDeadlines(filteredDeadlines, userType),
-    '?': () => showShortcuts()
-  });
-  
   // Load user data on mount
   useEffect(() => {
     const userData = loadUserData();
     setUserType(userData.userType);
     setFilteredDeadlines(getTaxDeadlines(userData.userType));
   }, []);
-  
-  const deadlines = getTaxDeadlines(userType);
-  
+
   const upcomingDeadlines = filteredDeadlines
     .filter(deadline => {
       const deadlineDate = new Date(deadline.date);
@@ -52,14 +33,8 @@ const Index = () => {
       threeMonthsFromNow.setMonth(today.getMonth() + 3);
       return deadlineDate >= today && deadlineDate <= threeMonthsFromNow;
     })
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
-  const urgentDeadlines = upcomingDeadlines.filter(deadline => {
-    const deadlineDate = new Date(deadline.date);
-    const today = new Date();
-    const daysUntil = Math.ceil((deadlineDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-    return daysUntil <= 30;
-  });
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(0, 3);
 
   const handleUserTypeChange = (type: UserType) => {
     setUserType(type);
@@ -67,39 +42,14 @@ const Index = () => {
     saveUserData({ userType: type });
     toast({
       title: "Profile Updated!",
-      description: `Your calendar is now personalized for ${type.replace('-', ' ')} activities. Keep scrolling for the rest of the information.`,
+      description: `Your calendar is now personalized for ${type.replace('-', ' ')} activities.`,
     });
   };
 
-  const handleQuickAction = (action: string) => {
-    console.log('Quick action triggered:', action);
-    
-    // Navigate to specific tabs with proper delay
-    setTimeout(() => {
-      const tabElement = document.querySelector(`[value="${action}"]`) as HTMLElement;
-      if (tabElement) {
-        tabElement.click();
-        tabElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        console.log(`Navigated to ${action} tab`);
-        
-        toast({
-          title: "Section Opened",
-          description: `Showing ${action} section for you.`,
-        });
-      }
-    }, 200);
-
-    // Handle other actions
-    switch (action) {
-      case 'print':
-        printCalendar(filteredDeadlines, userType);
-        break;
-      case 'export':
-        exportToCSV(filteredDeadlines);
-        break;
-      case 'share':
-        shareDeadlines(filteredDeadlines, userType);
-        break;
+  const scrollToTabs = () => {
+    const tabsElement = document.querySelector('[role="tablist"]');
+    if (tabsElement) {
+      tabsElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
 
@@ -111,8 +61,8 @@ const Index = () => {
           <ThemeToggle />
         </div>
 
-        {/* User Type Selection - Step 1 */}
-        <section className="mb-8 animate-slide-up">
+        {/* Step 1: User Type Selection */}
+        <section className="mb-12 animate-slide-up">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               Step 1: Choose Your Profile
@@ -124,72 +74,97 @@ const Index = () => {
           <UserTypeSelector userType={userType} onUserTypeChange={handleUserTypeChange} />
         </section>
 
-        {/* Step 2 - Next Actions */}
-        <section className="mb-8">
+        {/* Step 2: Priority Deadlines */}
+        <section className="mb-12">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Step 2: View Your Tax Information
+              Step 2: Your Priority Deadlines
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-lg">
-              Access your deadlines, set reminders, and use tax calculators
+              Your most important upcoming tax deadlines
             </p>
+          </div>
+
+          <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-lg max-w-4xl mx-auto">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-3 text-xl">
+                <AlertTriangle className="h-6 w-6 text-amber-500" />
+                Next 3 Months
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {upcomingDeadlines.length > 0 ? (
+                <div className="space-y-4">
+                  {upcomingDeadlines.map((deadline) => (
+                    <div 
+                      key={deadline.id} 
+                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                    >
+                      <div className="flex-1">
+                        <h3 className="font-medium text-gray-900 dark:text-white">{deadline.title}</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          {new Date(deadline.date).toLocaleDateString('en-GB', { 
+                            weekday: 'long',
+                            day: 'numeric', 
+                            month: 'long',
+                            year: 'numeric'
+                          })}
+                        </p>
+                        {deadline.description && (
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                            {deadline.description}
+                          </p>
+                        )}
+                      </div>
+                      <Badge className={deadline.priority === 'high' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'}>
+                        {deadline.priority}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-3" />
+                  <p className="text-gray-600 dark:text-gray-300 font-medium">All caught up!</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">No urgent deadlines in the next 3 months</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Step 3: Access Tools */}
+        <section className="mb-12">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              Step 3: Access Your Tax Tools
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 text-lg">
+              Everything you need for tax management in one place
+            </p>
+          </div>
+          
+          <div className="text-center">
+            <Button 
+              onClick={scrollToTabs}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
+            >
+              <ArrowRight className="h-5 w-5 mr-2" />
+              Explore Tax Tools Below
+            </Button>
           </div>
         </section>
 
-        <QuickStatusOverview
-          upcomingDeadlines={upcomingDeadlines}
-          onDeadlineClick={setSelectedDeadline}
-          onShowAdvanced={() => {}}
-          onQuickAction={handleQuickAction}
-        />
-
-        {/* Deadline Notes Modal */}
-        {selectedDeadline && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-gray-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">{selectedDeadline.title}</h3>
-                  <Button variant="ghost" onClick={() => setSelectedDeadline(null)}>×</Button>
-                </div>
-                <DeadlineNotes deadline={selectedDeadline} />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Advanced Features */}
-        <div className="mb-8 animate-scale-in">
-          <TaxYearSelector
-            currentTaxYear={currentTaxYear}
-            onTaxYearChange={setCurrentTaxYear}
-          />
-        </div>
-
-        <div className="mb-8 animate-fade-in">
-          <SearchFilterBar
-            deadlines={deadlines}
-            onFilteredDeadlines={setFilteredDeadlines}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-          />
-        </div>
-
-        <StatsCards
-          urgentDeadlines={urgentDeadlines}
-          upcomingDeadlines={upcomingDeadlines}
-          userType={userType}
-        />
-
+        {/* Main Tools */}
         <MainTabs
           filteredDeadlines={filteredDeadlines}
           upcomingDeadlines={upcomingDeadlines}
-          selectedMonth={selectedMonth}
-          onMonthChange={setSelectedMonth}
+          selectedMonth={new Date()}
+          onMonthChange={() => {}}
           userType={userType}
         />
 
-        {/* Footer with correct year */}
+        {/* Footer */}
         <footer className="mt-16 text-center text-gray-500 dark:text-gray-400">
           <p className="text-sm">
             2025 UK Tax Calendar - Professional tax deadline management by Pearl Lemon Accountants
