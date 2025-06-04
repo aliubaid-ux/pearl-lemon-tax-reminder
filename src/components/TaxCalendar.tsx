@@ -49,8 +49,7 @@ const TaxCalendar: React.FC<TaxCalendarProps> = ({ deadlines, selectedMonth, onM
       backgroundColor: 'rgb(239 68 68)',
       color: 'white',
       fontWeight: 'bold',
-      borderRadius: '6px',
-      position: 'relative'
+      borderRadius: '6px'
     },
     preparation: {
       backgroundColor: 'rgb(59 130 246)',
@@ -126,7 +125,7 @@ const TaxCalendar: React.FC<TaxCalendarProps> = ({ deadlines, selectedMonth, onM
         components={{
           Day: ({ date, ...props }) => {
             return (
-              <div {...props} className={cn(props.className, "hover:scale-110 transition-transform duration-200")}>
+              <div {...props} className={cn("hover:scale-110 transition-transform duration-200")}>
                 {customDayContent(date)}
               </div>
             );
