@@ -68,7 +68,7 @@ const Index = () => {
     saveUserData({ userType: type });
     toast({
       title: "Profile Updated!",
-      description: `Your calendar is now personalized for ${type.replace('-', ' ')} activities.`,
+      description: `Your calendar is now personalized for ${type.replace('-', ' ')} activities. Keep scrolling for the rest of the information.`,
     });
   };
 
@@ -104,54 +104,12 @@ const Index = () => {
     }
   };
 
-  const handleDownloadCalendar = () => {
-    printCalendar(filteredDeadlines, userType);
-    toast({
-      title: "Downloading Tax Calendar",
-      description: "Your personalized tax calendar is being prepared for download.",
-    });
-  };
-
-  const handleExportToGoogleCalendar = () => {
-    // Create Google Calendar events for each deadline
-    const calendarEvents = filteredDeadlines.map(deadline => {
-      const deadlineDate = new Date(deadline.date);
-      const startDate = deadlineDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-      const endDate = new Date(deadlineDate.getTime() + 60 * 60 * 1000).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-      
-      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(deadline.title)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(deadline.description || 'Tax deadline reminder')}&location=UK`;
-    });
-
-    // Open the first event in Google Calendar (for demo)
-    if (calendarEvents.length > 0) {
-      window.open(calendarEvents[0], '_blank');
-      toast({
-        title: "Google Calendar Export",
-        description: `Opening Google Calendar with your tax deadlines. ${calendarEvents.length} events ready to add.`,
-      });
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Quick Action Bar */}
-        <div className="flex items-center justify-between mb-8 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
-          <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">PL Tax Reminder</h1>
-            <p className="text-gray-600 dark:text-gray-300">Professional Tax Management</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Button onClick={handleDownloadCalendar} className="bg-green-600 hover:bg-green-700">
-              <Download className="h-4 w-4 mr-2" />
-              Download Calendar
-            </Button>
-            <Button onClick={handleExportToGoogleCalendar} variant="outline" className="border-green-200 hover:bg-green-50">
-              <CalendarIcon className="h-4 w-4 mr-2" />
-              Add to Google Calendar
-            </Button>
-            <ThemeToggle />
-          </div>
+        {/* Simple Header with Theme Toggle */}
+        <div className="flex items-center justify-end mb-8">
+          <ThemeToggle />
         </div>
 
         {/* User Type Selection - Step 1 */}

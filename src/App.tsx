@@ -8,10 +8,20 @@ import SelfEmployedPage from './pages/SelfEmployedPage';
 import CompanyDirectorPage from './pages/CompanyDirectorPage';
 import BothProfilesPage from './pages/BothProfilesPage';
 import PenaltiesPage from './pages/PenaltiesPage';
+import CalendarViewPage from './pages/CalendarViewPage';
 import LateSubmissionTemplates from './components/LateSubmissionTemplates';
 import HMRCGuidance from './components/HMRCGuidance';
 import DocumentationChecklist from './components/DocumentationChecklist';
 import CommonTaxIssues from './pages/CommonTaxIssues';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
+import { Calculator, Settings, FileText, Bell, Calendar, Users, Building, UserCog, AlertTriangle } from 'lucide-react';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,47 +46,152 @@ function App() {
                   </svg>
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">PL Tax Reminder</h1>
-                  <p className="text-sm text-gray-600">Professional Tax Management</p>
+                  <h1 className="text-2xl font-bold text-gray-900">UK Tax Calendar</h1>
+                  <p className="text-sm text-gray-600">Professional Tax Deadline Management</p>
                 </div>
               </div>
 
-              <div className="hidden md:flex items-center space-x-8">
-                <NavLink to="/" className={({ isActive }) => 
-                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
-                }>
-                  Dashboard
-                </NavLink>
-                <NavLink to="/self-employed" className={({ isActive }) => 
-                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
-                }>
-                  Self-Employed
-                </NavLink>
-                <NavLink to="/company-director" className={({ isActive }) => 
-                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
-                }>
-                  Company Director
-                </NavLink>
-                <NavLink to="/both-profiles" className={({ isActive }) => 
-                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
-                }>
-                  Both
-                </NavLink>
-                <NavLink to="/penalties" className={({ isActive }) => 
-                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
-                }>
-                  Penalties
-                </NavLink>
-                <NavLink to="/common-tax-issues" className={({ isActive }) => 
-                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
-                }>
-                  Common Issues
-                </NavLink>
-                <NavLink to="/hmrc-guidance" className={({ isActive }) => 
-                  `font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`
-                }>
-                  HMRC Guidance
-                </NavLink>
+              <div className="hidden md:flex items-center">
+                <NavigationMenu>
+                  <NavigationMenuList className="space-x-2">
+                    <NavigationMenuItem>
+                      <NavLink to="/" className={({ isActive }) => 
+                        `font-medium transition-colors px-3 py-2 rounded-md ${isActive ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"}`
+                      }>
+                        Dashboard
+                      </NavLink>
+                    </NavigationMenuItem>
+
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger className="font-medium text-gray-700 hover:text-blue-600">
+                        <Users className="h-4 w-4 mr-2" />
+                        Profiles
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-80 p-4 bg-white border rounded-lg shadow-lg">
+                          <div className="grid gap-3">
+                            <NavLink to="/self-employed" className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 transition-colors group">
+                              <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200">
+                                <Users className="h-4 w-4 text-blue-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">Self-Employed</div>
+                                <div className="text-sm text-gray-600">Freelancers & sole traders</div>
+                              </div>
+                            </NavLink>
+                            <NavLink to="/company-director" className="flex items-center gap-3 p-3 rounded-lg hover:bg-green-50 transition-colors group">
+                              <div className="p-2 bg-green-100 rounded-lg group-hover:bg-green-200">
+                                <Building className="h-4 w-4 text-green-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">Company Director</div>
+                                <div className="text-sm text-gray-600">Business owners & directors</div>
+                              </div>
+                            </NavLink>
+                            <NavLink to="/both-profiles" className="flex items-center gap-3 p-3 rounded-lg hover:bg-purple-50 transition-colors group">
+                              <div className="p-2 bg-purple-100 rounded-lg group-hover:bg-purple-200">
+                                <UserCog className="h-4 w-4 text-purple-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">Both Profiles</div>
+                                <div className="text-sm text-gray-600">Self-employed + director</div>
+                              </div>
+                            </NavLink>
+                          </div>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+
+                    <NavigationMenuItem>
+                      <NavLink to="/calendar-view" className={({ isActive }) => 
+                        `font-medium transition-colors px-3 py-2 rounded-md flex items-center gap-2 ${isActive ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"}`
+                      }>
+                        <Calendar className="h-4 w-4" />
+                        Calendar
+                      </NavLink>
+                    </NavigationMenuItem>
+
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger className="font-medium text-gray-700 hover:text-blue-600">
+                        <Calculator className="h-4 w-4 mr-2" />
+                        Tax Tools
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-80 p-4 bg-white border rounded-lg shadow-lg">
+                          <div className="grid gap-3">
+                            <NavLink to="/penalties" className="flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 transition-colors group">
+                              <div className="p-2 bg-red-100 rounded-lg group-hover:bg-red-200">
+                                <AlertTriangle className="h-4 w-4 text-red-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">Penalty Calculator</div>
+                                <div className="text-sm text-gray-600">Calculate late submission penalties</div>
+                              </div>
+                            </NavLink>
+                            <NavLink to="/common-tax-issues" className="flex items-center gap-3 p-3 rounded-lg hover:bg-orange-50 transition-colors group">
+                              <div className="p-2 bg-orange-100 rounded-lg group-hover:bg-orange-200">
+                                <FileText className="h-4 w-4 text-orange-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">Common Issues</div>
+                                <div className="text-sm text-gray-600">Tax problems & solutions</div>
+                              </div>
+                            </NavLink>
+                            <NavLink to="/hmrc-guidance" className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 transition-colors group">
+                              <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200">
+                                <FileText className="h-4 w-4 text-blue-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">HMRC Guidance</div>
+                                <div className="text-sm text-gray-600">Official resources & links</div>
+                              </div>
+                            </NavLink>
+                          </div>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger className="font-medium text-gray-700 hover:text-blue-600">
+                        <Settings className="h-4 w-4 mr-2" />
+                        Settings
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-80 p-4 bg-white border rounded-lg shadow-lg">
+                          <div className="grid gap-3">
+                            <a href="#reminders" className="flex items-center gap-3 p-3 rounded-lg hover:bg-green-50 transition-colors group">
+                              <div className="p-2 bg-green-100 rounded-lg group-hover:bg-green-200">
+                                <Bell className="h-4 w-4 text-green-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">Email Reminders</div>
+                                <div className="text-sm text-gray-600">Set up deadline notifications</div>
+                              </div>
+                            </a>
+                            <NavLink to="/documentation-checklist" className="flex items-center gap-3 p-3 rounded-lg hover:bg-purple-50 transition-colors group">
+                              <div className="p-2 bg-purple-100 rounded-lg group-hover:bg-purple-200">
+                                <FileText className="h-4 w-4 text-purple-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">Documentation</div>
+                                <div className="text-sm text-gray-600">Required documents checklist</div>
+                              </div>
+                            </NavLink>
+                            <NavLink to="/late-submission-templates" className="flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors group">
+                              <div className="p-2 bg-amber-100 rounded-lg group-hover:bg-amber-200">
+                                <FileText className="h-4 w-4 text-amber-600" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">Templates</div>
+                                <div className="text-sm text-gray-600">Late submission letter templates</div>
+                              </div>
+                            </NavLink>
+                          </div>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
               </div>
 
               <button 
@@ -89,12 +204,18 @@ function App() {
               </button>
             </div>
 
+            {/* Mobile Menu */}
             {isMenuOpen && (
               <div className="md:hidden mt-4 space-y-3 pb-3 border-t pt-4">
                 <NavLink to="/" className={({ isActive }) => 
                   `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
                 } onClick={() => setIsMenuOpen(false)}>
                   Dashboard
+                </NavLink>
+                <NavLink to="/calendar-view" className={({ isActive }) => 
+                  `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
+                } onClick={() => setIsMenuOpen(false)}>
+                  Calendar View
                 </NavLink>
                 <NavLink to="/self-employed" className={({ isActive }) => 
                   `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
@@ -109,7 +230,7 @@ function App() {
                 <NavLink to="/both-profiles" className={({ isActive }) => 
                   `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
                 } onClick={() => setIsMenuOpen(false)}>
-                  Both
+                  Both Profiles
                 </NavLink>
                 <NavLink to="/penalties" className={({ isActive }) => 
                   `block font-medium transition-colors ${isActive ? "text-blue-600" : "text-gray-700"}`
@@ -134,6 +255,7 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/calendar-view" element={<CalendarViewPage />} />
             <Route path="/self-employed" element={<SelfEmployedPage />} />
             <Route path="/company-director" element={<CompanyDirectorPage />} />
             <Route path="/both-profiles" element={<BothProfilesPage />} />
