@@ -8,13 +8,15 @@ interface ModernCardProps {
   className?: string;
   variant?: 'default' | 'glass' | 'elevated' | 'minimal';
   hover?: boolean;
+  onClick?: () => void;
 }
 
 const ModernCard: React.FC<ModernCardProps> = ({ 
   children, 
   className, 
   variant = 'default',
-  hover = true 
+  hover = true,
+  onClick 
 }) => {
   const variants = {
     default: 'bg-white/90 backdrop-blur-sm border-white/20 shadow-lg',
@@ -24,14 +26,19 @@ const ModernCard: React.FC<ModernCardProps> = ({
   };
 
   const hoverEffect = hover ? 'hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1' : '';
+  const clickableStyles = onClick ? 'cursor-pointer' : '';
 
   return (
-    <Card className={cn(
-      'transition-all duration-300 ease-out',
-      variants[variant],
-      hoverEffect,
-      className
-    )}>
+    <Card 
+      className={cn(
+        'transition-all duration-300 ease-out',
+        variants[variant],
+        hoverEffect,
+        clickableStyles,
+        className
+      )}
+      onClick={onClick}
+    >
       {children}
     </Card>
   );

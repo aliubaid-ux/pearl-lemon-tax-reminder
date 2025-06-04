@@ -425,40 +425,43 @@ END:VCALENDAR`;
             </div>
           </div>
 
-          {/* Quick Stats */}
+          {/* Enhanced Quick Stats with Better Animations */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <ModernCard variant="glass" className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl text-white">
-                  <Target className="h-5 w-5" />
+            <ModernCard variant="glass" className="p-6 hover:scale-105 transition-transform duration-300">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl text-white shadow-lg">
+                  <Target className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Active Deadlines</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{filteredDeadlines.length}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Active Deadlines</p>
+                  <p className="text-3xl font-bold text-gray-900 dark:text-white">{filteredDeadlines.length}</p>
+                  <p className="text-xs text-gray-500">Personalized for you</p>
                 </div>
               </div>
             </ModernCard>
             
-            <ModernCard variant="glass" className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl text-white">
-                  <Clock className="h-5 w-5" />
+            <ModernCard variant="glass" className="p-6 hover:scale-105 transition-transform duration-300">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl text-white shadow-lg">
+                  <Clock className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Upcoming (3 months)</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{upcomingDeadlines.length}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Upcoming (3 months)</p>
+                  <p className="text-3xl font-bold text-gray-900 dark:text-white">{upcomingDeadlines.length}</p>
+                  <p className="text-xs text-gray-500">Requires attention</p>
                 </div>
               </div>
             </ModernCard>
             
-            <ModernCard variant="glass" className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-r from-red-500 to-pink-600 rounded-xl text-white">
-                  <AlertTriangle className="h-5 w-5" />
+            <ModernCard variant="glass" className="p-6 hover:scale-105 transition-transform duration-300">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-gradient-to-r from-red-500 to-pink-600 rounded-xl text-white shadow-lg">
+                  <AlertTriangle className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Urgent (1 week)</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{urgentCount}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Urgent (1 week)</p>
+                  <p className="text-3xl font-bold text-gray-900 dark:text-white">{urgentCount}</p>
+                  <p className="text-xs text-gray-500">Immediate action</p>
                 </div>
               </div>
             </ModernCard>
@@ -611,7 +614,9 @@ END:VCALENDAR`;
                           size="sm"
                           icon={ExternalLink}
                           onClick={() => window.open('https://www.gov.uk/government/organisations/hm-revenue-customs/services-information', '_blank')}
-                        />
+                        >
+                          View Details
+                        </AnimatedButton>
                       </div>
                     </div>
                   ))}

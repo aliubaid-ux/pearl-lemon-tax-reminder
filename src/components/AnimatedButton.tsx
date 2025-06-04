@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { LucideIcon } from 'lucide-react';
 
 interface AnimatedButtonProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   variant?: 'default' | 'primary' | 'glass' | 'minimal';
   size?: 'sm' | 'md' | 'lg';
   icon?: LucideIcon;
