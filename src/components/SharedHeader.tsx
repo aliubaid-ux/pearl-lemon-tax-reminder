@@ -60,136 +60,113 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-6xl">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-            {title}
+    <div className="container mx-auto px-4 py-4 max-w-7xl">
+      {/* Top Row: Logo and Navigation */}
+      <div className="flex items-center justify-between mb-6">
+        {/* Logo and Slogan */}
+        <div className="flex flex-col">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            UK Tax Doctor
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
-            {subtitle}
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Smart tax deadline management
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          {/* Desktop Navigation Menu with Fixed Styling */}
+
+        {/* Right Side Navigation */}
+        <div className="flex items-center gap-2">
+          {/* Simplified Desktop Navigation */}
           <div className="hidden lg:block">
             <NavigationMenu>
-              <NavigationMenuList>
+              <NavigationMenuList className="space-x-1">
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="bg-white/90 backdrop-blur-sm hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800">
-                    Tax Calculators
+                  <NavigationMenuTrigger className="text-sm bg-white/90 backdrop-blur-sm hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800">
+                    Calculators
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-[9999] border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg backdrop-blur-sm">
+                    <div className="grid gap-2 p-3 w-[300px] bg-white dark:bg-gray-800 z-[9999] border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg backdrop-blur-sm">
                       <NavigationMenuLink 
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                        className="block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/penalty-calculator')}
                       >
-                        <div className="text-sm font-medium leading-none">Penalty Calculator</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Calculate late filing and payment penalties
-                        </p>
+                        <div className="text-sm font-medium">Penalty Calculator</div>
+                        <p className="text-xs text-muted-foreground">Calculate penalties</p>
                       </NavigationMenuLink>
                       <NavigationMenuLink 
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                        className="block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/vat-calculator')}
                       >
-                        <div className="text-sm font-medium leading-none">VAT Calculator</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Calculate VAT amounts and check thresholds
-                        </p>
+                        <div className="text-sm font-medium">VAT Calculator</div>
+                        <p className="text-xs text-muted-foreground">Calculate VAT amounts</p>
                       </NavigationMenuLink>
                       <NavigationMenuLink 
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                        className="block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/trading-allowance')}
                       >
-                        <div className="text-sm font-medium leading-none">Trading Allowance</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Check if you qualify for trading allowance
-                        </p>
+                        <div className="text-sm font-medium">Trading Allowance</div>
+                        <p className="text-xs text-muted-foreground">Check allowance eligibility</p>
                       </NavigationMenuLink>
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="bg-white/90 backdrop-blur-sm hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800">
-                    Tax Resources
+                  <NavigationMenuTrigger className="text-sm bg-white/90 backdrop-blur-sm hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800">
+                    Resources
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-[9999] border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg backdrop-blur-sm">
+                    <div className="grid gap-2 p-3 w-[300px] bg-white dark:bg-gray-800 z-[9999] border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg backdrop-blur-sm">
                       <NavigationMenuLink 
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                        className="block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/common-tax-issues')}
                       >
-                        <div className="text-sm font-medium leading-none">Common Tax Issues</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Solutions for frequent tax problems
-                        </p>
+                        <div className="text-sm font-medium">Common Issues</div>
+                        <p className="text-xs text-muted-foreground">Tax problem solutions</p>
                       </NavigationMenuLink>
                       <NavigationMenuLink 
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                        className="block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/hmrc-support-guide')}
                       >
-                        <div className="text-sm font-medium leading-none">HMRC Support Guide</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          How to get help from HMRC
-                        </p>
+                        <div className="text-sm font-medium">HMRC Support</div>
+                        <p className="text-xs text-muted-foreground">Get help from HMRC</p>
                       </NavigationMenuLink>
                       <NavigationMenuLink 
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                        className="block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/common-mistakes')}
                       >
-                        <div className="text-sm font-medium leading-none">Common Mistakes</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Avoid these common tax filing errors
-                        </p>
+                        <div className="text-sm font-medium">Common Mistakes</div>
+                        <p className="text-xs text-muted-foreground">Avoid filing errors</p>
                       </NavigationMenuLink>
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="bg-white/90 backdrop-blur-sm hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800">
+                  <NavigationMenuTrigger className="text-sm bg-white/90 backdrop-blur-sm hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800">
                     Tools
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 w-[400px] bg-white dark:bg-gray-800 z-[9999] border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg backdrop-blur-sm">
+                    <div className="grid gap-2 p-3 w-[300px] bg-white dark:bg-gray-800 z-[9999] border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg backdrop-blur-sm">
                       <NavigationMenuLink 
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                        className="block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/employment-status')}
                       >
-                        <div className="text-sm font-medium leading-none">Employment Status</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Check your employment status
-                        </p>
+                        <div className="text-sm font-medium">Employment Status</div>
+                        <p className="text-xs text-muted-foreground">Check your status</p>
                       </NavigationMenuLink>
                       <NavigationMenuLink 
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                        className="block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/registration-tracker')}
                       >
-                        <div className="text-sm font-medium leading-none">Registration Tracker</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Track your tax registrations
-                        </p>
+                        <div className="text-sm font-medium">Registration Tracker</div>
+                        <p className="text-xs text-muted-foreground">Track registrations</p>
                       </NavigationMenuLink>
                       <NavigationMenuLink 
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
-                        onClick={() => navigate('/payments-on-account')}
-                      >
-                        <div className="text-sm font-medium leading-none">Payments on Account</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Understand advance tax payments
-                        </p>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink 
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                        className="block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         onClick={() => navigate('/')}
                       >
-                        <div className="text-sm font-medium leading-none">Calendar Dashboard</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          View all tax deadlines
-                        </p>
+                        <div className="text-sm font-medium">Calendar Dashboard</div>
+                        <p className="text-xs text-muted-foreground">View deadlines</p>
                       </NavigationMenuLink>
                     </div>
                   </NavigationMenuContent>
@@ -198,39 +175,39 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             </NavigationMenu>
           </div>
 
-          <AnimatedButton
-            variant="glass"
+          {/* Action Buttons */}
+          <Button
+            variant="ghost"
             size="sm"
-            icon={Home}
             onClick={() => navigate('/')}
-            className="hidden md:flex"
+            className="hidden md:flex items-center gap-2 text-sm"
           >
+            <Home className="h-4 w-4" />
             Dashboard
-          </AnimatedButton>
+          </Button>
 
           {showSearch && (
-            <AnimatedButton 
-              variant="glass"
+            <Button 
+              variant="ghost"
               size="sm" 
-              icon={Search}
               onClick={onOpenSearch}
-              className="hidden md:flex"
+              className="hidden md:flex items-center gap-2 text-sm"
             >
+              <Search className="h-4 w-4" />
               Search
-              <Badge variant="secondary" className="ml-2 text-xs">⌘K</Badge>
-            </AnimatedButton>
+            </Button>
           )}
           
           {showFilters && (
-            <AnimatedButton 
-              variant="glass"
+            <Button 
+              variant="ghost"
               size="sm" 
-              icon={Filter}
               onClick={onOpenFilters}
-              className="hidden md:flex"
+              className="hidden md:flex items-center gap-2 text-sm"
             >
+              <Filter className="h-4 w-4" />
               Filter
-            </AnimatedButton>
+            </Button>
           )}
 
           <NotificationCenter deadlines={deadlines} />
@@ -242,6 +219,16 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           />
           <ThemeToggle />
         </div>
+      </div>
+
+      {/* Page Title Section - More Compact */}
+      <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-1">
+          {title}
+        </h2>
+        <p className="text-gray-600 dark:text-gray-300">
+          {subtitle}
+        </p>
       </div>
     </div>
   );
