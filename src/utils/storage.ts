@@ -5,6 +5,19 @@ interface UserData {
     notifications: boolean;
     emailReminders: boolean;
     theme: 'light' | 'dark' | 'system';
+    // Accessibility settings
+    highContrast?: boolean;
+    largeText?: boolean;
+    reducedMotion?: boolean;
+    screenReaderAnnouncements?: boolean;
+    keyboardNavigation?: boolean;
+    focusIndicators?: boolean;
+  };
+  // Email reminder settings
+  emailReminders?: {
+    enabled: boolean;
+    email?: string;
+    daysBeforeNotification: number[];
   };
 }
 
@@ -42,7 +55,18 @@ export const loadUserData = (): UserData => {
     preferences: {
       notifications: true,
       emailReminders: false,
-      theme: 'system'
+      theme: 'system',
+      highContrast: false,
+      largeText: false,
+      reducedMotion: false,
+      screenReaderAnnouncements: true,
+      keyboardNavigation: true,
+      focusIndicators: true
+    },
+    emailReminders: {
+      enabled: false,
+      email: '',
+      daysBeforeNotification: [7]
     }
   };
 };

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,16 +20,14 @@ const AccessibilityFeatures = () => {
   useEffect(() => {
     const userData = loadUserData();
     if (userData.preferences) {
-      // Map the accessibility settings from the user data preferences
       setSettings(prev => ({
         ...prev,
-        // Only update settings that exist in our accessibility settings
-        highContrast: userData.preferences.highContrast || false,
-        largeText: userData.preferences.largeText || false,
-        reducedMotion: userData.preferences.reducedMotion || false,
-        screenReaderAnnouncements: userData.preferences.screenReaderAnnouncements !== undefined ? userData.preferences.screenReaderAnnouncements : true,
-        keyboardNavigation: userData.preferences.keyboardNavigation !== undefined ? userData.preferences.keyboardNavigation : true,
-        focusIndicators: userData.preferences.focusIndicators !== undefined ? userData.preferences.focusIndicators : true
+        highContrast: userData.preferences?.highContrast || false,
+        largeText: userData.preferences?.largeText || false,
+        reducedMotion: userData.preferences?.reducedMotion || false,
+        screenReaderAnnouncements: userData.preferences?.screenReaderAnnouncements !== undefined ? userData.preferences.screenReaderAnnouncements : true,
+        keyboardNavigation: userData.preferences?.keyboardNavigation !== undefined ? userData.preferences.keyboardNavigation : true,
+        focusIndicators: userData.preferences?.focusIndicators !== undefined ? userData.preferences.focusIndicators : true
       }));
     }
   }, []);
@@ -48,9 +47,10 @@ const AccessibilityFeatures = () => {
       document.documentElement.classList.toggle('reduced-motion', value);
     }
     
-    // Save to storage - merge with existing preferences
+    // Save to storage - merge with existing user data
     const userData = loadUserData();
     saveUserData({ 
+      ...userData,
       preferences: { 
         ...userData.preferences,
         [key]: value
