@@ -26,21 +26,27 @@ const MainTabs: React.FC<MainTabsProps> = ({
   return (
     <Tabs defaultValue="deadlines" className="space-y-8 animate-fade-in">
       <TabsList className="grid w-full grid-cols-2 h-14 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg">
-        <TabsTrigger value="deadlines" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">
+        <TabsTrigger 
+          value="deadlines" 
+          className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400"
+        >
           <FileText className="h-4 w-4 mr-2" />
           All Deadlines
         </TabsTrigger>
-        <TabsTrigger value="calendar" className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400">
+        <TabsTrigger 
+          value="calendar" 
+          className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400"
+        >
           <Calendar className="h-4 w-4 mr-2" />
           Calendar View
         </TabsTrigger>
       </TabsList>
       
-      <TabsContent value="deadlines">
+      <TabsContent value="deadlines" className="space-y-6">
         <SmartDeadlineGroups deadlines={filteredDeadlines} />
       </TabsContent>
 
-      <TabsContent value="calendar">
+      <TabsContent value="calendar" className="space-y-6">
         <Card className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border-0 shadow-2xl rounded-3xl">
           <CardHeader className="pb-6">
             <CardTitle className="flex items-center gap-4 text-2xl text-gray-900 dark:text-white">
@@ -51,14 +57,14 @@ const MainTabs: React.FC<MainTabsProps> = ({
               View your tax deadlines by month with visual indicators
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
             <TaxCalendar 
               deadlines={filteredDeadlines}
               selectedMonth={selectedMonth}
               onMonthChange={onMonthChange}
             />
             
-            <div className="flex flex-wrap gap-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-wrap gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
               <Button 
                 variant="outline" 
                 onClick={() => printCalendar(filteredDeadlines, userType)}

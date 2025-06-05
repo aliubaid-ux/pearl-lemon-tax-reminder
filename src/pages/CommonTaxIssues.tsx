@@ -40,28 +40,28 @@ const CommonTaxIssues: React.FC = () => {
         </div>
 
         <Tabs defaultValue="mistakes" className="space-y-6">
-          <TabsList className="grid grid-cols-5 w-full max-w-4xl mx-auto bg-white dark:bg-gray-800">
-            <TabsTrigger value="mistakes" className="flex items-center gap-2 text-sm">
+          <TabsList className="grid grid-cols-5 w-full max-w-4xl mx-auto bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+            <TabsTrigger value="mistakes" className="flex items-center gap-2 text-sm data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
               <AlertTriangle className="h-4 w-4" />
               <span className="hidden sm:inline">Common Mistakes</span>
               <span className="sm:hidden">Mistakes</span>
             </TabsTrigger>
-            <TabsTrigger value="registration" className="flex items-center gap-2 text-sm">
+            <TabsTrigger value="registration" className="flex items-center gap-2 text-sm data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
               <FileCheck className="h-4 w-4" />
               <span className="hidden sm:inline">Registration</span>
               <span className="sm:hidden">Register</span>
             </TabsTrigger>
-            <TabsTrigger value="trading" className="flex items-center gap-2 text-sm">
+            <TabsTrigger value="trading" className="flex items-center gap-2 text-sm data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
               <Calculator className="h-4 w-4" />
               <span className="hidden sm:inline">Trading</span>
               <span className="sm:hidden">Trading</span>
             </TabsTrigger>
-            <TabsTrigger value="payments" className="flex items-center gap-2 text-sm">
+            <TabsTrigger value="payments" className="flex items-center gap-2 text-sm data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
               <CreditCard className="h-4 w-4" />
               <span className="hidden sm:inline">Payments</span>
               <span className="sm:hidden">Payments</span>
             </TabsTrigger>
-            <TabsTrigger value="support" className="flex items-center gap-2 text-sm">
+            <TabsTrigger value="support" className="flex items-center gap-2 text-sm data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
               <HelpCircle className="h-4 w-4" />
               <span className="hidden sm:inline">Support</span>
               <span className="sm:hidden">Help</span>

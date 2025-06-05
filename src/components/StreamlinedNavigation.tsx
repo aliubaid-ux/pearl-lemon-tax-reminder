@@ -57,11 +57,11 @@ const StreamlinedNavigation: React.FC = () => {
             </NavigationMenuItem>
             
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="h-9 px-3">
+              <NavigationMenuTrigger className="h-9 px-3 bg-white dark:bg-gray-800">
                 <Calculator className="h-4 w-4 mr-2" />
                 Tools
               </NavigationMenuTrigger>
-              <NavigationMenuContent className="bg-white dark:bg-gray-800 p-4 w-80">
+              <NavigationMenuContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 w-80 z-50">
                 <div className="grid gap-3">
                   <Button variant="ghost" onClick={() => navigate('/penalty-calculator')} className="justify-start">
                     Penalty Calculator
@@ -80,11 +80,11 @@ const StreamlinedNavigation: React.FC = () => {
             </NavigationMenuItem>
             
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="h-9 px-3">
+              <NavigationMenuTrigger className="h-9 px-3 bg-white dark:bg-gray-800">
                 <FileText className="h-4 w-4 mr-2" />
                 Help
               </NavigationMenuTrigger>
-              <NavigationMenuContent className="bg-white dark:bg-gray-800 p-4 w-80">
+              <NavigationMenuContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 w-80 z-50">
                 <div className="grid gap-3">
                   <Button variant="ghost" onClick={() => navigate('/common-tax-issues')} className="justify-start">
                     Common Issues
