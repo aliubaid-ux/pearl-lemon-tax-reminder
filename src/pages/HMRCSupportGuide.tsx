@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, Phone, Mail, MessageCircle, Clock, AlertTriangle, FileText, Users, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import SharedHeader from '@/components/SharedHeader';
+import StreamlinedNavigation from '@/components/StreamlinedNavigation';
 
 const HMRCSupportGuide: React.FC = () => {
   const { toast } = useToast();
@@ -84,22 +84,28 @@ const HMRCSupportGuide: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
-      <SharedHeader 
-        title="HMRC Support Guide"
-        subtitle="Get help with your tax obligations through official HMRC channels"
-      />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <StreamlinedNavigation />
       
       <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="mb-6">
+        <div className="mb-8">
           <Button 
             variant="outline" 
             onClick={() => navigate('/')}
             className="mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Calendar
+            Back to Dashboard
           </Button>
+          
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              HMRC Support Guide
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300">
+              Get help with your tax obligations through official HMRC channels
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
