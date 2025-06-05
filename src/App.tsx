@@ -12,10 +12,10 @@ import TradingAllowancePage from '@/pages/TradingAllowancePage';
 import CommonTaxIssues from '@/pages/CommonTaxIssues';
 import SettingsPage from '@/pages/SettingsPage';
 import NotFound from '@/pages/NotFound';
-import HMRCSupportGuide from '@/pages/HMRCSupportGuide';
-import CommonMistakes from '@/pages/CommonMistakes';
-import RegistrationTracker from '@/pages/RegistrationTracker';
-import PaymentsOnAccountGuide from '@/pages/PaymentsOnAccountGuide';
+import HMRCSupportGuidePage from '@/pages/HMRCSupportGuide';
+import CommonMistakesPage from '@/pages/CommonMistakes';
+import RegistrationTrackerPage from '@/pages/RegistrationTracker';
+import PaymentsOnAccountGuidePage from '@/pages/PaymentsOnAccountGuide';
 import './App.css';
 
 const queryClient = new QueryClient({
@@ -47,12 +47,12 @@ function App() {
               <Route path="/trading-allowance" element={<TradingAllowancePage />} />
               <Route path="/common-tax-issues" element={<CommonTaxIssues />} />
               <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/hmrc-support-guide" element={<HMRCSupportGuide />} />
-              <Route path="/common-mistakes" element={<CommonMistakes />} />
-              <Route path="/registration-tracker" element={<RegistrationTracker />} />
-              <Route path="/payments-on-account" element={<PaymentsOnAccountGuide />} />
+              <Route path="/hmrc-support-guide" element={<HMRCSupportGuidePage />} />
+              <Route path="/common-mistakes" element={<CommonMistakesPage />} />
+              <Route path="/registration-tracker" element={<RegistrationTrackerPage />} />
+              <Route path="/payments-on-account" element={<PaymentsOnAccountGuidePage />} />
               {/* Legacy route redirects - these now work */}
-              <Route path="/hmrc-guidance" element={<HMRCSupportGuide />} />
+              <Route path="/hmrc-guidance" element={<HMRCSupportGuidePage />} />
               <Route path="/late-submission-templates" element={<PenaltyCalculatorPage />} />
               <Route path="/documentation-checklist" element={<CommonTaxIssues />} />
               <Route path="*" element={<NotFound />} />
