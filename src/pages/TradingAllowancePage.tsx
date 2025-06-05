@@ -3,7 +3,7 @@ import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import SharedHeader from '@/components/SharedHeader';
+import StreamlinedNavigation from '@/components/StreamlinedNavigation';
 import TradingAllowanceCalculator from '@/components/TradingAllowanceCalculator';
 import QuickDeadlineLookup from '@/components/QuickDeadlineLookup';
 import DownloadableChecklists from '@/components/DownloadableChecklists';
@@ -13,21 +13,27 @@ const TradingAllowancePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <SharedHeader 
-        title="Trading Allowance Tools"
-        subtitle="Check eligibility and manage your trading allowance efficiently"
-      />
+      <StreamlinedNavigation />
       
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="mb-6">
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="mb-8">
           <Button 
             variant="outline" 
             onClick={() => navigate('/')}
             className="mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Calendar
+            Back to Dashboard
           </Button>
+          
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Trading Allowance Tools
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300">
+              Check eligibility and manage your trading allowance efficiently
+            </p>
+          </div>
         </div>
 
         <div className="grid gap-6">
@@ -41,11 +47,11 @@ const TradingAllowancePage: React.FC = () => {
           </div>
           
           {/* Trading Allowance Information */}
-          <div className="bg-green-50 p-6 rounded-lg border border-green-200">
-            <h3 className="text-lg font-semibold text-green-900 mb-3">
+          <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg border border-green-200 dark:border-green-700">
+            <h3 className="text-lg font-semibold text-green-900 dark:text-green-100 mb-3">
               📊 Trading Allowance Quick Facts
             </h3>
-            <div className="grid md:grid-cols-2 gap-4 text-green-800">
+            <div className="grid md:grid-cols-2 gap-4 text-green-800 dark:text-green-200">
               <div>
                 <h4 className="font-semibold mb-2">What is it?</h4>
                 <ul className="space-y-1 text-sm">
