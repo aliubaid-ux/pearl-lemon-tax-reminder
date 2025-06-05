@@ -9,10 +9,13 @@ import GlobalSearch from '@/components/GlobalSearch';
 import DeadlineFilters from '@/components/DeadlineFilters';
 import MainTabs from '@/components/MainTabs';
 import VisualDeadlineDisplay from '@/components/VisualDeadlineDisplay';
+import UserTypeSelector from '@/components/UserTypeSelector';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
 import { TaxDeadline } from '@/types/tax';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, BarChart3 } from 'lucide-react';
+import { Calendar, BarChart3, Settings } from 'lucide-react';
+
+type UserType = 'self-employed' | 'company-director' | 'both';
 
 const Index: React.FC = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -22,6 +25,7 @@ const Index: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
   const [deadlines, setDeadlines] = useState<TaxDeadline[]>([]);
   const [filteredDeadlines, setFilteredDeadlines] = useState<TaxDeadline[]>([]);
+  const [userType, setUserType] = useState<UserType>('both');
 
   useEffect(() => {
     const hasCompletedOnboarding = localStorage.getItem('uk-tax-doctor-onboarding-complete');
@@ -29,9 +33,12 @@ const Index: React.FC = () => {
       setShowOnboarding(true);
     }
 
-    // Load deadlines - default to 'both' for all deadlines
-    const userType = localStorage.getItem('uk-tax-doctor-user-type') || 'both';
-    const loadedDeadlines = getTaxDeadlines(userType as any);
+    // Load user type from localStorage
+    const savedUserType = localStorage.getItem('uk-tax-doctor-user-type') as UserType || 'both';
+    setUserType(savedUserType);
+
+    // Load deadlines based on user type
+    const loadedDeadlines = getTaxDeadlines(savedUserType);
     setDeadlines(loadedDeadlines);
     setFilteredDeadlines(loadedDeadlines);
 
@@ -69,6 +76,16 @@ const Index: React.FC = () => {
     setShowFilters(false);
   };
 
+  const handleUserTypeChange = (newUserType: UserType) => {
+    setUserType(newUserType);
+    localStorage.setItem('uk-tax-doctor-user-type', newUserType);
+    
+    // Reload deadlines for the new user type
+    const newDeadlines = getTaxDeadlines(newUserType);
+    setDeadlines(newDeadlines);
+    setFilteredDeadlines(newDeadlines);
+  };
+
   // Get upcoming deadlines for quick access dashboard
   const today = new Date();
   const oneMonthFromNow = new Date();
@@ -78,9 +95,6 @@ const Index: React.FC = () => {
     return deadlineDate >= today && deadlineDate <= oneMonthFromNow;
   });
 
-  // Get user type for visual display
-  const userType = localStorage.getItem('uk-tax-doctor-user-type') || 'both';
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <StreamlinedNavigation />
@@ -89,7 +103,7 @@ const Index: React.FC = () => {
         <WelcomeHero />
         
         <Tabs defaultValue="deadlines" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
+          <TabsList className="grid w-full grid-cols-3 max-w-lg mx-auto">
             <TabsTrigger value="deadlines" className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               Tax Deadlines
@@ -97,6 +111,10 @@ const Index: React.FC = () => {
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
               Quick Access
+            </TabsTrigger>
+            <TabsTrigger value="profile" className="flex items-center gap-2">
+              <Settings className="h-4 w-4" />
+              Profile
             </TabsTrigger>
           </TabsList>
           
@@ -116,6 +134,13 @@ const Index: React.FC = () => {
           
           <TabsContent value="dashboard" className="space-y-6">
             <QuickAccessDashboard />
+          </TabsContent>
+          
+          <TabsContent value="profile" className="space-y-6">
+            <UserTypeSelector 
+              userType={userType}
+              onUserTypeChange={handleUserTypeChange}
+            />
           </TabsContent>
         </Tabs>
       </div>
