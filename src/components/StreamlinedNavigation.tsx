@@ -6,13 +6,11 @@ import { Badge } from '@/components/ui/badge';
 import { Home, Calculator, FileText, Settings, Bell } from 'lucide-react';
 import {
   NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import NotificationCenter from '@/components/NotificationCenter';
+import NavigationDropdown from '@/components/navigation/NavigationDropdown';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
 
 const StreamlinedNavigation: React.FC = () => {
@@ -26,6 +24,21 @@ const StreamlinedNavigation: React.FC = () => {
     oneWeekFromNow.setDate(today.getDate() + 7);
     return deadlineDate >= today && deadlineDate <= oneWeekFromNow && deadline.priority === 'high';
   }).length;
+
+  const toolsItems = [
+    { title: 'Penalty Calculator', path: '/penalty-calculator' },
+    { title: 'VAT Calculator', path: '/vat-calculator' },
+    { title: 'Trading Allowance', path: '/trading-allowance' },
+    { title: 'Employment Status', path: '/employment-status' }
+  ];
+
+  const helpItems = [
+    { title: 'Common Issues', path: '/common-tax-issues' },
+    { title: 'HMRC Support', path: '/hmrc-support-guide' },
+    { title: 'Common Mistakes', path: '/common-mistakes' },
+    { title: 'Registration Tracker', path: '/registration-tracker' },
+    { title: 'Payments on Account', path: '/payments-on-account' }
+  ];
 
   return (
     <nav className="border-b border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm sticky top-0 z-50">
@@ -49,61 +62,22 @@ const StreamlinedNavigation: React.FC = () => {
         {/* Main Navigation */}
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList className="space-x-2">
-            <NavigationMenuItem>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
-                <Home className="h-4 w-4 mr-2" />
-                Dashboard
-              </Button>
-            </NavigationMenuItem>
+            <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
+              <Home className="h-4 w-4 mr-2" />
+              Dashboard
+            </Button>
             
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="h-9 px-3 bg-white dark:bg-gray-800 z-50">
-                <Calculator className="h-4 w-4 mr-2" />
-                Tools
-              </NavigationMenuTrigger>
-              <NavigationMenuContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 w-80 z-50 shadow-lg">
-                <div className="grid gap-3">
-                  <Button variant="ghost" onClick={() => navigate('/penalty-calculator')} className="justify-start">
-                    Penalty Calculator
-                  </Button>
-                  <Button variant="ghost" onClick={() => navigate('/vat-calculator')} className="justify-start">
-                    VAT Calculator
-                  </Button>
-                  <Button variant="ghost" onClick={() => navigate('/trading-allowance')} className="justify-start">
-                    Trading Allowance
-                  </Button>
-                  <Button variant="ghost" onClick={() => navigate('/employment-status')} className="justify-start">
-                    Employment Status
-                  </Button>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
+            <NavigationDropdown 
+              title="Tools" 
+              icon={Calculator} 
+              items={toolsItems} 
+            />
             
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="h-9 px-3 bg-white dark:bg-gray-800 z-50">
-                <FileText className="h-4 w-4 mr-2" />
-                Help
-              </NavigationMenuTrigger>
-              <NavigationMenuContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 w-80 z-50 shadow-lg">
-                <div className="grid gap-3">
-                  <Button variant="ghost" onClick={() => navigate('/common-tax-issues')} className="justify-start">
-                    Common Issues
-                  </Button>
-                  <Button variant="ghost" onClick={() => navigate('/hmrc-support-guide')} className="justify-start">
-                    HMRC Support
-                  </Button>
-                  <Button variant="ghost" onClick={() => navigate('/common-mistakes')} className="justify-start">
-                    Common Mistakes
-                  </Button>
-                  <Button variant="ghost" onClick={() => navigate('/registration-tracker')} className="justify-start">
-                    Registration Tracker
-                  </Button>
-                  <Button variant="ghost" onClick={() => navigate('/payments-on-account')} className="justify-start">
-                    Payments on Account
-                  </Button>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
+            <NavigationDropdown 
+              title="Help" 
+              icon={FileText} 
+              items={helpItems} 
+            />
           </NavigationMenuList>
         </NavigationMenu>
 
