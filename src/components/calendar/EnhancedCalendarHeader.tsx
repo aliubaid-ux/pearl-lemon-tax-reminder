@@ -38,34 +38,37 @@ const EnhancedCalendarHeader: React.FC<EnhancedCalendarHeaderProps> = ({
 }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border p-4 mb-6">
-      {/* Top row - Month/Year navigation and view controls */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
-        <CalendarNavigation
-          currentMonth={currentMonth}
-          onPreviousMonth={onPreviousMonth}
-          onNextMonth={onNextMonth}
-          onGoToToday={onGoToToday}
-          onMonthSelect={onMonthSelect}
-          onYearSelect={onYearSelect}
-        />
-
-        <ViewModeSelector
-          viewMode={viewMode}
-          onViewModeChange={onViewModeChange}
-        />
-      </div>
-
-      {/* Bottom row - Stats and actions */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <DeadlineStats
-          urgentCount={urgentCount}
-          totalCount={totalCount}
-        />
+      {/* Top row - Month/Year navigation, view controls, and actions */}
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <CalendarNavigation
+            currentMonth={currentMonth}
+            onPreviousMonth={onPreviousMonth}
+            onNextMonth={onNextMonth}
+            onGoToToday={onGoToToday}
+            onMonthSelect={onMonthSelect}
+            onYearSelect={onYearSelect}
+          />
+          
+          <ViewModeSelector
+            viewMode={viewMode}
+            onViewModeChange={onViewModeChange}
+          />
+        </div>
 
         <CalendarActions
           onSearchToggle={onSearchToggle}
           onFilterToggle={onFilterToggle}
           onExport={onExport}
+          compact={false}
+        />
+      </div>
+
+      {/* Bottom row - Stats only */}
+      <div className="flex items-center">
+        <DeadlineStats
+          urgentCount={urgentCount}
+          totalCount={totalCount}
         />
       </div>
     </div>

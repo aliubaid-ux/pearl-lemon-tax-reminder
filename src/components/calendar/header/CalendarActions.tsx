@@ -8,12 +8,14 @@ interface CalendarActionsProps {
   onSearchToggle: () => void;
   onFilterToggle: () => void;
   onExport: () => void;
+  compact?: boolean;
 }
 
 const CalendarActions: React.FC<CalendarActionsProps> = ({
   onSearchToggle,
   onFilterToggle,
-  onExport
+  onExport,
+  compact = false
 }) => {
   const { toast } = useToast();
 
@@ -42,7 +44,7 @@ const CalendarActions: React.FC<CalendarActionsProps> = ({
         className="h-8"
       >
         <Search className="h-3 w-3 mr-1" />
-        Search
+        {!compact && "Search"}
       </Button>
       <Button
         variant="outline"
@@ -51,7 +53,7 @@ const CalendarActions: React.FC<CalendarActionsProps> = ({
         className="h-8"
       >
         <Filter className="h-3 w-3 mr-1" />
-        Filter
+        {!compact && "Filter"}
       </Button>
       <Button
         variant="outline"
@@ -60,7 +62,7 @@ const CalendarActions: React.FC<CalendarActionsProps> = ({
         className="h-8"
       >
         <Download className="h-3 w-3 mr-1" />
-        Export
+        {!compact && "Export"}
       </Button>
     </div>
   );
