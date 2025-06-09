@@ -89,6 +89,31 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
               Dashboard
             </Button>
             
+            {/* Search and Filter buttons positioned here */}
+            {showSearch && (
+              <Button 
+                variant="outline"
+                size="sm" 
+                onClick={onOpenSearch}
+                className="text-sm"
+              >
+                <Search className="h-4 w-4 mr-1" />
+                Search
+              </Button>
+            )}
+            
+            {showFilters && (
+              <Button 
+                variant="outline"
+                size="sm" 
+                onClick={onOpenFilters}
+                className="text-sm"
+              >
+                <Filter className="h-4 w-4 mr-1" />
+                Filter
+              </Button>
+            )}
+            
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="text-sm">
@@ -151,31 +176,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
               Settings
             </Button>
           </div>
-
-          {/* Action Buttons */}
-          {showSearch && (
-            <Button 
-              variant="ghost"
-              size="sm" 
-              onClick={onOpenSearch}
-              className="hidden md:flex items-center gap-2 text-sm"
-            >
-              <Search className="h-4 w-4" />
-              Search
-            </Button>
-          )}
-          
-          {showFilters && (
-            <Button 
-              variant="ghost"
-              size="sm" 
-              onClick={onOpenFilters}
-              className="hidden md:flex items-center gap-2 text-sm"
-            >
-              <Filter className="h-4 w-4" />
-              Filter
-            </Button>
-          )}
 
           <NotificationCenter deadlines={deadlines} />
           <EnhancedMobileNavigation 
