@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
-import SimplifiedTabNavigation from '@/components/navigation/SimplifiedTabNavigation';
-import SimplifiedModalsContainer from '@/components/modals/SimplifiedModalsContainer';
+import SimplifiedWelcome from '@/components/SimplifiedWelcome';
+import FocusedDashboard from '@/components/dashboard/FocusedDashboard';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { useUserTypeAndDeadlines } from '@/hooks/useUserTypeAndDeadlines';
 import { useSimplifiedModals } from '@/hooks/useSimplifiedModals';
@@ -25,27 +25,26 @@ const Index: React.FC = () => {
 
   useKeyboardShortcuts({
     onShowShortcuts: () => {
-      // Show shortcuts info via console for now
       console.log('Keyboard shortcuts: Use arrow keys to navigate calendar');
     },
   });
 
   return (
     <MainLayout>
-      <SimplifiedTabNavigation
-        deadlines={filteredDeadlines}
-        selectedMonth={selectedMonth}
-        onMonthChange={setSelectedMonth}
-        userType={userType}
-        onUserTypeChange={handleUserTypeChange}
-      />
-
-      <SimplifiedModalsContainer
-        showOnboarding={showOnboarding}
-        onCloseOnboarding={closeOnboarding}
-        onCompleteOnboarding={handleOnboardingComplete}
-        deadlines={deadlines}
-      />
+      <div className="space-y-8">
+        <SimplifiedWelcome 
+          onGetStarted={handleOnboardingComplete}
+          userType={userType}
+          onUserTypeChange={handleUserTypeChange}
+        />
+        
+        <FocusedDashboard
+          deadlines={filteredDeadlines}
+          userType={userType}
+          selectedMonth={selectedMonth}
+          onMonthChange={setSelectedMonth}
+        />
+      </div>
     </MainLayout>
   );
 };
