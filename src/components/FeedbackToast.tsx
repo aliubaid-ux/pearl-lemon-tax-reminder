@@ -22,20 +22,23 @@ export const useFeedbackToast = () => {
 
     const Icon = icons[type];
 
+    // Create a custom description that includes the icon
+    const customDescription = (
+      <div className="flex items-center gap-2">
+        <Icon className={cn(
+          "h-4 w-4 flex-shrink-0",
+          type === 'success' && "text-green-600",
+          type === 'error' && "text-red-600",
+          type === 'info' && "text-blue-600",
+          type === 'warning' && "text-yellow-600"
+        )} />
+        <span>{description || title}</span>
+      </div>
+    );
+
     toast({
-      title: (
-        <div className="flex items-center gap-2">
-          <Icon className={cn(
-            "h-4 w-4",
-            type === 'success' && "text-green-600",
-            type === 'error' && "text-red-600",
-            type === 'info' && "text-blue-600",
-            type === 'warning' && "text-yellow-600"
-          )} />
-          {title}
-        </div>
-      ),
-      description,
+      title: title,
+      description: description ? customDescription : undefined,
       duration: type === 'error' ? 5000 : 3000,
     });
   };
