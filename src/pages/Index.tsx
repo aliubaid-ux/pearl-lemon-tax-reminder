@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
-import SimplifiedWelcome from '@/components/SimplifiedWelcome';
-import FocusedDashboard from '@/components/dashboard/FocusedDashboard';
+import CollapsibleWelcome from '@/components/CollapsibleWelcome';
+import CollapsibleDashboard from '@/components/dashboard/CollapsibleDashboard';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { useUserTypeAndDeadlines } from '@/hooks/useUserTypeAndDeadlines';
 import { useSimplifiedModals } from '@/hooks/useSimplifiedModals';
@@ -32,13 +32,13 @@ const Index: React.FC = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <SimplifiedWelcome 
+        <CollapsibleWelcome 
           onGetStarted={handleOnboardingComplete}
           userType={userType}
           onUserTypeChange={handleUserTypeChange}
         />
         
-        <FocusedDashboard
+        <CollapsibleDashboard
           deadlines={filteredDeadlines}
           userType={userType}
           selectedMonth={selectedMonth}
