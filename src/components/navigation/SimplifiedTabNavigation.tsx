@@ -1,15 +1,11 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Filter, 
-  Search, 
   Calendar,
   LayoutDashboard,
-  FileText,
-  Settings
+  FileText
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import MainDashboard from '@/components/dashboard/MainDashboard';
@@ -26,8 +22,6 @@ interface SimplifiedTabNavigationProps {
   onMonthChange: (date: Date) => void;
   userType: UserType;
   onUserTypeChange: (type: UserType) => void;
-  onFilterToggle?: () => void;
-  onSearchToggle?: () => void;
 }
 
 const SimplifiedTabNavigation: React.FC<SimplifiedTabNavigationProps> = ({
@@ -35,9 +29,7 @@ const SimplifiedTabNavigation: React.FC<SimplifiedTabNavigationProps> = ({
   selectedMonth,
   onMonthChange,
   userType,
-  onUserTypeChange,
-  onFilterToggle,
-  onSearchToggle
+  onUserTypeChange
 }) => {
   const today = new Date();
   
@@ -55,7 +47,7 @@ const SimplifiedTabNavigation: React.FC<SimplifiedTabNavigationProps> = ({
 
   return (
     <div className="space-y-8">
-      {/* Header with user type selector and quick actions */}
+      {/* Header with user type selector */}
       <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl rounded-2xl">
         <CardContent className="p-6">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
@@ -66,31 +58,13 @@ const SimplifiedTabNavigation: React.FC<SimplifiedTabNavigationProps> = ({
               />
             </div>
             
-            <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={onSearchToggle}
-                className="flex items-center gap-2"
-              >
-                <Search className="h-4 w-4" />
-                Search
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={onFilterToggle}
-                className="flex items-center gap-2"
-              >
-                <Filter className="h-4 w-4" />
-                Filter
-                {urgentDeadlines.length > 0 && (
-                  <Badge variant="destructive" className="ml-1">
-                    {urgentDeadlines.length}
-                  </Badge>
-                )}
-              </Button>
-            </div>
+            {urgentDeadlines.length > 0 && (
+              <div className="flex items-center gap-2">
+                <Badge variant="destructive" className="text-sm">
+                  {urgentDeadlines.length} urgent deadline{urgentDeadlines.length > 1 ? 's' : ''}
+                </Badge>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -137,8 +111,6 @@ const SimplifiedTabNavigation: React.FC<SimplifiedTabNavigationProps> = ({
             selectedMonth={selectedMonth}
             onMonthChange={onMonthChange}
             userType={userType}
-            onFilterToggle={onFilterToggle}
-            onSearchToggle={onSearchToggle}
           />
         </TabsContent>
 

@@ -24,7 +24,10 @@ const Index: React.FC = () => {
   } = useSimplifiedModals();
 
   useKeyboardShortcuts({
-    onShowShortcuts: () => {}, // Removed shortcuts modal for simplicity
+    onShowShortcuts: () => {
+      // Show shortcuts info via console for now
+      console.log('Keyboard shortcuts: Use arrow keys to navigate calendar');
+    },
   });
 
   return (
