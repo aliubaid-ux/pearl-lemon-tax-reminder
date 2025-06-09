@@ -6,7 +6,7 @@ import SimplifiedModalsContainer from '@/components/modals/SimplifiedModalsConta
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { useUserTypeAndDeadlines } from '@/hooks/useUserTypeAndDeadlines';
 import { useSimplifiedModals } from '@/hooks/useSimplifiedModals';
-import { useFeedbackToast } from '@/components/FeedbackToast';
+import { useFeedbackToast } from '@/hooks/useFeedbackToast';
 
 const ImprovedIndex: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
@@ -68,12 +68,12 @@ const ImprovedIndex: React.FC = () => {
     });
   };
 
-  const handleUserTypeChangeWithFeedback = (type: 'self-employed' | 'company-director' | 'both') => {
-    handleUserTypeChange(type);
+  const handleOnboardingCompleteWithFeedback = () => {
+    handleOnboardingComplete();
     showFeedback({
       type: 'success',
-      title: 'User type updated',
-      description: `Now showing deadlines for: ${type.replace('-', ' ')}`
+      title: 'Welcome to UK Tax Doctor!',
+      description: 'You are all set up and ready to manage your tax deadlines'
     });
   };
 
@@ -84,7 +84,7 @@ const ImprovedIndex: React.FC = () => {
         selectedMonth={selectedMonth}
         onMonthChange={setSelectedMonth}
         userType={userType}
-        onUserTypeChange={handleUserTypeChangeWithFeedback}
+        onUserTypeChange={handleUserTypeChange}
         onFilterToggle={openFilters}
         onSearchToggle={openSearch}
       />
@@ -92,14 +92,7 @@ const ImprovedIndex: React.FC = () => {
       <SimplifiedModalsContainer
         showOnboarding={showOnboarding}
         onCloseOnboarding={closeOnboarding}
-        onCompleteOnboarding={() => {
-          handleOnboardingComplete();
-          showFeedback({
-            type: 'success',
-            title: 'Welcome to UK Tax Doctor!',
-            description: 'You are all set up and ready to manage your tax deadlines'
-          });
-        }}
+        onCompleteOnboarding={handleOnboardingCompleteWithFeedback}
         showSearch={showSearch}
         onCloseSearch={closeSearch}
         showFilters={showFilters}
