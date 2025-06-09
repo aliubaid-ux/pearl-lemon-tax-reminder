@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { AlertTriangle, Calendar, Clock, TrendingUp } from 'lucide-react';
+import { AlertTriangle, Calendar, Clock, TrendingUp, Calculator, Settings } from 'lucide-react';
 import { TaxDeadline } from '@/types/tax';
 import { useNavigate } from 'react-router-dom';
 
