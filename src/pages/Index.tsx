@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
-import CollapsibleWelcome from '@/components/CollapsibleWelcome';
+import SimplifiedWelcome from '@/components/SimplifiedWelcome';
 import CollapsibleDashboard from '@/components/dashboard/CollapsibleDashboard';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { useUserTypeAndDeadlines } from '@/hooks/useUserTypeAndDeadlines';
@@ -32,7 +32,7 @@ const Index: React.FC = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <CollapsibleWelcome 
+        <SimplifiedWelcome 
           onGetStarted={handleOnboardingComplete}
           userType={userType}
           onUserTypeChange={handleUserTypeChange}

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import ImprovedIndex from '@/pages/ImprovedIndex';
+import Index from '@/pages/Index';
 import PenaltyCalculatorPage from '@/pages/PenaltyCalculatorPage';
 import VATCalculatorPage from '@/pages/VATCalculatorPage';
 import EmploymentStatusPage from '@/pages/EmploymentStatusPage';
@@ -40,7 +40,7 @@ function App() {
         <Router>
           <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             <Routes>
-              <Route path="/" element={<ImprovedIndex />} />
+              <Route path="/" element={<Index />} />
               <Route path="/penalty-calculator" element={<PenaltyCalculatorPage />} />
               <Route path="/vat-calculator" element={<VATCalculatorPage />} />
               <Route path="/employment-status" element={<EmploymentStatusPage />} />
