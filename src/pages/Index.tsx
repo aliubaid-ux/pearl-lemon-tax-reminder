@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
-import TabNavigation from '@/components/navigation/TabNavigation';
-import ModalsContainer from '@/components/modals/ModalsContainer';
+import SimplifiedTabNavigation from '@/components/navigation/SimplifiedTabNavigation';
+import SimplifiedModalsContainer from '@/components/modals/SimplifiedModalsContainer';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { useUserTypeAndDeadlines } from '@/hooks/useUserTypeAndDeadlines';
-import { useModalState } from '@/hooks/useModalState';
+import { useSimplifiedModals } from '@/hooks/useSimplifiedModals';
 
 const Index: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
@@ -14,28 +14,26 @@ const Index: React.FC = () => {
     deadlines,
     filteredDeadlines,
     userType,
-    upcomingDeadlines,
     handleUserTypeChange,
     handleFilterChange,
   } = useUserTypeAndDeadlines();
 
   const {
     showOnboarding,
-    setShowOnboarding,
-    showShortcuts,
-    setShowShortcuts,
-    showSearch,
-    setShowSearch,
-    showFilters,
-    setShowFilters,
     handleOnboardingComplete,
+    closeOnboarding,
+    showSearch,
+    openSearch,
+    closeSearch,
+    showFilters,
+    openFilters,
     closeFilters,
-  } = useModalState();
+  } = useSimplifiedModals();
 
   useKeyboardShortcuts({
-    onShowSearch: () => setShowSearch(true),
-    onShowFilters: () => setShowFilters(true),
-    onShowShortcuts: () => setShowShortcuts(true),
+    onShowSearch: openSearch,
+    onShowFilters: openFilters,
+    onShowShortcuts: () => {}, // Removed shortcuts modal for simplicity
   });
 
   const handleFilterChangeAndClose = (filtered: any) => {
@@ -45,25 +43,22 @@ const Index: React.FC = () => {
 
   return (
     <MainLayout>
-      <TabNavigation
-        filteredDeadlines={filteredDeadlines}
-        upcomingDeadlines={upcomingDeadlines}
+      <SimplifiedTabNavigation
+        deadlines={filteredDeadlines}
         selectedMonth={selectedMonth}
         onMonthChange={setSelectedMonth}
         userType={userType}
         onUserTypeChange={handleUserTypeChange}
       />
 
-      <ModalsContainer
+      <SimplifiedModalsContainer
         showOnboarding={showOnboarding}
-        onCloseOnboarding={() => setShowOnboarding(false)}
+        onCloseOnboarding={closeOnboarding}
         onCompleteOnboarding={handleOnboardingComplete}
-        showShortcuts={showShortcuts}
-        onCloseShortcuts={() => setShowShortcuts(false)}
         showSearch={showSearch}
-        onCloseSearch={() => setShowSearch(false)}
+        onCloseSearch={closeSearch}
         showFilters={showFilters}
-        onCloseFilters={() => setShowFilters(false)}
+        onCloseFilters={closeFilters}
         deadlines={deadlines}
         onFilterChange={handleFilterChangeAndClose}
       />
