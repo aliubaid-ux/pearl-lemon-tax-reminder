@@ -18,12 +18,14 @@ import VisualDeadlineDisplay from '@/components/VisualDeadlineDisplay';
 import EnhancedUserTypeSelector from '@/components/EnhancedUserTypeSelector';
 import { TaxDeadline } from '@/types/tax';
 
+type UserType = 'self-employed' | 'company-director' | 'both';
+
 interface SimplifiedTabNavigationProps {
   deadlines: TaxDeadline[];
   selectedMonth: Date;
   onMonthChange: (date: Date) => void;
-  userType: string;
-  onUserTypeChange: (type: string) => void;
+  userType: UserType;
+  onUserTypeChange: (type: UserType) => void;
   onFilterToggle?: () => void;
   onSearchToggle?: () => void;
 }
@@ -124,7 +126,7 @@ const SimplifiedTabNavigation: React.FC<SimplifiedTabNavigationProps> = ({
         <TabsContent value="dashboard" className="space-y-6">
           <MainDashboard 
             deadlines={deadlines} 
-            userType={userType as 'self-employed' | 'company-director' | 'both'} 
+            userType={userType} 
           />
         </TabsContent>
 
