@@ -15,31 +15,17 @@ const Index: React.FC = () => {
     filteredDeadlines,
     userType,
     handleUserTypeChange,
-    handleFilterChange,
   } = useUserTypeAndDeadlines();
 
   const {
     showOnboarding,
     handleOnboardingComplete,
     closeOnboarding,
-    showSearch,
-    openSearch,
-    closeSearch,
-    showFilters,
-    openFilters,
-    closeFilters,
   } = useSimplifiedModals();
 
   useKeyboardShortcuts({
-    onShowSearch: openSearch,
-    onShowFilters: openFilters,
     onShowShortcuts: () => {}, // Removed shortcuts modal for simplicity
   });
-
-  const handleFilterChangeAndClose = (filtered: any) => {
-    handleFilterChange(filtered);
-    closeFilters();
-  };
 
   return (
     <MainLayout>
@@ -49,20 +35,13 @@ const Index: React.FC = () => {
         onMonthChange={setSelectedMonth}
         userType={userType}
         onUserTypeChange={handleUserTypeChange}
-        onFilterToggle={openFilters}
-        onSearchToggle={openSearch}
       />
 
       <SimplifiedModalsContainer
         showOnboarding={showOnboarding}
         onCloseOnboarding={closeOnboarding}
         onCompleteOnboarding={handleOnboardingComplete}
-        showSearch={showSearch}
-        onCloseSearch={closeSearch}
-        showFilters={showFilters}
-        onCloseFilters={closeFilters}
         deadlines={deadlines}
-        onFilterChange={handleFilterChangeAndClose}
       />
     </MainLayout>
   );

@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Search, Filter, Home, Calculator, FileText, Settings } from 'lucide-react';
+import { Home, Calculator, FileText, Settings } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,19 +20,11 @@ import { getTaxDeadlines } from '@/utils/taxDeadlines';
 interface SharedHeaderProps {
   title: string;
   subtitle: string;
-  showSearch?: boolean;
-  showFilters?: boolean;
-  onOpenSearch?: () => void;
-  onOpenFilters?: () => void;
 }
 
 const SharedHeader: React.FC<SharedHeaderProps> = ({
   title,
-  subtitle,
-  showSearch = false,
-  showFilters = false,
-  onOpenSearch,
-  onOpenFilters
+  subtitle
 }) => {
   const navigate = useNavigate();
   const deadlines = getTaxDeadlines('self-employed');
@@ -46,12 +39,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
   const handleQuickAction = (action: string) => {
     switch (action) {
-      case 'search':
-        onOpenSearch?.();
-        break;
-      case 'filter':
-        onOpenFilters?.();
-        break;
       case 'calendar-integration':
         navigate('/settings');
         break;
@@ -87,31 +74,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
               <Home className="h-4 w-4 mr-2" />
               Dashboard
             </Button>
-            
-            {/* Search and Filter buttons positioned here in top nav */}
-            {showSearch && (
-              <Button 
-                variant="outline"
-                size="sm" 
-                onClick={onOpenSearch}
-                className="text-sm"
-              >
-                <Search className="h-4 w-4 mr-1" />
-                Search
-              </Button>
-            )}
-            
-            {showFilters && (
-              <Button 
-                variant="outline"
-                size="sm" 
-                onClick={onOpenFilters}
-                className="text-sm"
-              >
-                <Filter className="h-4 w-4 mr-1" />
-                Filter
-              </Button>
-            )}
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -180,8 +142,8 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           <EnhancedMobileNavigation 
             urgentCount={urgentCount}
             onQuickAction={handleQuickAction}
-            onOpenSearch={onOpenSearch || (() => {})}
-            onOpenFilters={onOpenFilters || (() => {})}
+            onOpenSearch={() => {}}
+            onOpenFilters={() => {}}
           />
           <ThemeToggle />
         </div>

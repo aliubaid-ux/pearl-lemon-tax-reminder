@@ -12,8 +12,6 @@ interface MainTabsProps {
   selectedMonth: Date;
   onMonthChange: (date: Date) => void;
   userType: string;
-  onFilterToggle?: () => void;
-  onSearchToggle?: () => void;
 }
 
 const MainTabs: React.FC<MainTabsProps> = ({
@@ -21,9 +19,7 @@ const MainTabs: React.FC<MainTabsProps> = ({
   upcomingDeadlines,
   selectedMonth,
   onMonthChange,
-  userType,
-  onFilterToggle,
-  onSearchToggle
+  userType
 }) => {
   return (
     <Tabs defaultValue="calendar" className="space-y-8 animate-fade-in">
