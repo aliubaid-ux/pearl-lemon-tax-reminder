@@ -38,9 +38,9 @@ const EnhancedCalendarHeader: React.FC<EnhancedCalendarHeaderProps> = ({
 }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border p-4 mb-6">
-      {/* Top row - Month/Year navigation, view controls, and actions */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      {/* Top row - All controls grouped together on the left */}
+      <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 flex-1">
           <CalendarNavigation
             currentMonth={currentMonth}
             onPreviousMonth={onPreviousMonth}
@@ -54,14 +54,14 @@ const EnhancedCalendarHeader: React.FC<EnhancedCalendarHeaderProps> = ({
             viewMode={viewMode}
             onViewModeChange={onViewModeChange}
           />
-        </div>
 
-        <CalendarActions
-          onSearchToggle={onSearchToggle}
-          onFilterToggle={onFilterToggle}
-          onExport={onExport}
-          compact={false}
-        />
+          <CalendarActions
+            onSearchToggle={onSearchToggle}
+            onFilterToggle={onFilterToggle}
+            onExport={onExport}
+            compact={true}
+          />
+        </div>
       </div>
 
       {/* Bottom row - Stats only */}
