@@ -50,8 +50,6 @@ const MainTabs: React.FC<MainTabsProps> = ({
           selectedMonth={selectedMonth}
           onMonthChange={onMonthChange}
           userType={userType}
-          onFilterToggle={onFilterToggle}
-          onSearchToggle={onSearchToggle}
         />
       </TabsContent>
 

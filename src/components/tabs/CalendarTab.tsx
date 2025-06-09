@@ -48,8 +48,7 @@ const CalendarTab: React.FC<CalendarTabProps> = ({
           deadlines={deadlines}
           selectedMonth={selectedMonth}
           onMonthChange={onMonthChange}
-          onFilterToggle={onFilterToggle}
-          onSearchToggle={onSearchToggle}
+          userType={userType}
           onExport={handleExport}
         />
         
