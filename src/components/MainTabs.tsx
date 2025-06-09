@@ -23,24 +23,24 @@ const MainTabs: React.FC<MainTabsProps> = ({
 }) => {
   return (
     <Tabs defaultValue="calendar" className="space-y-8 animate-fade-in">
-      <TabsList className="grid w-full grid-cols-2 h-14 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg">
+      <TabsList className="grid w-full grid-cols-2 h-16 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg border">
         <TabsTrigger 
           value="calendar" 
-          className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400"
+          className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400 py-3"
         >
-          <Calendar className="h-4 w-4 mr-2" />
+          <Calendar className="h-5 w-5 mr-3" />
           Interactive Calendar
         </TabsTrigger>
         <TabsTrigger 
           value="deadlines" 
-          className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400"
+          className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400 py-3"
         >
-          <FileText className="h-4 w-4 mr-2" />
+          <FileText className="h-5 w-5 mr-3" />
           Grouped View
         </TabsTrigger>
       </TabsList>
       
-      <TabsContent value="calendar" className="space-y-6">
+      <TabsContent value="calendar" className="space-y-8">
         <TaxCalendar
           deadlines={filteredDeadlines}
           selectedMonth={selectedMonth}
@@ -49,7 +49,7 @@ const MainTabs: React.FC<MainTabsProps> = ({
         />
       </TabsContent>
 
-      <TabsContent value="deadlines" className="space-y-6">
+      <TabsContent value="deadlines" className="space-y-8">
         <SmartDeadlineGroups deadlines={filteredDeadlines} />
       </TabsContent>
     </Tabs>

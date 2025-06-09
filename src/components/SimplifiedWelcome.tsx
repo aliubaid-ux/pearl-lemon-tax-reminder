@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { X, Sparkles, ArrowRight } from 'lucide-react';
+import { X, Sparkles, ArrowRight, Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import EnhancedUserTypeSelector from '@/components/EnhancedUserTypeSelector';
 
@@ -32,20 +32,33 @@ const SimplifiedWelcome: React.FC<SimplifiedWelcomeProps> = ({
 
   if (!isVisible) {
     return (
-      <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-sm">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between">
-            <EnhancedUserTypeSelector
-              userType={userType}
-              onUserTypeChange={onUserTypeChange}
-            />
-            <Button 
-              onClick={() => navigate('/common-tax-issues')}
-              variant="outline"
-              size="sm"
-            >
-              Need Help?
-            </Button>
+      <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border shadow-lg">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between gap-6">
+            <div className="flex-1">
+              <EnhancedUserTypeSelector
+                userType={userType}
+                onUserTypeChange={onUserTypeChange}
+              />
+            </div>
+            <div className="flex gap-3">
+              <Button 
+                onClick={() => setIsVisible(true)}
+                variant="ghost"
+                size="sm"
+                className="gap-2"
+              >
+                <Info className="h-4 w-4" />
+                Show Welcome
+              </Button>
+              <Button 
+                onClick={() => navigate('/common-tax-issues')}
+                variant="outline"
+                size="sm"
+              >
+                Need Help?
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -53,65 +66,88 @@ const SimplifiedWelcome: React.FC<SimplifiedWelcomeProps> = ({
   }
 
   return (
-    <Card className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 border-blue-200 dark:border-blue-700">
-      <CardContent className="p-6 relative">
+    <Card className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 border-blue-200 dark:border-blue-700 shadow-xl">
+      <CardContent className="p-8 relative">
         <Button 
           variant="ghost" 
           size="sm" 
           onClick={handleDismiss}
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
         >
-          <X className="h-4 w-4" />
+          <X className="h-5 w-5" />
         </Button>
         
-        <div className="max-w-3xl">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-gradient-to-r from-blue-600 to-green-600 rounded-lg text-white">
-              <Sparkles className="h-5 w-5" />
+        <div className="max-w-4xl space-y-8">
+          <div className="flex items-start gap-6">
+            <div className="p-3 bg-gradient-to-r from-blue-600 to-green-600 rounded-xl text-white shadow-lg">
+              <Sparkles className="h-8 w-8" />
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+            <div className="flex-1 space-y-3">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                 Welcome to UK Tax Doctor
               </h1>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                Smart deadline management for UK taxes
+              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                Your intelligent companion for UK tax deadline management, compliance, and planning
               </p>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4 mb-4">
-            <div>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Select Your Profile
+              </h3>
               <EnhancedUserTypeSelector
                 userType={userType}
                 onUserTypeChange={onUserTypeChange}
               />
             </div>
             
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="text-xs">
-                ✨ AI reminders
-              </Badge>
-              <Badge variant="secondary" className="text-xs">
-                📊 Calculators
-              </Badge>
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Key Features
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                <Badge variant="secondary" className="px-3 py-1.5 text-sm">
+                  ✨ AI-powered reminders
+                </Badge>
+                <Badge variant="secondary" className="px-3 py-1.5 text-sm">
+                  📊 Tax calculators
+                </Badge>
+                <Badge variant="secondary" className="px-3 py-1.5 text-sm">
+                  📅 Interactive calendar
+                </Badge>
+                <Badge variant="secondary" className="px-3 py-1.5 text-sm">
+                  🎯 Personalized deadlines
+                </Badge>
+              </div>
             </div>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-4 pt-4">
             <Button 
               onClick={onGetStarted}
-              className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white"
-              size="sm"
+              className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-6 py-3 text-lg font-medium"
+              size="lg"
             >
-              <ArrowRight className="h-4 w-4 mr-2" />
+              <ArrowRight className="h-5 w-5 mr-2" />
               Get Started
             </Button>
             <Button 
               variant="outline"
               onClick={() => navigate('/penalty-calculator')}
-              size="sm"
+              size="lg"
+              className="px-6 py-3"
             >
               Try Calculator
+            </Button>
+            <Button 
+              variant="ghost"
+              onClick={() => navigate('/common-tax-issues')}
+              size="lg"
+              className="px-6 py-3"
+            >
+              Learn More
             </Button>
           </div>
         </div>

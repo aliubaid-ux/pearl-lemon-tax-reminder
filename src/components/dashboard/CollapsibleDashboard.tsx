@@ -42,8 +42,8 @@ const CollapsibleDashboard: React.FC<CollapsibleDashboardProps> = ({
 
   // Collapsible state management
   const [openSections, setOpenSections] = useState({
-    overview: true,  // Start with overview open
-    urgentDeadlines: true,  // Always show urgent by default
+    overview: true,
+    urgentDeadlines: true,
     quickActions: false,
     upcomingDeadlines: false,
     calendarView: false,
@@ -92,30 +92,30 @@ const CollapsibleDashboard: React.FC<CollapsibleDashboardProps> = ({
     priority?: boolean;
     children: React.ReactNode;
   }> = ({ id, title, icon: Icon, badge, priority, children }) => (
-    <Card className={`${priority && urgentDeadlines.length > 0 ? "border-red-200 bg-red-50/30" : ""}`}>
+    <Card className={`${priority && urgentDeadlines.length > 0 ? "border-red-200 bg-red-50/30" : ""} shadow-lg`}>
       <Collapsible open={openSections[id]} onOpenChange={() => toggleSection(id)}>
         <CollapsibleTrigger asChild>
-          <CardHeader className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors pb-3">
-            <CardTitle className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Icon className={`h-5 w-5 ${priority ? "text-red-600" : "text-blue-600"}`} />
+          <CardHeader className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors pb-4">
+            <CardTitle className="flex items-center justify-between text-lg">
+              <div className="flex items-center gap-3">
+                <Icon className={`h-6 w-6 ${priority ? "text-red-600" : "text-blue-600"}`} />
                 <span>{title}</span>
                 {badge !== undefined && (
-                  <Badge variant={priority ? "destructive" : "secondary"}>
+                  <Badge variant={priority ? "destructive" : "secondary"} className="px-2 py-1">
                     {badge}
                   </Badge>
                 )}
               </div>
               {openSections[id] ? 
-                <ChevronDown className="h-4 w-4" /> : 
-                <ChevronRight className="h-4 w-4" />
+                <ChevronDown className="h-5 w-5" /> : 
+                <ChevronRight className="h-5 w-5" />
               }
             </CardTitle>
           </CardHeader>
         </CollapsibleTrigger>
         
         <CollapsibleContent>
-          <CardContent className="pt-0">
+          <CardContent className="pt-0 pb-6">
             {children}
           </CardContent>
         </CollapsibleContent>
@@ -124,41 +124,41 @@ const CollapsibleDashboard: React.FC<CollapsibleDashboardProps> = ({
   );
 
   return (
-    <div className="space-y-4">
-      {/* Quick Status Overview - Always Visible */}
+    <div className="space-y-6">
+      {/* Quick Status Overview */}
       <CollapsibleSection
         id="overview"
         title="Dashboard Overview"
         icon={LayoutDashboard}
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded border">
-            <div>
-              <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Urgent (7 days)</p>
-              <p className="text-xl font-bold">{urgentDeadlines.length}</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex items-center justify-between p-6 bg-white dark:bg-gray-800 rounded-lg border shadow-sm">
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Urgent (7 days)</p>
+              <p className="text-3xl font-bold">{urgentDeadlines.length}</p>
             </div>
-            <AlertTriangle className={urgentDeadlines.length > 0 ? "h-5 w-5 text-red-600" : "h-5 w-5 text-gray-400"} />
+            <AlertTriangle className={urgentDeadlines.length > 0 ? "h-8 w-8 text-red-600" : "h-8 w-8 text-gray-400"} />
           </div>
 
-          <div className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded border">
-            <div>
-              <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Coming Up (30 days)</p>
-              <p className="text-xl font-bold">{upcomingDeadlines.length}</p>
+          <div className="flex items-center justify-between p-6 bg-white dark:bg-gray-800 rounded-lg border shadow-sm">
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Coming Up (30 days)</p>
+              <p className="text-3xl font-bold">{upcomingDeadlines.length}</p>
             </div>
-            <Clock className="h-5 w-5 text-amber-600" />
+            <Clock className="h-8 w-8 text-amber-600" />
           </div>
 
-          <div className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded border">
-            <div>
-              <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Profile</p>
-              <p className="text-sm font-semibold capitalize">{userType.replace('-', ' ')}</p>
+          <div className="flex items-center justify-between p-6 bg-white dark:bg-gray-800 rounded-lg border shadow-sm">
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Profile</p>
+              <p className="text-lg font-semibold capitalize">{userType.replace('-', ' ')}</p>
             </div>
-            <Calendar className="h-5 w-5 text-blue-600" />
+            <Calendar className="h-8 w-8 text-blue-600" />
           </div>
         </div>
       </CollapsibleSection>
 
-      {/* Urgent Deadlines - Auto-open if urgent items exist */}
+      {/* Urgent Deadlines */}
       {urgentDeadlines.length > 0 && (
         <CollapsibleSection
           id="urgentDeadlines"
@@ -167,17 +167,17 @@ const CollapsibleDashboard: React.FC<CollapsibleDashboardProps> = ({
           badge={urgentDeadlines.length}
           priority={true}
         >
-          <div className="space-y-2">
+          <div className="space-y-4">
             {urgentDeadlines.map((deadline) => (
-              <div key={deadline.id} className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded border">
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white text-sm">{deadline.title}</h4>
-                  <p className="text-xs text-gray-600 dark:text-gray-300">{formatDate(deadline.date)}</p>
+              <div key={deadline.id} className="flex items-center justify-between p-6 bg-white dark:bg-gray-800 rounded-lg border shadow-sm">
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-gray-900 dark:text-white text-lg">{deadline.title}</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">{formatDate(deadline.date)}</p>
                   {deadline.description && (
-                    <p className="text-xs text-gray-500 mt-1">{deadline.description}</p>
+                    <p className="text-sm text-gray-500 mt-2">{deadline.description}</p>
                   )}
                 </div>
-                <Badge variant="destructive" className="text-xs">
+                <Badge variant="destructive" className="px-3 py-1.5">
                   {getDaysUntil(deadline.date)} days
                 </Badge>
               </div>
@@ -186,50 +186,50 @@ const CollapsibleDashboard: React.FC<CollapsibleDashboardProps> = ({
         </CollapsibleSection>
       )}
 
-      {/* Quick Actions - Collapsible */}
+      {/* Quick Actions */}
       <CollapsibleSection
         id="quickActions"
         title="Tax Tools & Calculators"
         icon={Calculator}
         badge={4}
       >
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Button 
             variant="outline" 
             onClick={() => navigate('/penalty-calculator')}
-            className="h-16 flex flex-col gap-1 text-xs"
+            className="h-24 flex flex-col gap-3 text-base font-medium"
           >
-            <TrendingUp className="h-4 w-4" />
+            <TrendingUp className="h-6 w-6" />
             <span>Penalty Calculator</span>
           </Button>
           <Button 
             variant="outline" 
             onClick={() => navigate('/vat-calculator')}
-            className="h-16 flex flex-col gap-1 text-xs"
+            className="h-24 flex flex-col gap-3 text-base font-medium"
           >
-            <Calculator className="h-4 w-4" />
+            <Calculator className="h-6 w-6" />
             <span>VAT Calculator</span>
           </Button>
           <Button 
             variant="outline" 
             onClick={() => navigate('/common-tax-issues')}
-            className="h-16 flex flex-col gap-1 text-xs"
+            className="h-24 flex flex-col gap-3 text-base font-medium"
           >
-            <AlertTriangle className="h-4 w-4" />
+            <AlertTriangle className="h-6 w-6" />
             <span>Common Issues</span>
           </Button>
           <Button 
             variant="outline" 
             onClick={() => navigate('/hmrc-support-guide')}
-            className="h-16 flex flex-col gap-1 text-xs"
+            className="h-24 flex flex-col gap-3 text-base font-medium"
           >
-            <FileText className="h-4 w-4" />
+            <FileText className="h-6 w-6" />
             <span>HMRC Support</span>
           </Button>
         </div>
       </CollapsibleSection>
 
-      {/* Upcoming Deadlines - Collapsible */}
+      {/* Upcoming Deadlines */}
       {upcomingDeadlines.length > 0 && (
         <CollapsibleSection
           id="upcomingDeadlines"
@@ -237,14 +237,14 @@ const CollapsibleDashboard: React.FC<CollapsibleDashboardProps> = ({
           icon={Clock}
           badge={upcomingDeadlines.length}
         >
-          <div className="space-y-2">
+          <div className="space-y-3">
             {upcomingDeadlines.map((deadline) => (
-              <div key={deadline.id} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
-                <div>
-                  <p className="font-medium text-gray-900 dark:text-white text-sm">{deadline.title}</p>
-                  <p className="text-xs text-gray-600 dark:text-gray-300">{formatDate(deadline.date)}</p>
+              <div key={deadline.id} className="flex items-center justify-between py-4 px-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
+                <div className="space-y-1">
+                  <p className="font-medium text-gray-900 dark:text-white text-base">{deadline.title}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">{formatDate(deadline.date)}</p>
                 </div>
-                <Badge variant="secondary" className="text-xs">
+                <Badge variant="secondary" className="px-3 py-1">
                   {getDaysUntil(deadline.date)} days
                 </Badge>
               </div>
@@ -253,7 +253,7 @@ const CollapsibleDashboard: React.FC<CollapsibleDashboardProps> = ({
         </CollapsibleSection>
       )}
 
-      {/* Calendar View - Collapsible */}
+      {/* Calendar View */}
       <CollapsibleSection
         id="calendarView"
         title="Interactive Calendar"
@@ -268,7 +268,7 @@ const CollapsibleDashboard: React.FC<CollapsibleDashboardProps> = ({
         />
       </CollapsibleSection>
 
-      {/* All Deadlines - Collapsible */}
+      {/* All Deadlines */}
       <CollapsibleSection
         id="allDeadlines"
         title="All Deadlines (Detailed View)"
@@ -281,47 +281,44 @@ const CollapsibleDashboard: React.FC<CollapsibleDashboardProps> = ({
         />
       </CollapsibleSection>
 
-      {/* User Settings & Profile - Collapsible */}
+      {/* User Settings & Profile */}
       <CollapsibleSection
         id="userSettings"
         title="Profile Settings"
         icon={Settings}
       >
-        <div className="space-y-3">
-          <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded border">
-            <h4 className="font-medium text-blue-900 dark:text-blue-100 text-sm mb-2">Current Profile</h4>
-            <p className="text-sm text-blue-700 dark:text-blue-300 capitalize">
+        <div className="space-y-6">
+          <div className="p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg border">
+            <h4 className="font-semibold text-blue-900 dark:text-blue-100 text-lg mb-3">Current Profile</h4>
+            <p className="text-base text-blue-700 dark:text-blue-300 capitalize mb-4">
               {userType.replace('-', ' ')}
             </p>
             <Button 
               variant="outline" 
-              size="sm" 
               onClick={() => navigate('/settings')}
-              className="mt-2"
+              className="px-4 py-2"
             >
               Change Profile Settings
             </Button>
           </div>
           
-          <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded border">
-            <h4 className="font-medium text-gray-900 dark:text-gray-100 text-sm mb-2">Quick Help</h4>
-            <div className="space-y-1">
+          <div className="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg border">
+            <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-lg mb-4">Quick Help</h4>
+            <div className="space-y-3">
               <Button 
                 variant="ghost" 
-                size="sm" 
                 onClick={() => navigate('/common-tax-issues')}
-                className="w-full justify-start text-xs"
+                className="w-full justify-start text-base py-3"
               >
-                <Info className="h-3 w-3 mr-2" />
+                <Info className="h-5 w-5 mr-3" />
                 Common Tax Issues
               </Button>
               <Button 
                 variant="ghost" 
-                size="sm" 
                 onClick={() => navigate('/hmrc-support-guide')}
-                className="w-full justify-start text-xs"
+                className="w-full justify-start text-base py-3"
               >
-                <FileText className="h-3 w-3 mr-2" />
+                <FileText className="h-5 w-5 mr-3" />
                 HMRC Support Guide
               </Button>
             </div>
