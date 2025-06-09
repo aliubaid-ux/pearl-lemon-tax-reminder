@@ -49,6 +49,8 @@ const Index: React.FC = () => {
         onMonthChange={setSelectedMonth}
         userType={userType}
         onUserTypeChange={handleUserTypeChange}
+        onFilterToggle={openFilters}
+        onSearchToggle={openSearch}
       />
 
       <SimplifiedModalsContainer

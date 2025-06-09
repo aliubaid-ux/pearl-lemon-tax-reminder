@@ -12,6 +12,8 @@ interface MainTabsProps {
   selectedMonth: Date;
   onMonthChange: (date: Date) => void;
   userType: string;
+  onFilterToggle?: () => void;
+  onSearchToggle?: () => void;
 }
 
 const MainTabs: React.FC<MainTabsProps> = ({
@@ -19,38 +21,42 @@ const MainTabs: React.FC<MainTabsProps> = ({
   upcomingDeadlines,
   selectedMonth,
   onMonthChange,
-  userType
+  userType,
+  onFilterToggle,
+  onSearchToggle
 }) => {
   return (
-    <Tabs defaultValue="deadlines" className="space-y-8 animate-fade-in">
+    <Tabs defaultValue="calendar" className="space-y-8 animate-fade-in">
       <TabsList className="grid w-full grid-cols-2 h-14 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg">
-        <TabsTrigger 
-          value="deadlines" 
-          className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400"
-        >
-          <FileText className="h-4 w-4 mr-2" />
-          All Deadlines
-        </TabsTrigger>
         <TabsTrigger 
           value="calendar" 
           className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400"
         >
           <Calendar className="h-4 w-4 mr-2" />
-          Calendar View
+          Interactive Calendar
+        </TabsTrigger>
+        <TabsTrigger 
+          value="deadlines" 
+          className="text-lg font-medium rounded-xl data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/30 dark:data-[state=active]:text-green-400"
+        >
+          <FileText className="h-4 w-4 mr-2" />
+          Grouped View
         </TabsTrigger>
       </TabsList>
       
-      <TabsContent value="deadlines" className="space-y-6">
-        <SmartDeadlineGroups deadlines={filteredDeadlines} />
-      </TabsContent>
-
       <TabsContent value="calendar" className="space-y-6">
         <CalendarTab
           deadlines={filteredDeadlines}
           selectedMonth={selectedMonth}
           onMonthChange={onMonthChange}
           userType={userType}
+          onFilterToggle={onFilterToggle}
+          onSearchToggle={onSearchToggle}
         />
+      </TabsContent>
+
+      <TabsContent value="deadlines" className="space-y-6">
+        <SmartDeadlineGroups deadlines={filteredDeadlines} />
       </TabsContent>
     </Tabs>
   );
