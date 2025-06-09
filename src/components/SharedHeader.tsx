@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -89,7 +88,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
               Dashboard
             </Button>
             
-            {/* Search and Filter buttons positioned here */}
+            {/* Search and Filter buttons positioned here in top nav */}
             {showSearch && (
               <Button 
                 variant="outline"

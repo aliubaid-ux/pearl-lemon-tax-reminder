@@ -13,8 +13,6 @@ interface TaxCalendarProps {
   selectedMonth: Date;
   onMonthChange: (date: Date) => void;
   userType?: string;
-  onFilterToggle?: () => void;
-  onSearchToggle?: () => void;
   onExport?: () => void;
 }
 
@@ -23,8 +21,6 @@ const TaxCalendar: React.FC<TaxCalendarProps> = ({
   selectedMonth, 
   onMonthChange,
   userType = 'self-employed',
-  onFilterToggle,
-  onSearchToggle,
   onExport
 }) => {
   const [viewMode, setViewMode] = useState<'month' | 'week' | 'list'>('month');
@@ -70,9 +66,6 @@ const TaxCalendar: React.FC<TaxCalendarProps> = ({
             }}
             viewMode={viewMode}
             onViewModeChange={setViewMode}
-            onFilterToggle={onFilterToggle || (() => {})}
-            onSearchToggle={onSearchToggle || (() => {})}
-            onExport={handleExport}
             urgentCount={urgentDeadlines.length}
             totalCount={monthDeadlines.length}
           />

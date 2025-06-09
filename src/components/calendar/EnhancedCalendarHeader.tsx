@@ -13,9 +13,6 @@ interface EnhancedCalendarHeaderProps {
   onYearSelect: (year: number) => void;
   viewMode: 'month' | 'week' | 'list';
   onViewModeChange: (mode: 'month' | 'week' | 'list') => void;
-  onFilterToggle: () => void;
-  onSearchToggle: () => void;
-  onExport: () => void;
   urgentCount: number;
   totalCount: number;
 }
