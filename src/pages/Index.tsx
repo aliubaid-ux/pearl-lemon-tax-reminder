@@ -31,7 +31,7 @@ const Index: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="space-y-8">
+      <div className="space-y-6">
         <SimplifiedWelcome 
           onGetStarted={handleOnboardingComplete}
           userType={userType}

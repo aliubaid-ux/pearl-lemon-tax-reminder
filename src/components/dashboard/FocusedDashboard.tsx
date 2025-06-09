@@ -63,63 +63,63 @@ const FocusedDashboard: React.FC<FocusedDashboardProps> = ({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Quick Status Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className={urgentDeadlines.length > 0 ? "border-red-200 bg-red-50/50 dark:bg-red-900/10" : ""}>
-          <CardContent className="p-4">
+    <div className="space-y-4">
+      {/* Quick Status Overview - Simplified */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <Card className={urgentDeadlines.length > 0 ? "border-red-200 bg-red-50/50 dark:bg-red-900/10" : "border-0 shadow-sm"}>
+          <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Urgent</p>
-                <p className="text-2xl font-bold">{urgentDeadlines.length}</p>
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Urgent</p>
+                <p className="text-xl font-bold">{urgentDeadlines.length}</p>
               </div>
-              <AlertTriangle className={urgentDeadlines.length > 0 ? "h-6 w-6 text-red-600" : "h-6 w-6 text-gray-400"} />
+              <AlertTriangle className={urgentDeadlines.length > 0 ? "h-5 w-5 text-red-600" : "h-5 w-5 text-gray-400"} />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
+        <Card className="border-0 shadow-sm">
+          <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Coming Up</p>
-                <p className="text-2xl font-bold">{upcomingDeadlines.length}</p>
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Coming Up</p>
+                <p className="text-xl font-bold">{upcomingDeadlines.length}</p>
               </div>
-              <Clock className="h-6 w-6 text-amber-600" />
+              <Clock className="h-5 w-5 text-amber-600" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
+        <Card className="border-0 shadow-sm">
+          <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Profile</p>
-                <p className="text-lg font-semibold capitalize">{userType.replace('-', ' ')}</p>
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Profile</p>
+                <p className="text-sm font-semibold capitalize">{userType.replace('-', ' ')}</p>
               </div>
-              <Calendar className="h-6 w-6 text-blue-600" />
+              <Calendar className="h-5 w-5 text-blue-600" />
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Urgent Deadlines Alert */}
+      {/* Urgent Deadlines Alert - Simplified */}
       {urgentDeadlines.length > 0 && (
-        <Card className="border-red-200 bg-red-50/50 dark:bg-red-900/10">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-red-900 dark:text-red-100 text-lg">
-              <AlertTriangle className="h-5 w-5" />
-              Action Required - {urgentDeadlines.length} Urgent Deadline{urgentDeadlines.length > 1 ? 's' : ''}
+        <Card className="border-red-200 bg-red-50/50 dark:bg-red-900/10 border-0 shadow-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="flex items-center gap-2 text-red-900 dark:text-red-100 text-base">
+              <AlertTriangle className="h-4 w-4" />
+              {urgentDeadlines.length} Urgent Deadline{urgentDeadlines.length > 1 ? 's' : ''}
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-2">
             {urgentDeadlines.slice(0, 2).map((deadline) => (
-              <div key={deadline.id} className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg">
+              <div key={deadline.id} className="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded">
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white">{deadline.title}</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{formatDate(deadline.date)}</p>
+                  <h4 className="font-medium text-gray-900 dark:text-white text-sm">{deadline.title}</h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-300">{formatDate(deadline.date)}</p>
                 </div>
-                <Badge variant="destructive">
+                <Badge variant="destructive" className="text-xs">
                   {getDaysUntil(deadline.date)} days
                 </Badge>
               </div>
@@ -128,9 +128,9 @@ const FocusedDashboard: React.FC<FocusedDashboardProps> = ({
         </Card>
       )}
 
-      {/* Main Content Tabs */}
-      <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 h-12 bg-white/90 dark:bg-gray-800/90">
+      {/* Main Content Tabs - Simplified */}
+      <Tabs defaultValue="overview" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-3 h-10 bg-white/90 dark:bg-gray-800/90 border-0 shadow-sm">
           <TabsTrigger value="overview" className="text-sm">
             <LayoutDashboard className="h-4 w-4 mr-2" />
             Overview
@@ -145,62 +145,62 @@ const FocusedDashboard: React.FC<FocusedDashboardProps> = ({
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview" className="space-y-6">
-          {/* Quick Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Quick Actions</CardTitle>
+        <TabsContent value="overview" className="space-y-4">
+          {/* Quick Actions - Simplified */}
+          <Card className="border-0 shadow-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                 <Button 
                   variant="outline" 
                   onClick={() => navigate('/penalty-calculator')}
-                  className="h-16 flex flex-col gap-1"
+                  className="h-12 flex flex-col gap-1 text-xs"
                 >
-                  <TrendingUp className="h-5 w-5" />
-                  <span className="text-xs">Penalty Calculator</span>
+                  <TrendingUp className="h-4 w-4" />
+                  <span>Penalty Calc</span>
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={() => navigate('/vat-calculator')}
-                  className="h-16 flex flex-col gap-1"
+                  className="h-12 flex flex-col gap-1 text-xs"
                 >
-                  <Calculator className="h-5 w-5" />
-                  <span className="text-xs">VAT Calculator</span>
+                  <Calculator className="h-4 w-4" />
+                  <span>VAT Calc</span>
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={() => navigate('/common-tax-issues')}
-                  className="h-16 flex flex-col gap-1"
+                  className="h-12 flex flex-col gap-1 text-xs"
                 >
-                  <AlertTriangle className="h-5 w-5" />
-                  <span className="text-xs">Common Issues</span>
+                  <AlertTriangle className="h-4 w-4" />
+                  <span>Issues</span>
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={() => navigate('/hmrc-support-guide')}
-                  className="h-16 flex flex-col gap-1"
+                  className="h-12 flex flex-col gap-1 text-xs"
                 >
-                  <FileText className="h-5 w-5" />
-                  <span className="text-xs">HMRC Support</span>
+                  <FileText className="h-4 w-4" />
+                  <span>Support</span>
                 </Button>
               </div>
             </CardContent>
           </Card>
 
-          {/* Upcoming Deadlines Preview */}
+          {/* Upcoming Deadlines Preview - Simplified */}
           {upcomingDeadlines.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Next 30 Days</CardTitle>
+            <Card className="border-0 shadow-sm">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Next 30 Days</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  {upcomingDeadlines.slice(0, 4).map((deadline) => (
-                    <div key={deadline.id} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
+                <div className="space-y-1">
+                  {upcomingDeadlines.slice(0, 3).map((deadline) => (
+                    <div key={deadline.id} className="flex items-center justify-between py-1.5 border-b border-gray-100 dark:border-gray-700 last:border-0">
                       <div>
-                        <p className="font-medium text-gray-900 dark:text-white text-sm">{deadline.title}</p>
+                        <p className="font-medium text-gray-900 dark:text-white text-xs">{deadline.title}</p>
                         <p className="text-xs text-gray-600 dark:text-gray-300">{formatDate(deadline.date)}</p>
                       </div>
                       <Badge variant="secondary" className="text-xs">
