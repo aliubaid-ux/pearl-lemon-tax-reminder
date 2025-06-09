@@ -11,8 +11,11 @@ import {
   List,
   Filter,
   Search,
-  Download
+  Download,
+  Share,
+  Printer
 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface EnhancedCalendarHeaderProps {
   currentMonth: Date;
@@ -45,6 +48,7 @@ const EnhancedCalendarHeader: React.FC<EnhancedCalendarHeaderProps> = ({
   urgentCount,
   totalCount
 }) => {
+  const { toast } = useToast();
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -63,6 +67,26 @@ const EnhancedCalendarHeader: React.FC<EnhancedCalendarHeaderProps> = ({
     const newDate = new Date(currentMonth);
     newDate.setFullYear(parseInt(year));
     onYearSelect(parseInt(year));
+  };
+
+  const handleSearchClick = () => {
+    onSearchToggle();
+    toast({
+      title: "Search opened",
+      description: "You can now search through your deadlines",
+    });
+  };
+
+  const handleFilterClick = () => {
+    onFilterToggle();
+    toast({
+      title: "Filters opened",
+      description: "Customize which deadlines you want to see",
+    });
+  };
+
+  const handleExportClick = () => {
+    onExport();
   };
 
   return (
@@ -180,7 +204,7 @@ const EnhancedCalendarHeader: React.FC<EnhancedCalendarHeaderProps> = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={onSearchToggle}
+            onClick={handleSearchClick}
             className="h-8"
           >
             <Search className="h-3 w-3 mr-1" />
@@ -189,7 +213,7 @@ const EnhancedCalendarHeader: React.FC<EnhancedCalendarHeaderProps> = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={onFilterToggle}
+            onClick={handleFilterClick}
             className="h-8"
           >
             <Filter className="h-3 w-3 mr-1" />
@@ -198,7 +222,7 @@ const EnhancedCalendarHeader: React.FC<EnhancedCalendarHeaderProps> = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={onExport}
+            onClick={handleExportClick}
             className="h-8"
           >
             <Download className="h-3 w-3 mr-1" />

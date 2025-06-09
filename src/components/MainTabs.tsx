@@ -3,7 +3,7 @@ import React from 'react';
 import { Calendar, FileText } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import SmartDeadlineGroups from '@/components/SmartDeadlineGroups';
-import CalendarTab from '@/components/tabs/CalendarTab';
+import TaxCalendar from '@/components/TaxCalendar';
 import { TaxDeadline } from '@/types/tax';
 
 interface MainTabsProps {
@@ -45,7 +45,7 @@ const MainTabs: React.FC<MainTabsProps> = ({
       </TabsList>
       
       <TabsContent value="calendar" className="space-y-6">
-        <CalendarTab
+        <TaxCalendar
           deadlines={filteredDeadlines}
           selectedMonth={selectedMonth}
           onMonthChange={onMonthChange}

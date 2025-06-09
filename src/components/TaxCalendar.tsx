@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { TaxDeadline } from '@/types/tax';
 import EnhancedCalendarHeader from './calendar/EnhancedCalendarHeader';
@@ -6,23 +5,24 @@ import CalendarDay from './calendar/CalendarDay';
 import QuickDateNavigation from './calendar/QuickDateNavigation';
 import DeadlineDetailsModal from './DeadlineDetailsModal';
 import { useToast } from '@/hooks/use-toast';
+import { exportToCSV, printCalendar, shareDeadlines } from '@/utils/exportUtils';
 
 interface TaxCalendarProps {
   deadlines: TaxDeadline[];
   selectedMonth: Date;
   onMonthChange: (date: Date) => void;
+  userType?: string;
   onFilterToggle?: () => void;
   onSearchToggle?: () => void;
-  onExport?: () => void;
 }
 
 const TaxCalendar: React.FC<TaxCalendarProps> = ({ 
   deadlines, 
   selectedMonth, 
   onMonthChange,
+  userType = 'self-employed',
   onFilterToggle,
-  onSearchToggle,
-  onExport
+  onSearchToggle
 }) => {
   const [viewMode, setViewMode] = useState<'month' | 'week' | 'list'>('month');
   const [selectedDeadline, setSelectedDeadline] = useState<TaxDeadline | null>(null);
@@ -31,33 +31,52 @@ const TaxCalendar: React.FC<TaxCalendarProps> = ({
   
   const today = new Date();
   
-  const getDaysInMonth = (date: Date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay();
-    
-    const days: Date[] = [];
-    
-    // Add previous month's trailing days
-    for (let i = startingDayOfWeek - 1; i >= 0; i--) {
-      days.push(new Date(year, month, -i));
+  const handleExport = () => {
+    try {
+      exportToCSV(deadlines);
+      toast({
+        title: "Export successful",
+        description: "Calendar data has been downloaded as CSV",
+      });
+    } catch (error) {
+      toast({
+        title: "Export failed",
+        description: "There was an error exporting the calendar data",
+        variant: "destructive"
+      });
     }
-    
-    // Add current month's days
-    for (let day = 1; day <= daysInMonth; day++) {
-      days.push(new Date(year, month, day));
+  };
+
+  const handlePrint = () => {
+    try {
+      printCalendar(deadlines, userType);
+      toast({
+        title: "Print initiated",
+        description: "Calendar is being prepared for printing",
+      });
+    } catch (error) {
+      toast({
+        title: "Print failed",
+        description: "There was an error preparing the calendar for printing",
+        variant: "destructive"
+      });
     }
-    
-    // Add next month's leading days
-    const remainingDays = 42 - days.length;
-    for (let day = 1; day <= remainingDays; day++) {
-      days.push(new Date(year, month + 1, day));
+  };
+
+  const handleShare = async () => {
+    try {
+      await shareDeadlines(deadlines, userType);
+      toast({
+        title: "Share successful",
+        description: "Calendar data has been shared or copied to clipboard",
+      });
+    } catch (error) {
+      toast({
+        title: "Share failed",
+        description: "There was an error sharing the calendar data",
+        variant: "destructive"
+      });
     }
-    
-    return days;
   };
 
   const handlePreviousMonth = () => {
@@ -142,7 +161,7 @@ const TaxCalendar: React.FC<TaxCalendarProps> = ({
             onViewModeChange={setViewMode}
             onFilterToggle={onFilterToggle || (() => {})}
             onSearchToggle={onSearchToggle || (() => {})}
-            onExport={onExport || (() => {})}
+            onExport={handleExport}
             urgentCount={urgentDeadlines.length}
             totalCount={monthDeadlines.length}
           />
