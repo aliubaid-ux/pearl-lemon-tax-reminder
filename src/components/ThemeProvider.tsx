@@ -24,14 +24,18 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>(() => {
-    const stored = localStorage.getItem('theme') as Theme;
-    return stored || 'system';
+  const [theme, setTheme] = React.useState<Theme>(() => {
+    try {
+      const stored = localStorage.getItem('theme') as Theme;
+      return stored || 'system';
+    } catch {
+      return 'system';
+    }
   });
 
-  const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light');
+  const [actualTheme, setActualTheme] = React.useState<'light' | 'dark'>('light');
 
-  useEffect(() => {
+  React.useEffect(() => {
     const root = window.document.documentElement;
     
     const getSystemTheme = () => {
@@ -57,8 +61,12 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, [theme]);
 
-  useEffect(() => {
-    localStorage.setItem('theme', theme);
+  React.useEffect(() => {
+    try {
+      localStorage.setItem('theme', theme);
+    } catch {
+      // Handle localStorage errors silently
+    }
   }, [theme]);
 
   return (
