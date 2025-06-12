@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Home, Calculator, FileText, Settings, Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import NotificationCenter from '@/components/NotificationCenter';
+import UserMenu from '@/components/auth/UserMenu';
 import { getTaxDeadlines } from '@/utils/taxDeadlines';
 import {
   DropdownMenu,
@@ -120,6 +121,7 @@ const UnifiedNavigation: React.FC = () => {
         <div className="flex items-center gap-3">
           <NotificationCenter deadlines={deadlines} />
           <ThemeToggle />
+          <UserMenu />
           
           {/* Mobile Menu */}
           <div className="lg:hidden">
