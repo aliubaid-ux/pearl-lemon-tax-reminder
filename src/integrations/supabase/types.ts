@@ -13,22 +13,28 @@ export type Database = {
         Row: {
           created_at: string
           email: string | null
+          email_notifications: boolean | null
           full_name: string | null
           id: string
+          notification_days: number[] | null
           updated_at: string
         }
         Insert: {
           created_at?: string
           email?: string | null
+          email_notifications?: boolean | null
           full_name?: string | null
           id: string
+          notification_days?: number[] | null
           updated_at?: string
         }
         Update: {
           created_at?: string
           email?: string | null
+          email_notifications?: boolean | null
           full_name?: string | null
           id?: string
+          notification_days?: number[] | null
           updated_at?: string
         }
         Relationships: []
