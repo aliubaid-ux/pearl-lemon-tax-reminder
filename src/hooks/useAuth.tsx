@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -11,6 +10,8 @@ interface AuthContextType {
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signInWithGoogle: () => Promise<{ error: any }>;
+  signInWithMicrosoft: () => Promise<{ error: any }>;
+  signInWithApple: () => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   updateProfile: (data: { full_name?: string }) => Promise<{ error: any }>;
 }
@@ -124,6 +125,48 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error };
   };
 
+  const signInWithMicrosoft = async () => {
+    const redirectUrl = `${window.location.origin}/`;
+    
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'azure',
+      options: {
+        redirectTo: redirectUrl
+      }
+    });
+
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Microsoft sign in failed",
+        description: error.message
+      });
+    }
+
+    return { error };
+  };
+
+  const signInWithApple = async () => {
+    const redirectUrl = `${window.location.origin}/`;
+    
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'apple',
+      options: {
+        redirectTo: redirectUrl
+      }
+    });
+
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Apple sign in failed",
+        description: error.message
+      });
+    }
+
+    return { error };
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
     toast({
@@ -163,6 +206,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signUp,
     signIn,
     signInWithGoogle,
+    signInWithMicrosoft,
+    signInWithApple,
     signOut,
     updateProfile
   };
