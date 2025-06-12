@@ -20,6 +20,8 @@ import CommonMistakesPage from '@/pages/CommonMistakes';
 import RegistrationTrackerPage from '@/pages/RegistrationTracker';
 import PaymentsOnAccountGuidePage from '@/pages/PaymentsOnAccountGuide';
 import AuthPage from '@/pages/AuthPage';
+import SuccessPage from '@/pages/SuccessPage';
+import SubscriptionPage from '@/pages/SubscriptionPage';
 import './App.css';
 
 const queryClient = new QueryClient({
@@ -47,9 +49,15 @@ function App() {
               <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
                 <Routes>
                   <Route path="/auth" element={<AuthPage />} />
+                  <Route path="/success" element={<SuccessPage />} />
                   <Route path="/" element={
                     <ProtectedRoute>
                       <ImprovedIndex />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/subscription" element={
+                    <ProtectedRoute>
+                      <SubscriptionPage />
                     </ProtectedRoute>
                   } />
                   <Route path="/penalty-calculator" element={
