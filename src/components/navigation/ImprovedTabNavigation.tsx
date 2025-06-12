@@ -18,6 +18,8 @@ interface ImprovedTabNavigationProps {
   onMonthChange: (date: Date) => void;
   userType: UserType;
   onUserTypeChange: (type: UserType) => void;
+  onFilterToggle?: () => void;
+  onSearchToggle?: () => void;
 }
 
 const ImprovedTabNavigation: React.FC<ImprovedTabNavigationProps> = ({
@@ -25,7 +27,9 @@ const ImprovedTabNavigation: React.FC<ImprovedTabNavigationProps> = ({
   selectedMonth,
   onMonthChange,
   userType,
-  onUserTypeChange
+  onUserTypeChange,
+  onFilterToggle,
+  onSearchToggle
 }) => {
   const { showFeedback } = useFeedbackToast();
   const { urgentDeadlines, upcomingDeadlines, urgentCount } = useDeadlineStats(deadlines);
@@ -45,6 +49,8 @@ const ImprovedTabNavigation: React.FC<ImprovedTabNavigationProps> = ({
         userType={userType}
         onUserTypeChange={handleUserTypeChangeWithFeedback}
         urgentCount={urgentCount}
+        onSearchToggle={onSearchToggle}
+        onFilterToggle={onFilterToggle}
       />
 
       <Tabs defaultValue="dashboard" className="space-y-8">
@@ -64,6 +70,8 @@ const ImprovedTabNavigation: React.FC<ImprovedTabNavigationProps> = ({
             selectedMonth={selectedMonth}
             onMonthChange={onMonthChange}
             userType={userType}
+            onFilterToggle={onFilterToggle}
+            onSearchToggle={onSearchToggle}
           />
         </TabsContent>
 

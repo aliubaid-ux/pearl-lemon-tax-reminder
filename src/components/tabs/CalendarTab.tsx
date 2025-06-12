@@ -12,13 +12,17 @@ interface CalendarTabProps {
   selectedMonth: Date;
   onMonthChange: (date: Date) => void;
   userType: string;
+  onFilterToggle?: () => void;
+  onSearchToggle?: () => void;
 }
 
 const CalendarTab: React.FC<CalendarTabProps> = ({
   deadlines,
   selectedMonth,
   onMonthChange,
-  userType
+  userType,
+  onFilterToggle,
+  onSearchToggle
 }) => {
   const handleExport = () => {
     exportToCSV(deadlines);
@@ -44,7 +48,8 @@ const CalendarTab: React.FC<CalendarTabProps> = ({
           deadlines={deadlines}
           selectedMonth={selectedMonth}
           onMonthChange={onMonthChange}
-          userType={userType}
+          onFilterToggle={onFilterToggle}
+          onSearchToggle={onSearchToggle}
           onExport={handleExport}
         />
         

@@ -13,54 +13,50 @@ const RegistrationTrackerPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-violet-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <StreamlinedNavigation />
       
-      <div className="container mx-auto px-6 py-12 max-w-6xl">
-        <div className="space-y-8">
-          <div className="space-y-6">
-            <Button 
-              variant="outline" 
-              onClick={() => navigate('/')}
-              className="mb-6 px-4 py-2"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
-            </Button>
-            
-            <div className="text-center space-y-6">
-              <h1 className="text-5xl font-bold text-gray-900 dark:text-white">
-                Registration Tracker
-              </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed">
-                Track your tax registration deadlines and avoid late registration penalties with our comprehensive guide
-              </p>
-            </div>
-          </div>
-
-          <div className="pt-8">
-            <RegistrationTracker />
-          </div>
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="mb-8">
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/')}
+            className="mb-4"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Dashboard
+          </Button>
           
-          {/* Enhanced Important Dates */}
-          <div className="mt-12 bg-purple-50 dark:bg-purple-900/20 p-8 rounded-xl border border-purple-200 dark:border-purple-700 shadow-lg">
-            <h3 className="text-2xl font-semibold text-purple-900 dark:text-purple-100 mb-6">
-              📅 Key Registration Deadlines
-            </h3>
-            <div className="grid md:grid-cols-2 gap-8 text-purple-800 dark:text-purple-200">
-              <div className="space-y-4">
-                <h4 className="font-semibold text-lg mb-3">Self Assessment</h4>
-                <ul className="space-y-2 text-base">
-                  <li>• Register by October 5th following tax year end</li>
-                  <li>• Late registration penalties start at £100</li>
-                  <li>• Additional penalties for continued delay</li>
-                </ul>
-              </div>
-              <div className="space-y-4">
-                <h4 className="font-semibold text-lg mb-3">VAT Registration</h4>
-                <ul className="space-y-2 text-base">
-                  <li>• Register within 30 days of crossing threshold</li>
-                  <li>• £85,000 threshold for 2024/25</li>
-                  <li>• Penalties for late registration</li>
-                </ul>
-              </div>
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Registration Tracker
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300">
+              Track your tax registration deadlines and avoid late registration penalties
+            </p>
+          </div>
+        </div>
+
+        <RegistrationTracker />
+        
+        {/* Important Dates */}
+        <div className="mt-8 bg-purple-50 dark:bg-purple-900/20 p-6 rounded-lg border border-purple-200 dark:border-purple-700">
+          <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-100 mb-3">
+            📅 Key Registration Deadlines
+          </h3>
+          <div className="grid md:grid-cols-2 gap-4 text-purple-800 dark:text-purple-200">
+            <div>
+              <h4 className="font-semibold mb-2">Self Assessment</h4>
+              <ul className="space-y-1 text-sm">
+                <li>• Register by October 5th following tax year end</li>
+                <li>• Late registration penalties start at £100</li>
+                <li>• Additional penalties for continued delay</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2">VAT Registration</h4>
+              <ul className="space-y-1 text-sm">
+                <li>• Register within 30 days of crossing threshold</li>
+                <li>• £85,000 threshold for 2024/25</li>
+                <li>• Penalties for late registration</li>
+              </ul>
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Home, Calculator, FileText, Settings } from 'lucide-react';
+import { Search, Filter, Home, Calculator, FileText, Settings } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,11 +20,19 @@ import { getTaxDeadlines } from '@/utils/taxDeadlines';
 interface SharedHeaderProps {
   title: string;
   subtitle: string;
+  showSearch?: boolean;
+  showFilters?: boolean;
+  onOpenSearch?: () => void;
+  onOpenFilters?: () => void;
 }
 
 const SharedHeader: React.FC<SharedHeaderProps> = ({
   title,
-  subtitle
+  subtitle,
+  showSearch = false,
+  showFilters = false,
+  onOpenSearch,
+  onOpenFilters
 }) => {
   const navigate = useNavigate();
   const deadlines = getTaxDeadlines('self-employed');
@@ -39,6 +47,12 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
   const handleQuickAction = (action: string) => {
     switch (action) {
+      case 'search':
+        onOpenSearch?.();
+        break;
+      case 'filter':
+        onOpenFilters?.();
+        break;
       case 'calendar-integration':
         navigate('/settings');
         break;
@@ -138,12 +152,37 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             </Button>
           </div>
 
+          {/* Action Buttons */}
+          {showSearch && (
+            <Button 
+              variant="ghost"
+              size="sm" 
+              onClick={onOpenSearch}
+              className="hidden md:flex items-center gap-2 text-sm"
+            >
+              <Search className="h-4 w-4" />
+              Search
+            </Button>
+          )}
+          
+          {showFilters && (
+            <Button 
+              variant="ghost"
+              size="sm" 
+              onClick={onOpenFilters}
+              className="hidden md:flex items-center gap-2 text-sm"
+            >
+              <Filter className="h-4 w-4" />
+              Filter
+            </Button>
+          )}
+
           <NotificationCenter deadlines={deadlines} />
           <EnhancedMobileNavigation 
             urgentCount={urgentCount}
             onQuickAction={handleQuickAction}
-            onOpenSearch={() => {}}
-            onOpenFilters={() => {}}
+            onOpenSearch={onOpenSearch || (() => {})}
+            onOpenFilters={onOpenFilters || (() => {})}
           />
           <ThemeToggle />
         </div>
