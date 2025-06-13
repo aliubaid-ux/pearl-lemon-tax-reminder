@@ -39,6 +39,7 @@ function App() {
   console.log('App component mounting...');
   console.log('Current URL:', window.location.href);
   console.log('Environment:', import.meta.env.MODE);
+  console.log('Base URL:', import.meta.env.BASE_URL);
   
   // Set document title for the new branding
   React.useEffect(() => {
@@ -46,7 +47,15 @@ function App() {
     document.title = 'UK Tax Doctor - AI-Powered Tax Deadline Management';
   }, []);
 
-  console.log('App component rendering...');
+  // Get the correct basename for routing
+  const getBasename = () => {
+    if (import.meta.env.MODE === 'production') {
+      return '/pearl-lemon-tax-reminder';
+    }
+    return undefined;
+  };
+
+  console.log('App component rendering with basename:', getBasename());
 
   return (
     <ErrorBoundary>
@@ -54,7 +63,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
             <UserProfileProvider>
-              <Router basename={import.meta.env.MODE === 'production' ? '/UK-Tax-Doctor' : undefined}>
+              <Router basename={getBasename()}>
                 <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
                   <Routes>
                     <Route path="/auth" element={<AuthPage />} />
