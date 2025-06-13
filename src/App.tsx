@@ -56,29 +56,13 @@ function App() {
     console.log('Is GitHub Pages:', isGitHubPages);
     
     if (isProduction && isGitHubPages) {
-      console.log('Using GitHub Pages basename: /pearl-lemon-tax-reminder');
       return '/pearl-lemon-tax-reminder';
     }
-    console.log('Using default basename: undefined');
     return undefined;
   };
 
   const basename = getBasename();
   console.log('App component rendering with basename:', basename);
-
-  // Simple fallback component for testing
-  const TestComponent = () => (
-    <div className="min-h-screen bg-red-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold text-red-600">App is Loading!</h1>
-        <p className="text-gray-600 mt-2">If you see this, React is working.</p>
-        <p className="text-sm text-gray-500 mt-4">Basename: {basename || 'undefined'}</p>
-        <p className="text-sm text-gray-500">Environment: {import.meta.env.MODE}</p>
-      </div>
-    </div>
-  );
-
-  console.log('About to render App component');
 
   return (
     <ErrorBoundary>
@@ -89,7 +73,6 @@ function App() {
               <Router basename={basename}>
                 <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
                   <Routes>
-                    <Route path="/test" element={<TestComponent />} />
                     <Route path="/auth" element={<AuthPage />} />
                     <Route path="/success" element={<SuccessPage />} />
                     <Route path="/" element={
@@ -152,7 +135,7 @@ function App() {
                         <PaymentsOnAccountGuidePage />
                       </ProtectedRoute>
                     } />
-                    {/* Legacy route redirects */}
+                    {/* Legacy route redirects - these now work */}
                     <Route path="/hmrc-guidance" element={
                       <ProtectedRoute>
                         <HMRCSupportGuidePage />
