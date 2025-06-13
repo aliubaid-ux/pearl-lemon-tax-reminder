@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -35,10 +36,17 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  console.log('App component mounting...');
+  console.log('Current URL:', window.location.href);
+  console.log('Environment:', import.meta.env.MODE);
+  
   // Set document title for the new branding
   React.useEffect(() => {
+    console.log('Setting document title...');
     document.title = 'UK Tax Doctor - AI-Powered Tax Deadline Management';
   }, []);
+
+  console.log('App component rendering...');
 
   return (
     <ErrorBoundary>
@@ -46,7 +54,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
             <UserProfileProvider>
-              <Router>
+              <Router basename={import.meta.env.MODE === 'production' ? '/UK-Tax-Doctor' : undefined}>
                 <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
                   <Routes>
                     <Route path="/auth" element={<AuthPage />} />

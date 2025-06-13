@@ -26,6 +26,12 @@ class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
+    
+    // Log additional debug info for production
+    console.log('Error stack:', error.stack);
+    console.log('Component stack:', errorInfo.componentStack);
+    console.log('Current URL:', window.location.href);
+    console.log('User agent:', navigator.userAgent);
   }
 
   private handleReset = () => {
@@ -68,13 +74,14 @@ class ErrorBoundary extends Component<Props, State> {
                 </ModernBadge>
               </div>
 
-              {process.env.NODE_ENV === 'development' && this.state.error && (
-                <div className="p-4 bg-red-50 rounded-lg text-left">
-                  <p className="text-xs text-red-600 font-mono break-all">
-                    {this.state.error.message}
-                  </p>
-                </div>
-              )}
+              <div className="p-4 bg-red-50 rounded-lg text-left">
+                <p className="text-xs text-red-600 font-mono break-all">
+                  {this.state.error?.message || 'Unknown error occurred'}
+                </p>
+                <p className="text-xs text-gray-500 mt-2">
+                  Check browser console for more details
+                </p>
+              </div>
 
               <div className="flex flex-col gap-3">
                 <AnimatedButton
