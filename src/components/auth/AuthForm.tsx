@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { Loader2 } from 'lucide-react';
 
 const AuthForm: React.FC = () => {
+  console.log('AuthForm component rendering...');
+  
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [isMicrosoftLoading, setIsMicrosoftLoading] = useState(false);
@@ -28,6 +31,7 @@ const AuthForm: React.FC = () => {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Handling sign in...');
     setIsLoading(true);
     await signIn(signInData.email, signInData.password);
     setIsLoading(false);
@@ -35,28 +39,34 @@ const AuthForm: React.FC = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Handling sign up...');
     setIsLoading(true);
     await signUp(signUpData.email, signUpData.password, signUpData.fullName);
     setIsLoading(false);
   };
 
   const handleGoogleAuth = async () => {
+    console.log('Handling Google auth...');
     setIsGoogleLoading(true);
     await signInWithGoogle();
     setIsGoogleLoading(false);
   };
 
   const handleMicrosoftAuth = async () => {
+    console.log('Handling Microsoft auth...');
     setIsMicrosoftLoading(true);
     await signInWithMicrosoft();
     setIsMicrosoftLoading(false);
   };
 
   const handleAppleAuth = async () => {
+    console.log('Handling Apple auth...');
     setIsAppleLoading(true);
     await signInWithApple();
     setIsAppleLoading(false);
   };
+
+  console.log('AuthForm rendering JSX...');
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">

@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -44,6 +45,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [subscription, setSubscription] = useState<SubscriptionInfo>({ subscribed: false });
   const [subscriptionLoading, setSubscriptionLoading] = useState(false);
   const { toast } = useToast();
+
+  console.log('AuthProvider rendering - loading:', loading, 'user:', !!user, 'session:', !!session);
 
   const checkSubscription = async () => {
     if (!session) return;
@@ -119,9 +122,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
+    console.log('AuthProvider: Setting up auth state change listener');
+    
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        console.log('Auth state change:', event, 'session:', !!session);
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
@@ -141,7 +147,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 
     // THEN check for existing session
+    console.log('AuthProvider: Checking for existing session');
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Initial session check:', !!session);
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -160,6 +168,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signUp = async (email: string, password: string, fullName: string) => {
     const redirectUrl = `${window.location.origin}/`;
     
+    console.log('Sign up attempt with redirect URL:', redirectUrl);
+    
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -172,12 +182,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     if (error) {
+      console.error('Sign up error:', error);
       toast({
         variant: "destructive",
         title: "Sign up failed",
         description: error.message
       });
     } else {
+      console.log('Sign up successful');
       toast({
         title: "Check your email",
         description: "Please check your email for a confirmation link to complete your registration."
@@ -188,18 +200,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signIn = async (email: string, password: string) => {
+    console.log('Sign in attempt for email:', email);
+    
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password
     });
 
     if (error) {
+      console.error('Sign in error:', error);
       toast({
         variant: "destructive",
         title: "Sign in failed",
         description: error.message
       });
     } else {
+      console.log('Sign in successful');
       toast({
         title: "Welcome back!",
         description: "You have successfully signed in."
@@ -212,6 +228,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signInWithGoogle = async () => {
     const redirectUrl = `${window.location.origin}/`;
     
+    console.log('Google sign in attempt with redirect URL:', redirectUrl);
+    
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -220,6 +238,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     if (error) {
+      console.error('Google sign in error:', error);
       toast({
         variant: "destructive",
         title: "Google sign in failed",
@@ -233,6 +252,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signInWithMicrosoft = async () => {
     const redirectUrl = `${window.location.origin}/`;
     
+    console.log('Microsoft sign in attempt with redirect URL:', redirectUrl);
+    
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'azure',
       options: {
@@ -241,6 +262,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     if (error) {
+      console.error('Microsoft sign in error:', error);
       toast({
         variant: "destructive",
         title: "Microsoft sign in failed",
@@ -254,6 +276,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signInWithApple = async () => {
     const redirectUrl = `${window.location.origin}/`;
     
+    console.log('Apple sign in attempt with redirect URL:', redirectUrl);
+    
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
@@ -262,6 +286,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     if (error) {
+      console.error('Apple sign in error:', error);
       toast({
         variant: "destructive",
         title: "Apple sign in failed",
@@ -273,6 +298,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signOut = async () => {
+    console.log('Sign out attempt');
     await supabase.auth.signOut();
     toast({
       title: "Signed out",
