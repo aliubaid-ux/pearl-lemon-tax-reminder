@@ -49,13 +49,20 @@ function App() {
 
   // Get the correct basename for routing
   const getBasename = () => {
-    if (import.meta.env.MODE === 'production') {
+    const isProduction = import.meta.env.MODE === 'production';
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    
+    console.log('Is production:', isProduction);
+    console.log('Is GitHub Pages:', isGitHubPages);
+    
+    if (isProduction && isGitHubPages) {
       return '/pearl-lemon-tax-reminder';
     }
     return undefined;
   };
 
-  console.log('App component rendering with basename:', getBasename());
+  const basename = getBasename();
+  console.log('App component rendering with basename:', basename);
 
   return (
     <ErrorBoundary>
@@ -63,7 +70,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
             <UserProfileProvider>
-              <Router basename={getBasename()}>
+              <Router basename={basename}>
                 <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
                   <Routes>
                     <Route path="/auth" element={<AuthPage />} />
